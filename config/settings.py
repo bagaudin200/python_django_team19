@@ -45,6 +45,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_jinja',
     'debug_toolbar',
+    'app_shop',
+    'app_order',
+    'app_cart',
+    'app_goods',
 ]
 
 MIDDLEWARE = [
