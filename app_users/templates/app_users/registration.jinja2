@@ -1,5 +1,4 @@
-{% extends "base.html" %}
-{% load static %}
+{% extends "base.jinja2" %}
 {% block middle %}
 {% url 'validate_email' as validate_email_url %}
 {{ validate_email_url|json_script}}:'validate_email_url' }}

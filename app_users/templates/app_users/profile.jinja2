@@ -1,5 +1,4 @@
-{% extends "base.html" %}
-{% load static %}
+{% extends "base.jinja2" %}
 {% block middle %}
 {% if request.user.avatar %}
 {{ request.user.avatar.url|json_script}}:"user_avatar" }}
