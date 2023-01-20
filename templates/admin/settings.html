@@ -1,0 +1,74 @@
+{% load i18n static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% translate 'Settings' %}
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <link rel="stylesheet" href="{% static "admin/css/base.css" %}">
+</head>
+<body>
+ <div id="container">
+
+    {% if not is_popup %}
+    <!-- Header -->
+    {% block header %}
+    <div id="header">
+        <div id="branding">
+        {% block branding %}{% translate 'SETTINGS' %}{% endblock %}
+        </div>
+    </div>
+    {% endblock %}
+    <!-- END Header -->
+    {% block breadcrumbs %}
+    <div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
+    </div>
+    {% endblock %}
+    {% endif %}
+
+    <div class="main" id="main">
+      <div class="content">
+        <!-- Content -->
+        <div id="content" class="{% block coltype %}colM{% endblock %}">
+          {% block content_title %}<h1>{% translate 'Settings' %}</h1>{% endblock %}
+          {% block content %}
+              <h2>{% translate 'Cash' %}</h2>
+               <form action="" method="post">
+                {% csrf_token %}
+                <button type="submit" class="button" name="clearCache" style="padding: 10px 15px">{% translate "Clear cache" %}</button>
+              </form>
+              <h2>{% translate 'Order' %}</h2>
+              <form action="{% url 'admin_settings' %}" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" name="saveSettings">{% translate 'Save' %}</button>
+              </form>
+
+            {% if messages %}
+                <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+</ul>
+{% endif %}
+
+          {% endblock %}
+          {% block sidebar %}{% endblock %}
+          <br class="clear">
+        </div>
+        <!-- END Content -->
+        {% block footer %}<div id="footer"></div>{% endblock %}
+      </div>
+    </div>
+</div>
+
+{% if alert_flag %}
+    <script>alert("{% translate 'Successful!' %}")</script>
+{% endif %}
+
+</body>
+</html>

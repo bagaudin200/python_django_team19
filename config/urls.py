@@ -16,7 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from app_shop import views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('settings/', views.admin_settings_view, name='admin_settings'),
     path('__debug__/', include('debug_toolbar.urls')),
 ]
