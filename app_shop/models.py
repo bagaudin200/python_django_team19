@@ -24,3 +24,7 @@ class SiteSettings(models.Model):
         class Meta:
             verbose_name_plural = 'настройки'
             verbose_name = 'настройки'
+
+
+class Shop(models.Model):
+    pass
