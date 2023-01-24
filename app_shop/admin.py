@@ -1,3 +1,10 @@
 from django.contrib import admin
+from .models import Shops
 
-# Register your models here.
+
+class ShopsAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name')
+
+
+
+admin.site.register(Shops, ShopsAdmin)
