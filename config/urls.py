@@ -20,6 +20,6 @@ from app_shop import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('settings/', views.admin_settings_view, name='admin_settings'),
+    path('clear_all_cache/', views.clear_all_cache_view, name='clear_all_cache'),
     path('__debug__/', include('debug_toolbar.urls')),
 ]
