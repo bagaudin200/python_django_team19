@@ -1,6 +1,8 @@
 from django.db import models
-from app_category.models import Category
-from app_shop.models import Shops
+
+
+class Category(models.Model):
+    title = models.CharField(max_length=40)
 
 
 class Items(models.Model):
