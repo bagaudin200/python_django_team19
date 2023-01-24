@@ -1,19 +1,18 @@
 {% extends "base.jinja2" %}
-{% block middle %}
-{% url 'validate_email' as validate_email_url %}
-{{ validate_email_url|json_script}}:'validate_email_url' }}
-{% url 'validate_phone' as validate_phone_url %}
-{{ validate_phone_url|json_script}}:'validate_phone_url' }}
+{% block content %}
+{% if request.user.avatar %}
+{{ request.user.avatar.url|json_script}}:"user_avatar" }}
+{% endif %}
 <div class="Middle Middle_top">
     <div class="Middle-top">
         <div class="wrap">
             <div class="Middle-header">
-                <h1 class="Middle-title">Регистрация
+                <h1 class="Middle-title">Профиль
                 </h1>
                 <ul class="breadcrumbs Middle-breadcrumbs">
-                    <li class="breadcrumbs-item"><a href="#">домой</a>
+                    <li class="breadcrumbs-item"><a href="#">home</a>
                     </li>
-                    <li class="breadcrumbs-item breadcrumbs-item_current"><span>Регистрация</span>
+                    <li class="breadcrumbs-item breadcrumbs-item_current"><span>Профиль</span>
                     </li>
                 </ul>
             </div>
@@ -30,10 +29,12 @@
                     <div class="Section-columnContent">
                         <div class="NavigateProfile">
                             <ul class="menu menu_vt">
-                                <li class="menu-item"><a class="menu-link" href="{% url 'login' %}">Вход</a>
+                                <li class="menu-item"><a class="menu-link" href="{{ url }} 'account' }}">Личный кабинет</a>
                                 </li>
-                                <li class="menu-item"><a class="menu-link"
-                                                         href="{% url 'registration' %}">Регистрация</a>
+                                <li class="menu-item_ACTIVE menu-item"><a class="menu-link"
+                                                                          href="{{ url }} 'profile' }}">Профиль</a>
+                                </li>
+                                <li class="menu-item"><a class="menu-link" href="#">История заказов</a>
                                 </li>
                             </ul>
                         </div>
@@ -56,7 +57,7 @@
                                     </label>
                                     <div class="Profile-avatar Profile-avatar_noimg">
                                         <div class="Profile-img">
-                                            <img src="{%static 'assets/img/content/home/empty_avatar.jpg' %}" alt="нет аватара"/>
+                                            <img src="{%static 'assets/img/content/home/empty_avatar.jpg' %}" alt="аватар"/>
                                         </div>
                                         <label class="Profile-fileLabel" for="{{ form.avatar.id_for_avatar }}">Выберите
                                             аватар
@@ -102,7 +103,7 @@
                                     </label>
                                     {{ form.password1 }}
                                     {% if form.password1.errors %}
-                                        {% for error in form.password2.errors %}
+                                        {% for error in form.password1.errors %}
                                         <div class="form-error">{{ error|escape }}</div>
                                         {% endfor %}
                                     {% endif %}
@@ -120,9 +121,15 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="Profile-btn">
-                                        <button class="btn btn_success" type="submit">Зарегистрироваться
+                                        <button class="btn btn_success" type="submit">Сохранить
                                         </button>
                                     </div>
+                                    {% if messages %}
+                                    {% for message in messages %}
+                                        <div class="Profile-success">{{ message }}
+                                        </div>
+                                    {% endfor %}
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
