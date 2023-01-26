@@ -20,12 +20,12 @@
     <script src="assets/plg/CountDown/countdown.js"></script>
 </head>
 <body>
-    {% include "header.html" ignore missing %}
+    {% include "header.jinja2" ignore missing %}
 
     {% block content %}
         <p>Здесь будет отображаться контент</p>
     {% endblock %}
 
-    {% include "footer.html" ignore missing%}
+    {% include "footer.jinja2" ignore missing%}
 </body>
 </html>
