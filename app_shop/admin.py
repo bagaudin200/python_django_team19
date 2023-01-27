@@ -6,5 +6,11 @@ class ShopsAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
 
 
+from app_shop.models import SiteSettings
 
-admin.site.register(Shops, ShopsAdmin)
+
+class SiteSettingsAdmin(admin.ModelAdmin):
+    change_form_template = 'admin/settings.html'
+
+
+admin.site.register(SiteSettings, SiteSettingsAdmin)
