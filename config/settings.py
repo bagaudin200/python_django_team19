@@ -50,8 +50,6 @@ INSTALLED_APPS = [
     'app_order.apps.AppOrderConfig',
     'app_users.apps.AppUsersConfig',
     'app_goods',
-    'app_category',
-
 ]
 
 MIDDLEWARE = [
