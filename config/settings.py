@@ -50,7 +50,6 @@ INSTALLED_APPS = [
     'app_order.apps.AppOrderConfig',
     'app_users.apps.AppUsersConfig',
     'app_goods',
-    'app_category',
 ]
 
 MIDDLEWARE = [
@@ -155,3 +154,5 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'app_users.User'
