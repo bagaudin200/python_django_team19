@@ -1,12 +1,9 @@
 from django.contrib import admin
-from .models import Shops
+from .models import Shops, SiteSettings
 
 
 class ShopsAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
-
-
-from app_shop.models import SiteSettings
 
 
 class SiteSettingsAdmin(admin.ModelAdmin):
