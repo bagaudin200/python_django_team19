@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    {% block title %}Megano{% endblock %}
+    <title>
+        {{ title }}
+    </title>
     <meta name="description" content="Описание страницы">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
     <link rel="shortcut icon" href="{{ static('favicon.ico')}}">
@@ -12,9 +14,9 @@
     <link rel="preload" href="{{ static('fonts/Roboto/Roboto-Bold_Italic.woff')}}" as="font">
     <link rel="preload" href="{{ static('fonts/Roboto/Roboto-Light.woff')}}" as="font">
     <link rel="preload" href="{{ static('fonts/Roboto/Roboto-Light_Italic.woff')}}" as="font">
-    <link rel="stylesheet" href="{{ static('css/fonts.css')}}">
-    <link rel="stylesheet" href="{{ static('css/basic.css')}}">
-    <link rel="stylesheet" href="{{ static('css/extra.css')}}">
+    <link rel="stylesheet" href="{{ static('css/fonts.css?v=65245665')}}">
+    <link rel="stylesheet" href="{{ static('css/basic.css?v=65245665')}}">
+    <link rel="stylesheet" href="{{ static('css/extra.css?v=65245665')}}">
     <script src="{{ static('plg/CountDown/countdown.js')}}"></script>
 </head>
 <body>
