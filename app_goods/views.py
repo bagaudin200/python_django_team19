@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from django.views.generic import DetailView
-from app_goods.models import Items
+from app_goods.models import Product
 
 
 class GoodsDetailView(DetailView):
-    model = Items
+    model = Product
     template_name = 'app_goods/product.jinja2'
     slug_url_kwarg = 'product_slug'
     context_object_name = 'product'
