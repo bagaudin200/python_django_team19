@@ -1,5 +1,4 @@
 from django.db import models
-from app_shop.models import Shops
 
 
 class Category(models.Model):
@@ -20,7 +19,8 @@ class Items(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, max_length=100, verbose_name='category')
     image = models.ImageField(upload_to='static/', verbose_name='image')
     description = models.CharField(max_length=1000, verbose_name='description')
-    reviews = models.PositiveIntegerField(default=0, verbose_name='reviews')
+    price = models.DecimalField(max_digits=10, decimal_places=0, default=0, verbose_name='price')
+    number = models.PositiveIntegerField(default=0, verbose_name='number')
 
     class Meta:
         verbose_name = 'item'
@@ -30,17 +30,19 @@ class Items(models.Model):
         return f'{self.name}'
 
 
-class ShopItems(models.Model):
+class Reviews(models.Model):
 
-    code = models.ForeignKey(Items, max_length=100, on_delete=models.CASCADE, verbose_name='code')
+    user = models.ForeignKey('app_users.User', default=None, null=True, on_delete=models.CASCADE, related_name='user',
+                             verbose_name='user')
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
-    shop = models.ForeignKey(Shops, on_delete=models.CASCADE, verbose_name='shop')
-    price = models.DecimalField(max_digits=10, decimal_places=0, verbose_name='price')
-    number = models.PositiveIntegerField(default=0, verbose_name='number')
+    comment = models.CharField(max_length=1000, default='', verbose_name='comment')
+    item = models.ForeignKey(Items, max_length=100, on_delete=models.CASCADE, related_name='reviews',
+                             verbose_name='item')
+    create_date = models.DateTimeField(auto_now_add=True, verbose_name='date')
 
     class Meta:
-        verbose_name = 'shopitem'
-        verbose_name_plural = 'shopitems'
+        verbose_name = 'review'
+        verbose_name_plural = 'reviews'
 
     def __str__(self):
-        return f'{self.code}'
+        return f'{self.item}'
