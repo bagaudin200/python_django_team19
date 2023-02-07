@@ -1,5 +1,5 @@
 from django.db import models
-from app_shop.models import Shops
+from django.urls import reverse
 from mptt.models import MPTTModel, TreeForeignKey
 
 from app_users.models import User
@@ -13,6 +13,7 @@ class Category(MPTTModel):
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
 
     class Meta:
+        db_table = 'category'
         verbose_name = 'category'
         verbose_name_plural = 'categories'
 
@@ -29,16 +30,21 @@ class Product(models.Model):
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, max_length=100, verbose_name='category')
     description = models.CharField(max_length=1000, verbose_name='description')
-    is_popular = models.BooleanField(default=False, verbose_name='is popular')
+    is_limited = models.BooleanField(default=False, verbose_name='is limited')
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='price')
     quantity = models.PositiveIntegerField(default=0, verbose_name='quantity')
+    image = models.ImageField(upload_to=product_directory_path, blank=True, null=True, verbose_name='image')  # основное фото
 
     class Meta:
-        verbose_name = 'item'
-        verbose_name_plural = 'items'
+        db_table = 'product'
+        verbose_name = 'product'
+        verbose_name_plural = 'products'
 
     def __str__(self):
         return f'{self.name}'
+
+    def get_absolute_url(self):
+        return reverse('product', kwargs={'product_slug': self.slug})
 
 
 class Image(models.Model):
