@@ -43,7 +43,7 @@
             <div class="CategoriesButton-content">
                 {% for category in main_categories %}
                     <div class="CategoriesButton-link">
-                        <a href="{{ url('catalog') }}?category={{ category }}">
+                        <a href="{{ url('catalog') }}?category={{ category.slug }}">
                             <div class="CategoriesButton-icon">
                                 <img src="{{ static('img/icons/departments/1.svg') }}" alt="1.svg"/>
                             </div>
@@ -53,7 +53,7 @@
                             <a class="CategoriesButton-arrow" href="#"></a>
                             <div class="CategoriesButton-submenu">
                             {% for child in category.get_children() %}
-                                <a class="CategoriesButton-link" href="{{ url('catalog') }}?category={{ child }}">
+                                <a class="CategoriesButton-link" href="{{ url('catalog') }}?category={{ child.slug }}">
                                     <div class="CategoriesButton-icon">
                                         <img src="{{ static('img/icons/departments/2.svg') }}" alt="2.svg"/>
                                     </div>
