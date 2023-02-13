@@ -1,1 +1,0 @@
-[{"model": "app_shop.shops", "pk": 1, "fields": {"name": "Apple Store", "slug": "apple-store"}}, {"model": "app_shop.shops", "pk": 2, "fields": {"name": "Restore", "slug": "restore"}}, {"model": "app_shop.shops", "pk": 3, "fields": {"name": "Amazon", "slug": "amazon"}}]

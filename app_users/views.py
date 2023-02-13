@@ -10,7 +10,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse, reverse_lazy
 from django.views.decorators.http import require_GET
-from django.views.generic import CreateView
+from django.views.generic import CreateView, TemplateView
 from django.views.generic.edit import UpdateView
 from django.contrib.auth import get_user_model
 from django.contrib import messages
@@ -106,6 +106,11 @@ class MyPasswordResetConfirmView(PasswordResetConfirmView):
 
 class MyPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = "app_users/password_reset_complete.jinja2"
+
+
+class AccountView(LoginRequiredMixin, generic.TemplateView):
+    template_name = 'app_users/account.jinja2'
+    raise_exception = True
 
 
 @require_GET
