@@ -9,6 +9,7 @@ from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView, 
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse, reverse_lazy
+from django.views import generic
 from django.views.decorators.http import require_GET
 from django.views.generic import CreateView, TemplateView
 from django.views.generic.edit import UpdateView
