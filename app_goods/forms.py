@@ -1,11 +1,11 @@
 from django import forms
-from .models import Reviews
+from .models import Review
 
 
 class Reviewsform(forms.ModelForm):
 
     class Meta:
-        model = Reviews
-        fields = ('comment',)
+        model = Review
+        fields = ('text',)
 
 
