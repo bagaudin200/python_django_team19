@@ -45,11 +45,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_jinja',
     'debug_toolbar',
+    'mptt',
+
     'app_cart.apps.AppCartConfig',
-    'app_shop.apps.AppShopConfig',
     'app_order.apps.AppOrderConfig',
     'app_users.apps.AppUsersConfig',
-    'app_goods',
+    'app_goods.apps.AppGoodsConfig',
 ]
 
 MIDDLEWARE = [
@@ -75,10 +76,11 @@ TEMPLATES = [
             "match_extension": ".jinja2",
             "match_regex": None,
             "app_dirname": "templates",
-            "constants": {
-            },
-            'globals': {
-            }
+            "constants": {},
+            'globals': {},
+            'context_processors': [
+                'context_processors.categories_context.categories',
+            ],
         },
     },
     {
@@ -156,3 +158,6 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'app_users.User'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MEDIA_URL = '/media/'

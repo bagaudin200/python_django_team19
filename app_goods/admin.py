@@ -1,20 +1,14 @@
 from django.contrib import admin
-from .models import Items, ShopItems, Category
+from .models import Product, Category
 
 
-class ItemsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'category', 'image', 'description', 'reviews')
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'category', 'price', 'quantity', 'slug', 'description')
+    prepopulated_fields = {'slug': ('name',)}
 
 
-class ShopItemsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'code', 'shop', 'price', 'number')
-
-
+@admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
-
-
-
-admin.site.register(Items, ItemsAdmin)
-admin.site.register(ShopItems, ShopItemsAdmin)
-admin.site.register(Category, CategoryAdmin)
+    list_display = ('id', 'name', 'slug')
+    prepopulated_fields = {'slug': ('name',)}

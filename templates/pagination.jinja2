@@ -1,0 +1,31 @@
+<div class="Pagination">
+    <div class="Pagination-ins">
+        {% for p in paginator.page_range %}
+            {% if page_obj.has_previous() %}
+                <a class="Pagination-element Pagination-element_prev" href="?page={{ page_obj.previous_page_number() }}&category={{ request.GET['category'] }}">
+                    <img src="{{ static('img/icons/prevPagination.svg') }}" alt="prevPagination.svg"/>
+                </a>
+            {% endif %}
+            {% if page_obj.number == p %}
+                <a class="Pagination-element Pagination-element_current" href="#">
+                    <span class="Pagination-text">{{ page_obj.number }}</span>
+                </a>
+            {% endif %}
+        {% endfor %}
+
+        <a class="Pagination-element Pagination-element_current" href="{{ page_obj.number }}">
+            <span class="Pagination-text">{{ page_obj.number }}</span>
+        </a>
+        <a class="Pagination-element" href="#">
+            <span class="Pagination-text">2</span>
+        </a>
+        <a class="Pagination-element" href="#">
+            <span class="Pagination-text">3</span>
+        </a>
+        {% if page_obj.has_next() %}
+            <a class="Pagination-element Pagination-element_prev" href="?page={{ page_obj.next_page_number() }}&category={{ request.GET['category'] }}">
+                <img src="{{ static('img/icons/nextPagination.svg') }}" alt="nextPagination.svg"/>
+            </a>
+        {% endif %}
+    </div>
+</div>
