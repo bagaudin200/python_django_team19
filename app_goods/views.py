@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.urls import reverse
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import FormMixin
@@ -21,11 +22,12 @@ class GoodsDetailView(FormMixin, DetailView):
         form = self.get_form()
         if request.user.is_authenticated:
             form.instance.user = request.user
-            form.instance.item = self.object
+            form.instance.product = self.object
         if form.is_valid():
             return self.form_valid(form)
         else:
             return self.form_invalid(form)
+            #return HttpResponse(form.errors.values())
 
     def form_valid(self, form):
         new_review = form.save(commit=False)

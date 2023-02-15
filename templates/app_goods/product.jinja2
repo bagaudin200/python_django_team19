@@ -69,7 +69,7 @@
             </div>
           </div>
           <div class="Tabs Tabs_default">
-            <div class="Tabs-links"><a class="Tabs-link_ACTIVE Tabs-link" href="#description"><span>Описание</span></a><a class="Tabs-link" href="#sellers"><span>Продавцы</span></a><a class="Tabs-link" href="#addit"><span>AdditionaL Info</span></a><a class="Tabs-link" href="#reviews"><span>Reviews ({{ product.items.filter(item=product.id).count() }})</span></a>
+            <div class="Tabs-links"><a class="Tabs-link_ACTIVE Tabs-link" href="#description"><span>Описание</span></a><a class="Tabs-link" href="#sellers"><span>Продавцы</span></a><a class="Tabs-link" href="#addit"><span>AdditionaL Info</span></a><a class="Tabs-link" href="#reviews"><span>Reviews ({{ product.items.filter(product=product.id).count() }})</span></a>
             </div>
             <div class="Tabs-wrap">
               <div class="Tabs-block" id="description">
@@ -202,10 +202,10 @@
               </div>
               <div class="Tabs-block" id="reviews">
                 <header class="Section-header">
-                  <h3 class="Section-title">{{ product.items.filter(item=product.id).count() }} Reviews</h3>
+                  <h3 class="Section-title">{{ product.items.filter(product=product.id).count() }} Reviews</h3>
                 </header>
               <div class="Comments">
-              {% for review in product.items.filter(item=product.id) %}
+              {% for review in product.items.filter(product=product.id) %}
                   <div class="Comment">
                     <div class="Comment-column Comment-column_pict">
                           {% if review.user.avatar %}
@@ -218,10 +218,10 @@
                       <header class="Comment-header">
                         <div>
                           <strong class="Comment-title">{{ review.user.full_name }}</strong>
-                            <span class="Comment-date">{{ review.create_date.strftime('%H:%M %Y-%m-%d') }}</span>
+                            <span class="Comment-date">{{ review.created_at.strftime('%H:%M %Y-%m-%d') }}</span>
                         </div>
                       </header>
-                      <div class="Comment-content">{{ review.comment }}</div>
+                      <div class="Comment-content">{{ review.text }}</div>
                     </div>
                   </div>
               {% endfor %}
@@ -236,7 +236,7 @@
                     <form class="form" method="post" action="/goods/product/{{ product.slug }}/">
                         {% csrf_token %}
                         <div class="form-group">
-                          <textarea class="form-textarea" name="comment" id="review" placeholder="Review" {{ form.text }}</textarea>
+                          <textarea class="form-textarea" name="text" id="review" placeholder="Review" {{ form.text }}</textarea>
                         </div>
                         <div class="form-group">
                         <div class="row">
