@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import TemplateView
 
 from app_shop import views
 
@@ -24,4 +25,5 @@ urlpatterns = [
     path('__debug__/', include('debug_toolbar.urls')),
     path('app_users/', include('app_users.urls')),
     path('goods/', include('app_goods.urls')),
+    path('', TemplateView.as_view(template_name="base.jinja2"), name='main'),
 ]

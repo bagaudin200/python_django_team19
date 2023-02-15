@@ -23,7 +23,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     full_name = models.CharField(max_length=254, verbose_name='Полное имя')
     date_joined = models.DateTimeField(auto_now_add=True, verbose_name='Дата регистрации')
     is_active = models.BooleanField(default=True, verbose_name='Активен')
-    avatar = models.ImageField(upload_to='avatars/', blank=True, verbose_name='Аватар',
+    avatar = models.ImageField(upload_to='static/user_avatars/', blank=True, verbose_name='Аватар',
                                validators=[validate_image_size, image_validator])
     phoneNumberRegex = RegexValidator(regex=r"^\d{10}$")
     phoneNumber = models.CharField(validators=[phoneNumberRegex], max_length=10, unique=True, verbose_name='Телефон')
