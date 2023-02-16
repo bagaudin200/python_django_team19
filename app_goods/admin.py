@@ -12,3 +12,6 @@ class ProductAdmin(admin.ModelAdmin):
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'slug')
     prepopulated_fields = {'slug': ('name',)}
+
+
+

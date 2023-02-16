@@ -1,16 +1,30 @@
-from django.shortcuts import render
+from django.core.cache import cache
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import FormMixin
-
-from app_goods.models import Product
+from app_goods.models import Product, Review
 from .services import get_cheapest_product, get_most_expensive_product
+
+
 
 
 class GoodsDetailView(DetailView):
     model = Product
     template_name = 'app_goods/product.jinja2'
-    slug_url_kwarg = 'product_slug'
     context_object_name = 'product'
+
+    def get_object(self, queryset=None):
+        slug = self.kwargs['slug']
+        obj = cache.get(f"product:{slug}")
+        if not obj:
+            obj = super(GoodsDetailView, self).get_object()
+            cache.set(obj, f"product:{slug}")
+        return obj
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['reviews'] = Review.objects.filter(product_id=self.object.id)
+        return context
+
 
 
 class CatalogView(FormMixin, ListView):

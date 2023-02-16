@@ -24,7 +24,8 @@ urlpatterns = [
     # path('clear_all_cache/', views.clear_all_cache_view, name='clear_all_cache'),
     path('__debug__/', include('debug_toolbar.urls')),
     path('app_users/', include('app_users.urls')),
-    path('goods/', include('app_goods.urls')),
+    path('cart/', include('app_cart.urls')),
+    path('product/', include('app_goods.urls')),
 ]
 
 if settings.DEBUG:
