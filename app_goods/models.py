@@ -11,6 +11,15 @@ class Category(models.Model):
         verbose_name = 'category'
         verbose_name_plural = 'categories'
 
+    def get_absolute_url(self):
+        return reverse('product-by-category', args=[str(self.slug)])
+
+    def get_min(self):
+        sub_categories = self.get_descendants(include_self=True)
+        price = Product.objects.values('price').filter(category__in=sub_categories).filter(available=True).aggregate(
+            Min('price'))['price__min']
+        return price
+
     def __str__(self):
         return f'{self.name}'
 
