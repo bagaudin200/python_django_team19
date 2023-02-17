@@ -22,7 +22,7 @@ class ShopView(TemplateView):
                                   only('category', 'name', 'price'). \
                                   annotate(total=Sum('order_items__quantity')). \
                                   order_by('-total')[:quantity.quantity_popular]
-        context['limited'] = Product.objects. \
+        context['is_limited'] = Product.objects. \
             select_related('category'). \
             filter(available=True). \
             filter(limited=True). \
