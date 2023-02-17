@@ -5,8 +5,6 @@ from app_goods.models import Product, Review
 from .services import get_cheapest_product, get_most_expensive_product
 
 
-
-
 class GoodsDetailView(DetailView):
     model = Product
     template_name = 'app_goods/product.jinja2'
@@ -17,7 +15,7 @@ class GoodsDetailView(DetailView):
         obj = cache.get(f"product:{slug}")
         if not obj:
             obj = super(GoodsDetailView, self).get_object()
-            cache.set(obj, f"product:{slug}")
+            cache.set(f"product:{slug}", obj)
         return obj
 
     def get_context_data(self, **kwargs):
