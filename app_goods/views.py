@@ -1,3 +1,4 @@
+from django.core.paginator import Page
 from django.shortcuts import render
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import FormMixin
@@ -5,6 +6,7 @@ from django.views.generic.edit import FormMixin
 from app_goods.models import Product, Category
 from .forms import FilterForm
 from .services import get_cheapest_product_price, get_most_expensive_product_price
+from .utils import CatalogPaginator
 
 
 class GoodsDetailView(DetailView):
@@ -18,15 +20,18 @@ class CatalogView(FormMixin, ListView):
     form_class = FilterForm
     template_name = 'app_goods/catalog.jinja2'
     context_object_name = 'products'
+    paginator_class = CatalogPaginator
     paginate_by = 8
     __order_by = {'popular': 'Популярности', 'price': 'Цене', 'reviews': 'Отзывам', 'novelty': 'Новизне'}
-    queryset = Product.objects.select_related('category', 'category__parent').defer('description', 'quantity')
+    queryset = Product.objects.select_related('category', 'category__parent').defer('description', 'quantity').order_by('price')
 
     def get_context_data(self, **kwargs):
         context = super(FormMixin, self).get_context_data(**kwargs)
         context['orders_by'] = self.__order_by
         context['cheapest'] = get_cheapest_product_price(self.queryset)
         context['most_expensive'] = get_most_expensive_product_price(self.queryset)
+        page: Page = context['page_obj']
+        context['paginator_range'] = page.paginator.get_elided_page_range(page.number)
         return context
 
     def get_queryset(self):
@@ -83,7 +88,7 @@ class CatalogView(FormMixin, ListView):
         try:
             result = bool(int(in_stock))
             return result
-        except:
+        except (TypeError, ValueError):
             return False
 
     def _get_free_delivery(self):
@@ -91,5 +96,5 @@ class CatalogView(FormMixin, ListView):
         try:
             result = bool(int(free_delivery))
             return result
-        except:
+        except (TypeError, ValueError):
             return False

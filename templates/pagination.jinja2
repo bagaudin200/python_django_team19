@@ -12,16 +12,20 @@
                 </a>
             {% endif %}
 
-            {% for p in paginator.page_range %}
+            {% for p in paginator_range %}
                 {% if page_obj.number == p %}
                     <a class="Pagination-element Pagination-element_current" href="#">
                         <span class="Pagination-text">{{ page_obj.number }}</span>
                     </a>
                 {% else %}
-                    <a class="Pagination-element"
-                       href="{{ url('catalog') }}{% if category %}?category={{ category }}{% else %}?{% endif %}{% if order_by %}&order_by={{ order_by }}{% endif %}{% if order %}&order={{ order }}{% endif %}{% if price %}&price={{ price }}{% endif %}{% if title %}&title={{ title }}{% endif %}{% if in_stock %}&in_stock={{ in_stock }}{% endif %}{% if free_delivery %}&free_delivery={{ free_delivery }}{% endif %}&page={{ p }}">
+                    {% if p == page_obj.paginator.ELLIPSIS %}
                         <span class="Pagination-text">{{ p }}</span>
-                    </a>
+                    {% else %}
+                        <a class="Pagination-element"
+                           href="{{ url('catalog') }}{% if category %}?category={{ category }}{% else %}?{% endif %}{% if order_by %}&order_by={{ order_by }}{% endif %}{% if order %}&order={{ order }}{% endif %}{% if price %}&price={{ price }}{% endif %}{% if title %}&title={{ title }}{% endif %}{% if in_stock %}&in_stock={{ in_stock }}{% endif %}{% if free_delivery %}&free_delivery={{ free_delivery }}{% endif %}&page={{ p }}">
+                            <span class="Pagination-text">{{ p }}</span>
+                        </a>
+                    {% endif %}
                 {% endif %}
             {% endfor %}
 
