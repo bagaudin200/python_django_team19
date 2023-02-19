@@ -34,6 +34,8 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='price')
     quantity = models.PositiveIntegerField(default=0, verbose_name='quantity')
     image = models.ImageField(upload_to=product_directory_path, blank=True, null=True, verbose_name='image')  # основное фото
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='created at')
+    free_delivery = models.BooleanField(default=False, verbose_name='free delivery')
 
     class Meta:
         db_table = 'product'
