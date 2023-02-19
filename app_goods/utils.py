@@ -1,6 +1,6 @@
 import os
 
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage, InvalidPage
+from django.core.paginator import Paginator, InvalidPage
 
 
 def product_directory_path(instance, filename):

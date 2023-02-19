@@ -1,4 +1,5 @@
-from django.core.paginator import Page
+from django.core.paginator import Page, Paginator, InvalidPage
+from django.http import Http404
 from django.shortcuts import render
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import FormMixin
