@@ -1,5 +1,4 @@
-from django.core.paginator import Page, Paginator, InvalidPage
-from django.http import Http404
+from django.core.paginator import Page
 from django.shortcuts import render
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import FormMixin
@@ -33,6 +32,7 @@ class CatalogView(FormMixin, ListView):
         context['most_expensive'] = get_most_expensive_product_price(self.queryset)
         page: Page = context['page_obj']
         context['paginator_range'] = page.paginator.get_elided_page_range(page.number)
+        context['popular_tags'] = Product.tags.most_common()[:20]
         return context
 
     def get_queryset(self):
@@ -43,6 +43,7 @@ class CatalogView(FormMixin, ListView):
         name = self.request.GET.get('title')
         in_stock = self._get_in_stock()
         free_delivery = self._get_free_delivery()
+        tag = self._get_tag()
 
         qs = self.queryset
         if category:
@@ -56,6 +57,8 @@ class CatalogView(FormMixin, ListView):
             qs = qs.filter(quantity__gt=0)
         if free_delivery:
             qs = qs.filter(free_delivery=free_delivery)
+        if tag:
+            qs = Product.objects.filter(tags__slug=tag)
         qs = qs.order_by(f"{order}{order_by}")
         self.queryset = qs
         return qs
@@ -99,3 +102,7 @@ class CatalogView(FormMixin, ListView):
             return result
         except (TypeError, ValueError):
             return False
+
+    def _get_tag(self):
+        tag = self.request.GET.get('tag')
+        return tag

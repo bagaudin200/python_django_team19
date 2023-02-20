@@ -43,8 +43,8 @@
             <div class="CategoriesButton-content">
                 {% for category in main_categories recursive %}
                     {% set children = category.get_children() %}
+                    {% set slug = category.slug %}
                     <div class="CategoriesButton-link">
-                        {% set slug = category.slug %}
                         <a href="{{ url('catalog') }}?category={{ slug }}">
                             <div class="CategoriesButton-icon">
                                 <img src="{{ static(category_icons_paths[slug]) }}" alt="{{ slug }}.png"/>

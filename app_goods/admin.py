@@ -4,9 +4,15 @@ from .models import Product, Category, Image
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'category', 'price', 'quantity', 'slug', 'description')
+    list_display = ('id', 'name', 'category', 'price', 'quantity', 'slug', 'short_description', 'tag_list')
     prepopulated_fields = {'slug': ('name',)}
     search_fields = ('name',)
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).prefetch_related('tags')
+
+    def tag_list(self, obj):
+        return ", ".join(o.name for o in obj.tags.all())
 
 
 @admin.register(Category)

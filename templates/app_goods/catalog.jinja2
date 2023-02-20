@@ -9,12 +9,12 @@
     <div class="Middle-top">
       <div class="wrap">
         <div class="Middle-header">
-          <h1 class="Middle-title">Catalog Megano
+          <h1 class="Middle-title">Каталог Megano
           </h1>
           <ul class="breadcrumbs Middle-breadcrumbs">
-            <li class="breadcrumbs-item"><a href="index.html">home</a>
+            <li class="breadcrumbs-item"><a href="index.html">главная</a>
             </li>
-            <li class="breadcrumbs-item breadcrumbs-item_current"><span>Catalog</span>
+            <li class="breadcrumbs-item breadcrumbs-item_current"><span>каталог</span>
             </li>
           </ul>
         </div>
@@ -69,11 +69,14 @@
           </div>
           <div class="Section-columnSection">
             <header class="Section-header">
-              <strong class="Section-title">Popular tags
+              <strong class="Section-title">Популярные теги
               </strong>
             </header>
             <div class="Section-columnContent">
-              <div class="buttons"><a class="btn btn_default btn_sm" href="#">Video</a><a class="btn btn_default btn_sm" href="#">Development</a><a class="btn btn_default btn_sm" href="#">Gaming</a><a class="btn btn_default btn_sm" href="#">Asus</a><a class="btn btn_default btn_sm" href="#">Development</a><a class="btn btn_default btn_sm" href="#">Video</a>
+              <div class="buttons">
+                  {% for tag in popular_tags %}
+                      <a class="btn btn_default btn_sm" href="{{ url('catalog') }}?tag={{ tag.slug }}">{{ tag }}</a>
+                  {% endfor %}
               </div>
             </div>
           </div>
@@ -84,6 +87,7 @@
             </div>
             <div class="Sort-variants">
                 {% with category=request.GET.get('category'), order=request.GET.get('order'), order_by=request.GET.get('order_by') %}
+                    {% set tag=request.GET.get('tag') %}
                     {% set price=request.GET.get('price') %}
                     {% set title=request.GET.get('title') %}
                     {% set in_stock=request.GET.get('in_stock') %}
@@ -91,11 +95,11 @@
                     {% for key, value in orders_by.items() %}
                         {% if key != order_by %}
                             <a class="Sort-sortBy"
-                               href="{{ url('catalog') }}{% if category %}?category={{ category }}&order_by={{ key }}&order=asc{% else %}?order_by={{ key }}&order=asc{% endif %}{% if price %}&price={{ price }}{% endif %}{% if title %}&title={{ title }}{% endif %}{% if in_stock %}&in_stock={{ in_stock }}{% endif %}{% if free_delivery %}&free_delivery={{ free_delivery }}{% endif %}">{{ value }}
+                               href="{{ url('catalog') }}{% if category %}?category={{ category }}&order_by={{ key }}&order=asc{% else %}?order_by={{ key }}&order=asc{% endif %}{% if tag %}&tag={{ tag }}{% endif %}{% if price %}&price={{ price }}{% endif %}{% if title %}&title={{ title }}{% endif %}{% if in_stock %}&in_stock={{ in_stock }}{% endif %}{% if free_delivery %}&free_delivery={{ free_delivery }}{% endif %}">{{ value }}
                             </a>
                         {% else %}
                             <a class="Sort-sortBy {% if order=='desc' %}Sort-sortBy_inc{% else %}Sort-sortBy_dec{% endif %}"
-                               href="{{ url('catalog') }}{% if category %}?category={{ category }}&{% else %}?{% endif %}order_by={{ key }}&order={% if order=='asc' %}desc{% else %}asc{% endif %}{% if price %}&price={{ price }}{% endif %}{% if title %}&title={{ title }}{% endif %}{% if in_stock %}&in_stock={{ in_stock }}{% endif %}{% if free_delivery %}&free_delivery={{ free_delivery }}{% endif %}">{{ value }}
+                               href="{{ url('catalog') }}{% if category %}?category={{ category }}&{% else %}?{% endif %}order_by={{ key }}&order={% if order=='asc' %}desc{% else %}asc{% endif %}{% if tag %}&tag={{ tag }}{% endif %}{% if price %}&price={{ price }}{% endif %}{% if title %}&title={{ title }}{% endif %}{% if in_stock %}&in_stock={{ in_stock }}{% endif %}{% if free_delivery %}&free_delivery={{ free_delivery }}{% endif %}">{{ value }}
                             </a>
                         {% endif %}
                     {% endfor %}

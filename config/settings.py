@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django_jinja',
     'debug_toolbar',
     'mptt',
+    'taggit',
 
     'app_cart.apps.AppCartConfig',
     'app_order.apps.AppOrderConfig',
@@ -161,3 +162,5 @@ AUTH_USER_MODEL = 'app_users.User'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = '/media/'
+
+TAGGIT_CASE_INSENSITIVE = True
