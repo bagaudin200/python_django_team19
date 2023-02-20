@@ -1,6 +1,3 @@
-import datetime
-import time
-
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.views.decorators.http import require_POST
