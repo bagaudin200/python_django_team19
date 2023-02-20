@@ -15,5 +15,5 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 @admin.register(Review)
-class CategoryAdmin(admin.ModelAdmin):
+class ReviewAdmin(admin.ModelAdmin):
     list_display = ('text', )

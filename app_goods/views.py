@@ -27,7 +27,6 @@ class GoodsDetailView(FormMixin, DetailView):
             return self.form_valid(form)
         else:
             return self.form_invalid(form)
-            #return HttpResponse(form.errors.values())
 
     def form_valid(self, form):
         new_review = form.save(commit=False)

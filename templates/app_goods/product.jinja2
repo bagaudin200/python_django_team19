@@ -233,7 +233,7 @@
                 </header>
                 <div class="Tabs-addComment">
                     {% if request.user.is_authenticated %}
-                    <form class="form" method="post" action="/goods/product/{{ product.slug }}/">
+                    <form class="form" method="post" action="{{ url('product', product_slug=product.slug) }}">
                         {% csrf_token %}
                         <div class="form-group">
                           <textarea class="form-textarea" name="text" id="review" placeholder="Review" {{ form.text }}</textarea>
