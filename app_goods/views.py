@@ -1,37 +1,27 @@
-from django.http import HttpResponse
-from django.urls import reverse
+from django.core.cache import cache
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import FormMixin
-from app_goods.forms import Reviewsform
-from app_goods.models import Product
+from app_goods.models import Product, Review
 from .services import get_cheapest_product, get_most_expensive_product
 
 
-class GoodsDetailView(FormMixin, DetailView):
-    form_class = Reviewsform
+class GoodsDetailView(DetailView):
     model = Product
     template_name = 'app_goods/product.jinja2'
-    slug_url_kwarg = 'product_slug'
     context_object_name = 'product'
 
-    def get_success_url(self):
-        return reverse('product', kwargs={'product_slug': self.object.slug})
+    def get_object(self, queryset=None):
+        slug = self.kwargs['slug']
+        obj = cache.get(f"product:{slug}")
+        if not obj:
+            obj = super(GoodsDetailView, self).get_object()
+            cache.set(f"product:{slug}", obj)
+        return obj
 
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        form = self.get_form()
-        if request.user.is_authenticated:
-            form.instance.user = request.user
-            form.instance.product = self.object
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
-
-    def form_valid(self, form):
-        new_review = form.save(commit=False)
-        new_review.save()
-        return super(GoodsDetailView, self).form_valid(form)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['reviews'] = Review.objects.filter(product_id=self.object.id)
+        return context
 
 
 

@@ -46,11 +46,11 @@ INSTALLED_APPS = [
     'django_jinja',
     'debug_toolbar',
     'mptt',
-
     'app_cart.apps.AppCartConfig',
     'app_order.apps.AppOrderConfig',
     'app_users.apps.AppUsersConfig',
     'app_goods.apps.AppGoodsConfig',
+    'app_settings.apps.AppSettingsConfig',
 ]
 
 MIDDLEWARE = [
@@ -101,6 +101,12 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    }
+}
+
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
@@ -110,7 +116,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

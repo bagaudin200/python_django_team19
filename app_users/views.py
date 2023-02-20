@@ -109,7 +109,7 @@ class MyPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = "app_users/password_reset_complete.jinja2"
 
 
-class AccountView(LoginRequiredMixin, generic.TemplateView):
+class AccountView(LoginRequiredMixin, TemplateView):
     template_name = 'app_users/account.jinja2'
     raise_exception = True
 

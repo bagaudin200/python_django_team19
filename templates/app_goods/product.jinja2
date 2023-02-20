@@ -1,15 +1,15 @@
 {% extends 'base.jinja2' %}
 
+
 {% block title%}{{ product.name }}{% endblock %}
 
 {% block content %}
     <div class="Middle-top">
       <div class="wrap">
         <div class="Middle-header">
-          <h1 class="Middle-title">Megano Product
-          </h1>
+          <h1 class="Middle-title">MEGANO PRODUCT</h1>
           <ul class="breadcrumbs Middle-breadcrumbs">
-            <li class="breadcrumbs-item"><a href="/">home</a>
+            <li class="breadcrumbs-item"><a href="index.html">home</a>
             </li>
             <li class="breadcrumbs-item breadcrumbs-item_current"><span>Product</span>
             </li>
@@ -23,10 +23,9 @@
           <div class="ProductCard">
             <div class="ProductCard-look">
               <div class="ProductCard-photo">
-                <div class="ProductCard-sale">-15%
-                </div><img src="{{ product.image.url }}" alt="product-image.png"/>
+                <img src="{{ product.image.url }}" alt="product image"/>
               </div>
-              <div class="ProductCard-picts"><a class="ProductCard-pict ProductCard-pict_ACTIVE" href="assets/img/content/home/bigGoods.png"><img src="{{ static('img/content/home/bigGoods.png') }}" alt="bigGoods.png"/></a><a class="ProductCard-pict" href="assets/img/content/home/slider.png"><img src="{{ static('img/content/home/slider.png') }}" alt="slider.png"/></a><a class="ProductCard-pict" href="assets/img/content/home/videoca.png"><img src="{{ static('img/content/home/videoca.png') }}" alt="videoca.png"/></a>
+              <div class="ProductCard-picts"><a class="ProductCard-pict ProductCard-pict_ACTIVE" href="{{ product.image.url }}"><img src="{{ product.image.url }}" alt="bigGoods.png"/></a><a class="ProductCard-pict" href="/img/content/home/slider.png"><img src="img/content/home/slider.png" alt="slider.png"/></a><a class="ProductCard-pict" href="img/content/home/videoca.png"><img src="img/content/home/videoca.png" alt="videoca.png"/></a>
               </div>
             </div>
             <div class="ProductCard-desc">
@@ -35,31 +34,35 @@
                 </h2>
                 <div class="ProductCard-info">
                   <div class="ProductCard-cost">
-                    <div class="ProductCard-price">{{ product.price }}
+                    <div class="ProductCard-price">{{ product.price }}$
                     </div>
-                    <div class="ProductCard-priceOld">$115.00
-                    </div>
-                  </div>
-                  <div class="ProductCard-compare"><a class="btn btn_default" href="#"><img class="btn-icon" src="{{ static('img/icons/card/change.svg') }}" alt="change.svg"/></a>
                   </div>
                 </div>
               </div>
               <div class="ProductCard-text">
-                  {{ product.description }}
+                <ul>
+                  <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, eiusmod
+                  </li>
+                  <li>tempor incididunt ut labore et dolore magna aliqua. Lorem
+                  </li>
+                  <li>ipsum dolor sit ameabore et dolore magna aliqua. Lorem ipsum
+                  </li>
+                </ul>
               </div>
-              <div class="ProductCard-cart">
+{#                {% cart_add product.id %}#}
+              <form class="ProductCard-cart" action="{{ url('cart_add')}}" method="post">{% csrf_token %}
                 <div class="ProductCard-cartElement ProductCard-cartElement_amount">
                   <div class="Amount Amount_product">
                     <button class="Amount-remove" type="button">
                     </button>
-                    <input class="Amount-input form-input" name="amount" type="text" value="1"/>
-                    <button class="Amount-add" type="button">
-                    </button>
+                    <input type="hidden" name="id" value="{{ product.id }}">
+                    <input class="Amount-input form-input" name="quantity" type="text" value="1">
+                    <button class="Amount-add" type="button"></button>
                   </div>
                 </div>
-                <div class="ProductCard-cartElement"><a class="btn btn_primary" href="#"><img class="btn-icon" src="{{ static('img/icons/card/cart_white.svg') }}" alt="cart_white.svg"/><span class="btn-content">Add To Cart</span></a>
+                <div class="ProductCard-cartElement"><button class="btn btn_primary" type="submit"><img class="btn-icon" src="{{ static('img/icons/card/cart_white.svg')}}" alt="cart_white.svg"/><span class="btn-content">Add To Cart</span></button>
                 </div>
-              </div>
+              </form>
               <div class="ProductCard-footer">
                 <div class="ProductCard-tags">
                   <strong class="ProductCard-tagsTitle">Tags:
@@ -69,16 +72,16 @@
             </div>
           </div>
           <div class="Tabs Tabs_default">
-            <div class="Tabs-links"><a class="Tabs-link_ACTIVE Tabs-link" href="#description"><span>Описание</span></a><a class="Tabs-link" href="#sellers"><span>Продавцы</span></a><a class="Tabs-link" href="#addit"><span>AdditionaL Info</span></a><a class="Tabs-link" href="#reviews"><span>Reviews ({{ product.items.filter(product=product.id).count() }})</span></a>
+            <div class="Tabs-links"><a class="Tabs-link_ACTIVE Tabs-link" href="#description"><span>Description</span></a><a class="Tabs-link" href="#addit"><span>AdditionaL Info</span></a><a class="Tabs-link" href="#reviews"><span>Reviews ({{ reviews|count }})</span></a>
             </div>
             <div class="Tabs-wrap">
               <div class="Tabs-block" id="description">
                 <h2>Megano Store Hystory
                 </h2>
-                <p>Lorem ipsum dolor sit amet, consectetuer&#32;
-                  <strong>adipiscing
-                  </strong>&#32;elit doli. Aenean commodo ligula eget dolor. Aenean massa.&#32;<a href="#">Cumtipsu</a>&#32;sociis natoque penatibus et magnis dis parturient montesti, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eutu, pretiumem.
-                </p><img class="pict pict_right" src="{{ static('img/content/home/bigGoods.png') }}" alt="bigGoods.png"/>
+                <p>
+                    {{ product.description }}
+                </p>
+                  <img class="pict pict_right" src="{{ product.image.url }}" alt="bigGoods.png"/>
                 <ul>
                   <li>Lorem ipsum dolor sit amet, consectetuer
                   </li>
@@ -98,9 +101,9 @@
                 <div class="table">
                   <table>
                     <tr>
-                      <th>Характеристика
+                      <th>Tech Specs
                       </th>
-                      <th>Значение
+                      <th>Value
                       </th>
                     </tr>
                     <tr>
@@ -114,70 +117,6 @@
               </div>
               <div class="Tabs-block" id="sellers">
                 <div class="Categories Categories_product">
-                  <div class="Categories-row">
-                    <div class="Categories-block Categories-block_info">
-                      <div class="Categories-info">
-                        <strong>Очень дешево
-                        </strong>
-                      </div>
-                    </div>
-                    <div class="Categories-splitProps">
-                    </div>
-                    <div class="Categories-block Categories-price">
-                      <strong>€&#32;40.58
-                      </strong>
-                    </div>
-                    <div class="Categories-block Categories-button"><a class="btn btn_primary" href="#"><img class="btn-icon" src="assets/img/icons/card/cart_white.svg" alt="cart_white.svg"/><span class="btn-content">Купить</span></a>
-                    </div>
-                  </div>
-                  <div class="Categories-row">
-                    <div class="Categories-block Categories-block_info">
-                      <div class="Categories-info">
-                        <strong>pleer.ru
-                        </strong>
-                      </div>
-                    </div>
-                    <div class="Categories-splitProps">
-                    </div>
-                    <div class="Categories-block Categories-price">
-                      <strong>€&#32;69.04
-                      </strong>
-                    </div>
-                    <div class="Categories-block Categories-button"><a class="btn btn_primary" href="#"><img class="btn-icon" src="assets/img/icons/card/cart_white.svg" alt="cart_white.svg"/><span class="btn-content">Купить</span></a>
-                    </div>
-                  </div>
-                  <div class="Categories-row">
-                    <div class="Categories-block Categories-block_info">
-                      <div class="Categories-info">
-                        <strong>citilink.ru
-                        </strong>
-                      </div>
-                    </div>
-                    <div class="Categories-splitProps">
-                    </div>
-                    <div class="Categories-block Categories-price">
-                      <strong>€&#32;112.69
-                      </strong>
-                    </div>
-                    <div class="Categories-block Categories-button"><a class="btn btn_primary" href="#"><img class="btn-icon" src="assets/img/icons/card/cart_white.svg" alt="cart_white.svg"/><span class="btn-content">Купить</span></a>
-                    </div>
-                  </div>
-                  <div class="Categories-row">
-                    <div class="Categories-block Categories-block_info">
-                      <div class="Categories-info">
-                        <strong>М.Видео
-                        </strong>
-                      </div>
-                    </div>
-                    <div class="Categories-splitProps">
-                    </div>
-                    <div class="Categories-block Categories-price">
-                      <strong>€&#32;197.32
-                      </strong>
-                    </div>
-                    <div class="Categories-block Categories-button"><a class="btn btn_primary" href="#"><img class="btn-icon" src="assets/img/icons/card/cart_white.svg" alt="cart_white.svg"/><span class="btn-content">Купить</span></a>
-                    </div>
-                  </div>
                 </div>
               </div>
               <div class="Tabs-block" id="addit">
@@ -202,58 +141,50 @@
               </div>
               <div class="Tabs-block" id="reviews">
                 <header class="Section-header">
-                  <h3 class="Section-title">{{ product.items.filter(product=product.id).count() }} Reviews</h3>
+                  <h3 class="Section-title">{{ reviews|count }} Reviews
+                  </h3>
                 </header>
-              <div class="Comments">
-              {% for review in product.items.filter(product=product.id) %}
+                <div class="Comments">
                   <div class="Comment">
                     <div class="Comment-column Comment-column_pict">
-                          {% if review.user.avatar %}
-                            <img class="Comment-avatar" src="{{ review.user.avatar.url }}" alt="avatar">
-                          {% else %}
-                            <img class="Comment-avatar" src="" alt="">
-                          {% endif %}
+                      <div class="Comment-avatar">
+                      </div>
                     </div>
                     <div class="Comment-column">
                       <header class="Comment-header">
                         <div>
-                          <strong class="Comment-title">{{ review.user.full_name }}</strong>
-                            <span class="Comment-date">{{ review.created_at.strftime('%H:%M %Y-%m-%d') }}</span>
+                          <strong class="Comment-title">Alexandra Brownie
+                          </strong><span class="Comment-date">December 25&#32;&#32;/&#32;&#32;2017&#32;&#32;/&#32;&#32;22:50</span>
                         </div>
                       </header>
-                      <div class="Comment-content">{{ review.text }}</div>
+                      <div class="Comment-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit doli. Aenean commodo ligula eget dolor. Aenean massa. Cumtipsu sociis natoque penatibus et magnis dis parturient montesti, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eutu, pretiumem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justotuio, rhoncus ut loret, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus element semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae.
+                      </div>
                     </div>
                   </div>
-              {% endfor %}
-              </div>
-
+                </div>
                 <header class="Section-header Section-header_product">
                   <h3 class="Section-title">Add Review
                   </h3>
                 </header>
                 <div class="Tabs-addComment">
-                    {% if request.user.is_authenticated %}
-                    <form class="form" method="post" action="{{ url('product', product_slug=product.slug) }}">
-                        {% csrf_token %}
-                        <div class="form-group">
-                          <textarea class="form-textarea" name="text" id="review" placeholder="Review" {{ form.text }}</textarea>
+                  <form class="form" action="#" method="post">
+                    <div class="form-group">
+                      <textarea class="form-textarea" name="review" id="review" placeholder="Review"></textarea>
+                    </div>
+                    <div class="form-group">
+                      <div class="row">
+                        <div class="row-block">
+                          <input class="form-input" id="name" name="name" type="text" placeholder="Name"/>
                         </div>
-                        <div class="form-group">
-                        <div class="row">
                         <div class="row-block">
-                          <input class="form-input" id="name" name="name" type="text" placeholder="Name" value="{{ request.user.full_name }}"></div>
-                        <div class="row-block">
-                          <input class="form-input" id="email" name="email" type="text" placeholder="Email" value="{{ request.user.email }}">
+                          <input class="form-input" id="email" name="email" type="text" placeholder="Email"/>
                         </div>
                       </div>
                     </div>
                     <div class="form-group">
-                      <button class="btn btn_muted" type="submit">Submit Review</button>
+                      <button class="btn btn_muted" type="submit">Submit Review
+                      </button>
                     </div>
-                    {% else %}
-                        <p><a href="/"><h5>Войти / зарегистрироваться</h5></a></p>
-                    {% endif %}
-
                   </form>
                 </div>
               </div>
@@ -262,5 +193,4 @@
         </div>
       </div>
     </div>
-  </div>
 {% endblock %}
