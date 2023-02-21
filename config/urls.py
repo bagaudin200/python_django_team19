@@ -26,7 +26,7 @@ urlpatterns = [
     path('__debug__/', include('debug_toolbar.urls')),
     path('app_users/', include('app_users.urls')),
     path('cart/', include('app_cart.urls')),
-    path('product/', include('app_goods.urls')),
+    path('', include('app_goods.urls', namespace='goods')),
 ]
 
 if settings.DEBUG:

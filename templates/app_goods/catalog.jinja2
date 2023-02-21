@@ -29,7 +29,7 @@
               </strong>
             </header>
             <div class="Section-columnContent">
-              <form class="form" action="{{ url('catalog') }}" method="get">
+              <form class="form" action="{{ url('goods:catalog') }}" method="get">
                 <input type="hidden" name="category" value="{{ request.GET.get('category') }}">
                 <input type="hidden" name="order" value="{{ request.GET.get('order') }}">
                 <input type="hidden" name="order_by" value="{{ request.GET.get('order_by') }}">
@@ -75,7 +75,7 @@
             <div class="Section-columnContent">
               <div class="buttons">
                   {% for tag in popular_tags %}
-                      <a class="btn btn_default btn_sm" href="{{ url('catalog') }}?tag={{ tag.slug }}">{{ tag }}</a>
+                      <a class="btn btn_default btn_sm" href="{{ url('goods:catalog') }}?tag={{ tag.slug }}">{{ tag }}</a>
                   {% endfor %}
               </div>
             </div>
@@ -95,11 +95,11 @@
                     {% for key, value in orders_by.items() %}
                         {% if key != order_by %}
                             <a class="Sort-sortBy"
-                               href="{{ url('catalog') }}{% if category %}?category={{ category }}&order_by={{ key }}&order=asc{% else %}?order_by={{ key }}&order=asc{% endif %}{% if tag %}&tag={{ tag }}{% endif %}{% if price %}&price={{ price }}{% endif %}{% if title %}&title={{ title }}{% endif %}{% if in_stock %}&in_stock={{ in_stock }}{% endif %}{% if free_delivery %}&free_delivery={{ free_delivery }}{% endif %}">{{ value }}
+                               href="{{ url('goods:catalog') }}{% if category %}?category={{ category }}&order_by={{ key }}&order=asc{% else %}?order_by={{ key }}&order=asc{% endif %}{% if tag %}&tag={{ tag }}{% endif %}{% if price %}&price={{ price }}{% endif %}{% if title %}&title={{ title }}{% endif %}{% if in_stock %}&in_stock={{ in_stock }}{% endif %}{% if free_delivery %}&free_delivery={{ free_delivery }}{% endif %}">{{ value }}
                             </a>
                         {% else %}
                             <a class="Sort-sortBy {% if order=='desc' %}Sort-sortBy_inc{% else %}Sort-sortBy_dec{% endif %}"
-                               href="{{ url('catalog') }}{% if category %}?category={{ category }}&{% else %}?{% endif %}order_by={{ key }}&order={% if order=='asc' %}desc{% else %}asc{% endif %}{% if tag %}&tag={{ tag }}{% endif %}{% if price %}&price={{ price }}{% endif %}{% if title %}&title={{ title }}{% endif %}{% if in_stock %}&in_stock={{ in_stock }}{% endif %}{% if free_delivery %}&free_delivery={{ free_delivery }}{% endif %}">{{ value }}
+                               href="{{ url('goods:catalog') }}{% if category %}?category={{ category }}&{% else %}?{% endif %}order_by={{ key }}&order={% if order=='asc' %}desc{% else %}asc{% endif %}{% if tag %}&tag={{ tag }}{% endif %}{% if price %}&price={{ price }}{% endif %}{% if title %}&title={{ title }}{% endif %}{% if in_stock %}&in_stock={{ in_stock }}{% endif %}{% if free_delivery %}&free_delivery={{ free_delivery }}{% endif %}">{{ value }}
                             </a>
                         {% endif %}
                     {% endfor %}
