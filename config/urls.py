@@ -26,6 +26,7 @@ urlpatterns = [
     path('__debug__/', include('debug_toolbar.urls')),
     path('app_users/', include('app_users.urls')),
     path('cart/', include('app_cart.urls')),
+    path('', include('app_goods.urls', namespace='goods')),
     path('product/', include('app_goods.urls')),
     path('', ShopView.as_view(), name='top'),
     path('settings/', include('app_settings.urls')),
