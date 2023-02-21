@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'django_jinja',
     'debug_toolbar',
     'mptt',
+    'taggit',
+
     'app_cart.apps.AppCartConfig',
     'app_order.apps.AppOrderConfig',
     'app_users.apps.AppUsersConfig',
@@ -117,6 +119,7 @@ DATABASES = {
     }
 }
 
+
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
@@ -166,3 +169,5 @@ AUTH_USER_MODEL = 'app_users.User'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = '/media/'
+
+TAGGIT_CASE_INSENSITIVE = True

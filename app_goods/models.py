@@ -1,10 +1,13 @@
 from django.db import models
+from django.template.defaultfilters import truncatechars
 from django.db.models import Min
 from django.urls import reverse
 from mptt.models import MPTTModel, TreeForeignKey
+from taggit.managers import TaggableManager
 
 from app_users.models import User
 from .utils import product_directory_path
+
 
 class Category(MPTTModel):
     """Модель категорий товара"""
@@ -44,6 +47,9 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='price')
     quantity = models.PositiveIntegerField(default=0, verbose_name='quantity')
     image = models.ImageField(upload_to=product_directory_path, blank=True, null=True, verbose_name='image')  # основное фото
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='created at')
+    free_delivery = models.BooleanField(default=False, verbose_name='free delivery')
+    tags = TaggableManager(verbose_name='tags')
 
     class Meta:
         db_table = 'product'
@@ -54,7 +60,12 @@ class Product(models.Model):
         return f'{self.name}'
 
     def get_absolute_url(self):
-        return reverse('product', kwargs={'product_slug': self.slug})
+        return reverse('product', args=[self.slug])
+
+    @property
+    def short_description(self):
+        """Метод для краткого отображения описания товара в админке"""
+        return truncatechars(self.description, 50)
 
 
 class Image(models.Model):
@@ -85,3 +96,4 @@ class Review(models.Model):
 
     def __str__(self):
         return f"Review for {self.product} by {self.user}"
+
