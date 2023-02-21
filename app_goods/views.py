@@ -34,7 +34,6 @@ class GoodsDetailView(DetailView):
         return context
 
 
-
 class CatalogView(FormMixin, ListView):
     form_class = FilterForm
     template_name = 'app_goods/catalog.jinja2'
@@ -42,7 +41,8 @@ class CatalogView(FormMixin, ListView):
     paginator_class = CatalogPaginator
     paginate_by = 8
     __order_by = {'popular': 'Популярности', 'price': 'Цене', 'reviews': 'Отзывам', 'novelty': 'Новизне'}
-    queryset = Product.objects.select_related('category', 'category__parent').defer('description', 'quantity').order_by('price')
+    queryset = Product.objects.select_related('category', 'category__parent').defer('description', 'quantity').order_by(
+        'price')
 
     def get_context_data(self, **kwargs):
         context = super(FormMixin, self).get_context_data(**kwargs)
@@ -77,7 +77,8 @@ class CatalogView(FormMixin, ListView):
         if free_delivery:
             qs = qs.filter(free_delivery=free_delivery)
         if tag:
-            qs = Product.objects.filter(tags__slug=tag)
+            qs = Product.objects.select_related('category', 'category__parent').prefetch_related('tags').filter(
+                tags__slug=tag)
         qs = qs.order_by(f"{order}{order_by}")
         self.queryset = qs
         return qs

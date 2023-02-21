@@ -2,7 +2,7 @@ from app_goods.models import Category
 
 
 def categories(request):
-    all_categories = Category.objects.all()
+    all_categories = Category.objects.select_related('parent')
     slugs = [category.slug for category in all_categories]
     paths = [f"img/icons/categories/{category.slug}.png" for category in all_categories]
     return {
