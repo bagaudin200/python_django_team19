@@ -64,3 +64,21 @@ def get_most_expensive_product(products: QuerySet) -> Product:
     :rtype: Product
     """
     return products.aggregate(price=Max('price'))['price']
+
+
+def get_top_products(products: QuerySet) -> Product:
+    """
+    Возвращает самые популярные товары
+    :param products:
+    :return: самые популярные товары
+    """
+    return products.prefetch_related('order_items').filter(available=True).only('category', 'name', 'price').annotate(total=Sum('order_items__quantity')).order_by('-total')[:quantity.top_items_count]
+
+
+def get_limited_product(is_limited: QuerySet) -> Product:
+    """
+    Возвращает топ ограниченных товаров
+    :param is_limited:
+    :return: топ ограниченных товаров
+    """
+    return is_limited.select_related('category').filter(available=True).filter(limited=True). only('category', 'name', 'price')

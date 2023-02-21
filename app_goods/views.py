@@ -4,7 +4,7 @@ from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import FormMixin
 from app_goods.models import Product, Review
 from app_settings.models import SiteSettings
-from .services import get_cheapest_product, get_most_expensive_product
+from .services import get_cheapest_product, get_most_expensive_product, get_top_products, get_limited_product
 
 
 class GoodsDetailView(DetailView):
@@ -49,20 +49,12 @@ class CatalogView(FormMixin, ListView):
 
 
 class ShopView(TemplateView):
-    template_name = 'index.html'
+    template_name = 'index.jinja2'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         quantity = SiteSettings.load()
-        context['products'] = Product.objects. \
-                                  prefetch_related('order_items'). \
-                                  filter(available=True). \
-                                  only('category', 'name', 'price'). \
-                                  annotate(total=Sum('order_items__quantity')). \
-                                  order_by('-total')[:quantity.quantity_popular]
-        context['is_limited'] = Product.objects. \
-            select_related('category'). \
-            filter(available=True). \
-            filter(limited=True). \
-            only('category', 'name', 'price')
+        context['products'] = get_top_products(products)
+        context['is_limited'] = get_limited_product(is_limited)
+
         return context
