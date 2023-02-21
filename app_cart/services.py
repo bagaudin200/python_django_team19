@@ -20,6 +20,7 @@ class Cart:
         """
         pass
 
+
     def remove(self, product: object) -> None:
         """
         Удаление товара из корзины

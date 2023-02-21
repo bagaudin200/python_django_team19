@@ -1,7 +1,6 @@
 from django.db import models
 
 from app_cart.models import Cart
-from app_goods.models import Product
 from app_users.models import User
 
 

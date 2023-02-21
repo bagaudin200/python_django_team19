@@ -1,19 +1,38 @@
 from django.core.paginator import Page
 from django.shortcuts import render
-from django.views.generic import DetailView, ListView
+from django.core.cache import cache
+from django.db.models import Sum
+from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import FormMixin
 
 from app_goods.models import Product, Category
 from .forms import FilterForm
 from .services import get_cheapest_product_price, get_most_expensive_product_price
 from .utils import CatalogPaginator
+from app_goods.models import Product, Review
+from app_settings.models import SiteSettings
 
 
 class GoodsDetailView(DetailView):
     model = Product
     template_name = 'app_goods/product.jinja2'
-    slug_url_kwarg = 'product_slug'
     context_object_name = 'product'
+    slug_url_kwarg = 'slug'
+
+    def get_object(self, queryset=None):
+        print(self.kwargs)
+        slug = self.kwargs['slug']
+        obj = cache.get(f"product:{slug}")
+        if not obj:
+            obj = super(GoodsDetailView, self).get_object()
+            cache.set(f"product:{slug}", obj)
+        return obj
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['reviews'] = Review.objects.filter(product_id=self.object.id)
+        return context
+
 
 
 class CatalogView(FormMixin, ListView):
@@ -106,3 +125,23 @@ class CatalogView(FormMixin, ListView):
     def _get_tag(self):
         tag = self.request.GET.get('tag')
         return tag
+
+
+class ShopView(TemplateView):
+    template_name = 'index.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        quantity = SiteSettings.load()
+        context['products'] = Product.objects. \
+                                  prefetch_related('order_items'). \
+                                  filter(available=True). \
+                                  only('category', 'name', 'price'). \
+                                  annotate(total=Sum('order_items__quantity')). \
+                                  order_by('-total')[:quantity.quantity_popular]
+        context['is_limited'] = Product.objects. \
+            select_related('category'). \
+            filter(available=True). \
+            filter(limited=True). \
+            only('category', 'name', 'price')
+        return context

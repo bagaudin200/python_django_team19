@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from contextlib import suppress
 from bootstrap_modal_forms.generic import BSModalLoginView
 from django.contrib.auth import authenticate, login

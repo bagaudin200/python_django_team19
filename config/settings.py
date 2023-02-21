@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'app_order.apps.AppOrderConfig',
     'app_users.apps.AppUsersConfig',
     'app_goods.apps.AppGoodsConfig',
+    'app_settings.apps.AppSettingsConfig',
 ]
 
 MIDDLEWARE = [
@@ -101,6 +102,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases

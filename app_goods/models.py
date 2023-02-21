@@ -1,5 +1,6 @@
 from django.db import models
 from django.template.defaultfilters import truncatechars
+from django.db.models import Min
 from django.urls import reverse
 from mptt.models import MPTTModel, TreeForeignKey
 from taggit.managers import TaggableManager
@@ -13,6 +14,7 @@ class Category(MPTTModel):
     name = models.CharField(max_length=100, verbose_name='name')
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
+    image = models.ImageField(blank=True, upload_to='category/', verbose_name='Изображение')
 
     class Meta:
         db_table = 'category'
@@ -21,6 +23,15 @@ class Category(MPTTModel):
 
     class MPTTMeta:
         order_insertion_by = ['name']
+
+    def get_absolute_url(self):
+        return reverse('product-by-category', args=[str(self.slug)])
+
+    def get_min(self):
+        sub_categories = self.get_descendants(include_self=True)
+        price = Product.objects.values('price').filter(category__in=sub_categories).filter(available=True).aggregate(
+            Min('price'))['price__min']
+        return price
 
     def __str__(self):
         return f'{self.name}'
@@ -49,7 +60,7 @@ class Product(models.Model):
         return f'{self.name}'
 
     def get_absolute_url(self):
-        return reverse('product', kwargs={'product_slug': self.slug})
+        return reverse('product', args=[self.slug])
 
     @property
     def short_description(self):
