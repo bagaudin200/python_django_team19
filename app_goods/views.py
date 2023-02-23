@@ -3,7 +3,7 @@ from django.db.models import Sum
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import FormMixin
 from app_goods.models import Product, Review
-from app_settings.models import SiteSettings
+
 from .services import get_cheapest_product, get_most_expensive_product, get_top_products, get_limited_product
 
 
@@ -53,7 +53,6 @@ class ShopView(TemplateView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        quantity = SiteSettings.load()
         context['products'] = get_top_products(products)
         context['is_limited'] = get_limited_product(is_limited)
 

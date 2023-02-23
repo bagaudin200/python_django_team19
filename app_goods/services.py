@@ -1,7 +1,7 @@
 from typing import List
 from decimal import Decimal
 from django.db.models import QuerySet, Min, Max
-
+from app_settings.models import SiteSettings
 from app_goods.models import Product
 
 
@@ -72,6 +72,7 @@ def get_top_products(products: QuerySet) -> Product:
     :param products:
     :return: самые популярные товары
     """
+    quantity = SiteSettings.load()
     return products.prefetch_related('order_items').filter(available=True).only('category', 'name', 'price').annotate(total=Sum('order_items__quantity')).order_by('-total')[:quantity.top_items_count]
 
 
