@@ -1,25 +1,21 @@
+from django.contrib.auth import get_user, get_user_model
 from django.db import models
 
 from app_goods.models import Product
-from app_users.models import User
+
+# Create your models here.
+User = get_user_model()
 
 
-class Cart(models.Model):
-    """Модель корзины"""
-    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='user')
-    products = models.ManyToManyField(Product, through='Cart2Product')
-
-    class Meta:
-        db_table = 'cart'
-        verbose_name = 'cart'
-        verbose_name_plural = 'carts'
+class Cart_db(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь', related_name='cart')
+    good = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Товар', related_name='cart')
+    quantity = models.PositiveIntegerField(verbose_name='Количество')
+    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Цена')
 
     def __str__(self):
-        return f"{self.user}"
+        return f'Корзина {self.user}'
 
-
-class Cart2Product(models.Model):
-    """Промежуточная модель между Cart и Product"""
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, verbose_name='cart')
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='product')
-    quantity = models.PositiveIntegerField(verbose_name='quantity')
+    class Meta:
+        verbose_name = "Корзина"
+        verbose_name_plural = "Корзины"
