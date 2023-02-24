@@ -7,10 +7,10 @@ from app_goods.forms import Reviewsform
 
 from app_goods.models import Category
 from .forms import FilterForm
-from .services import get_cheapest_product_price, get_most_expensive_product_price
+from .services import get_cheapest_product_price, get_most_expensive_product_price, get_top_products, get_limited_product
 from .utils import CatalogPaginator
 from app_goods.models import Product
-from app_settings.models import SiteSettings
+
 
 class GoodsDetailView(FormMixin, DetailView):
     form_class = Reviewsform
@@ -135,20 +135,11 @@ class CatalogView(FormMixin, ListView):
 
 
 class ShopView(TemplateView):
-    template_name = 'index.html'
+    template_name = 'index.jinja2'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        quantity = SiteSettings.load()
-        context['products'] = Product.objects. \
-                                  prefetch_related('order_items'). \
-                                  filter(available=True). \
-                                  only('category', 'name', 'price'). \
-                                  annotate(total=Sum('order_items__quantity')). \
-                                  order_by('-total')[:quantity.quantity_popular]
-        context['is_limited'] = Product.objects. \
-            select_related('category'). \
-            filter(available=True). \
-            filter(limited=True). \
-            only('category', 'name', 'price')
+        context['products'] = get_top_products()
+        context['is_limited'] = get_limited_product()
+
         return context
