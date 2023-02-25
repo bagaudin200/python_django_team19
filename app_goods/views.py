@@ -12,6 +12,10 @@ from app_goods.forms import AddProductToCardForm, ReviewsForm
 
 from app_goods.models import Category, Review, Image
 from .forms import FilterForm
+from .services import get_cheapest_product_price, get_most_expensive_product_price
+from .catalog_utils import CatalogPaginator, CatalogQueryStringBuilder
+from app_goods.models import Product, Review
+from app_settings.models import SiteSettings
 from .services import get_cheapest_product_price, get_most_expensive_product_price, get_top_products, \
     get_limited_product, get_update_quantity_product, ReviewService, check_product_quantity
 from .utils import CatalogPaginator
@@ -94,35 +98,42 @@ class CatalogView(FormMixin, ListView):
         page: Page = context['page_obj']
         context['paginator_range'] = page.paginator.get_elided_page_range(page.number)
         context['popular_tags'] = Product.tags.most_common()[:20]
+        context['query_string_builder'] = CatalogQueryStringBuilder
         return context
 
     def get_queryset(self):
-        category = self._get_category()
-        order = self._get_order()
-        order_by = self._get_order_by()
-        price_from, price_to = self._get_price_range()
-        name = self.request.GET.get('title')
-        in_stock = self._get_in_stock()
-        free_delivery = self._get_free_delivery()
-        tag = self._get_tag()
+        query_string = CatalogQueryStringBuilder(request=self.request)
+        print(query_string.build())
+        print(query_string.query_string_to_dict())
+        # category = self._get_category()
+        # order = self._get_order()
+        # order_by = self._get_order_by()
+        # price_from, price_to = self._get_price_range()
+        # name = self.request.GET.get('title')
+        # in_stock = self._get_in_stock()
+        # free_delivery = self._get_free_delivery()
+        # tag = self._get_tag()
+        # query = self._get_query()
 
         qs = self.queryset
-        if category:
-            filter_kwargs = dict(category__parent=category) if category.get_children() else dict(category=category)
-            qs = qs.filter(**filter_kwargs)
-        if price_from and price_to:
-            qs = qs.filter(price__range=[price_from, price_to])
-        if name:
-            qs = qs.filter(name__icontains=name)
-        if in_stock:
-            qs = qs.filter(quantity__gt=0)
-        if free_delivery:
-            qs = qs.filter(free_delivery=free_delivery)
-        if tag:
-            qs = Product.objects.select_related('category', 'category__parent').prefetch_related('tags').filter(
-                tags__slug=tag)
-        qs = qs.order_by(f"{order}{order_by}")
-        self.queryset = qs
+        # if category:
+        #     filter_kwargs = dict(category__parent=category) if category.get_children() else dict(category=category)
+        #     qs = qs.filter(**filter_kwargs)
+        # if price_from and price_to:
+        #     qs = qs.filter(price__range=[price_from, price_to])
+        # if name:
+        #     qs = qs.filter(name__icontains=name)
+        # if in_stock:
+        #     qs = qs.filter(quantity__gt=0)
+        # if free_delivery:
+        #     qs = qs.filter(free_delivery=free_delivery)
+        # if tag:
+        #     qs = Product.objects.select_related('category', 'category__parent').prefetch_related('tags').filter(
+        #         tags__slug=tag)
+        # if query:
+        #     qs = Product.objects.select_related('category', 'category__parent').filter(name__icontains=query)
+        # qs = qs.order_by(f"{order}{order_by}")
+        # self.queryset = qs
         return qs
 
     def _get_category(self):
@@ -169,6 +180,13 @@ class CatalogView(FormMixin, ListView):
         tag = self.request.GET.get('tag')
         return tag
 
+    def _get_query(self):
+        query = self.request.GET.get('query')
+        return query
+
+    def _get_page(self):
+        page = self.request.GET.get('page')
+        return page
 
 class ShopView(TemplateView):
     template_name = 'app_goods/index.jinja2'
