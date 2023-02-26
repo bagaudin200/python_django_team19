@@ -5,9 +5,7 @@ from django.db.models import Sum
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import FormMixin
 
-from app_goods.models import Product, Category
 from .forms import FilterForm
-from .services import get_cheapest_product_price, get_most_expensive_product_price
 from .catalog_utils import CatalogPaginator, CatalogQueryStringBuilder, CatalogQuerySetBuilder
 from app_goods.models import Product, Review
 from app_settings.models import SiteSettings
@@ -47,8 +45,6 @@ class CatalogView(FormMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super(FormMixin, self).get_context_data(**kwargs)
         context['orders_by'] = self.__order_by
-        context['cheapest'] = get_cheapest_product_price(self.queryset)
-        context['most_expensive'] = get_most_expensive_product_price(self.queryset)
         page: Page = context['page_obj']
         context['paginator_range'] = page.paginator.get_elided_page_range(page.number)
         context['popular_tags'] = Product.tags.most_common()[:20]

@@ -1,8 +1,4 @@
 from typing import List
-from decimal import Decimal
-from django.db.models import QuerySet, Min, Max
-
-from app_goods.models import Product
 
 
 class ReviewService:
@@ -42,25 +38,3 @@ class ReviewService:
         :rtype: int
         """
         return 3
-
-
-def get_cheapest_product_price(products: QuerySet) -> Decimal:
-    """
-    Возвращает цену самого дешевого товара
-    :param products: список товаров
-    :type products: QuerySet
-    :return: цена самого дешевого товара
-    :rtype: Decimal
-    """
-    return products.aggregate(price=Min('price'))['price']
-
-
-def get_most_expensive_product_price(products: QuerySet) -> Decimal:
-    """
-    Возвращает цену самого дорогого товара
-    :param products: список товаров
-    :type products: QuerySet
-    :return: цена самого дорогого товара
-    :rtype: Decimal
-    """
-    return products.aggregate(price=Max('price'))['price']
