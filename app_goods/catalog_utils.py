@@ -11,7 +11,7 @@ from app_goods.models import Category, Product
 class Builder:
 
     __available_params = (
-        'search', 'tag', 'category', 'price', 'title', 'in_stock', 'free_delivery', 'order_by', 'order', 'page',
+        'search', 'tag', 'category', 'price', 'title', 'in_stock', 'free_delivery', 'order_by', 'order',
     )
 
     def __init__(self, request):
