@@ -1,8 +1,9 @@
 from abc import abstractmethod
-from typing import Any
 from decimal import Decimal
-from django.core.paginator import Paginator, InvalidPage
+from typing import Any
+
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.paginator import Paginator, InvalidPage
 from django.db.models import QuerySet
 
 from app_goods.models import Category, Product
@@ -63,7 +64,7 @@ class CatalogQuerySetBuilder(Builder):
     """
     Создает QuerySet для каталога
     """
-    __order_by = {'popular': 'Популярности', 'price': 'Цене', 'reviews': 'Отзывам', 'novelty': 'Новизне'}
+    __order_by = ('popular', 'price', 'reviews', 'novelty',)
     __filter_params = ('search', 'tag', 'category', 'price', 'title', 'in_stock', 'free_delivery',)
 
     def build(self) -> QuerySet:
@@ -79,7 +80,7 @@ class CatalogQuerySetBuilder(Builder):
         filter_params = {}
         for param_name in self.query_string_to_dict().keys():
             if param_name in self.__filter_params:
-                filter_params.update(self.functions[param_name]())
+                filter_params.update(self._filter_methods[param_name]())
 
         # Добавляем к qs сортировку
         order_by = self._get_order_by()
@@ -90,7 +91,7 @@ class CatalogQuerySetBuilder(Builder):
         return qs
 
     @property
-    def functions(self):
+    def _filter_methods(self):
         return {
             'category': self._get_category_filter,
             'price': self._get_price_range_filter,
@@ -130,8 +131,7 @@ class CatalogQuerySetBuilder(Builder):
         try:
             price_from, price_to = prices.split(';')
             return dict(price__range=[Decimal(price_from), Decimal(price_to)])
-        except Exception as e:
-            print(e)
+        except Exception:
             return dict()
 
     def _get_title_filter(self) -> dict:
@@ -158,7 +158,7 @@ class CatalogQuerySetBuilder(Builder):
 
     def _get_tag_filter(self) -> dict:
         tag = self.request.GET.get('tag')
-        return dict(tag__slug=tag)
+        return dict(tags__slug=tag)
 
     def _get_search_filter(self) -> dict:
         search = self.request.GET.get('search')
