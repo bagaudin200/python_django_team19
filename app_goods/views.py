@@ -2,7 +2,7 @@ from django.core.cache import cache
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import FormMixin
 from app_goods.models import Product, Review
-from .services import get_cheapest_product, get_most_expensive_product
+from .services import get_cheapest_product, get_most_expensive_product, get_update_quantity_product
 
 
 class GoodsDetailView(DetailView):
@@ -20,7 +20,8 @@ class GoodsDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['reviews'] = Review.objects.filter(product_id=self.object.id)
+        product = self.object
+        context['reviews'] = Review.objects.filter(product_id=product.id)
         return context
 
 

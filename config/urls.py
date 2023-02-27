@@ -18,15 +18,14 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
-from app_settings.views import clear_all_cache_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('clear_all_cache/', clear_all_cache_view, name='clear_all_cache'),
     path('__debug__/', include('debug_toolbar.urls')),
     path('app_users/', include('app_users.urls')),
     path('cart/', include('app_cart.urls')),
     path('product/', include('app_goods.urls')),
+    path('settings', include('app_settings')),
 ]
 
 if settings.DEBUG:

@@ -1,9 +1,10 @@
 from typing import List
 from decimal import Decimal
+
+from django.contrib.auth.models import User
 from django.db.models import QuerySet, Min, Max
-
+from app_cart.models import Cart
 from app_goods.models import Product
-
 
 class ReviewService:
     """Сервис для работы с отзывами"""
@@ -64,3 +65,15 @@ def get_most_expensive_product(products: QuerySet) -> Product:
     :rtype: Product
     """
     return products.aggregate(price=Max('price'))['price']
+
+
+def get_update_quantity_product(product: Product, user: User) -> bool:
+    """
+    Возвращает булево значения, для добавление товара или обновления его количетсва в корзине
+    """
+    update = False
+    if product in Cart and user in Cart:
+        update = True
+    return update
+
+
