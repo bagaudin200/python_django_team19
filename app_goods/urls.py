@@ -1,9 +1,9 @@
 from django.urls import path
-from .views import GoodsDetailView, CatalogView
-from django.views.decorators.cache import cache_page
+from .views import GoodsDetailView, CatalogView, AddReview
 
 urlpatterns = [
     path('catalog/', CatalogView.as_view(), name='catalog'),
-    path('<slug:slug>/', cache_page(60)(GoodsDetailView.as_view()), name='product'),
+    path('<slug:slug>/',GoodsDetailView.as_view(), name='product'),
+    path('add_review/', AddReview.as_view(), name='add_review')
 
 ]
