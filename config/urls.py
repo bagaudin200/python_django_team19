@@ -17,7 +17,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-
+from app_goods.views import ShopView
 from app_settings.views import clear_all_cache_view
 
 urlpatterns = [
@@ -27,6 +27,7 @@ urlpatterns = [
     path('app_users/', include('app_users.urls')),
     path('cart/', include('app_cart.urls')),
     path('product/', include('app_goods.urls')),
+    path('', ShopView.as_view(), name='top')
 ]
 
 if settings.DEBUG:
