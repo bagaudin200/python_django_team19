@@ -5,8 +5,9 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.db.models import QuerySet, Min, Max
 from app_cart.models import Cart
-from app_goods.models import Product
-
+from django.db.models import QuerySet, Min, Max, Sum
+from app_settings.models import SiteSettings
+from app_goods.models import Product, Review
 
 user = get_user_model()
 
@@ -37,39 +38,67 @@ class ReviewService:
         :return: список отзывов
         :rtype: list
         """
-        return ['Отзыв1', 'Отзыв2', 'Отзыв3']
+        reviews = Review.objects.filter(product=product)
+        return reviews
 
-    def get_reviews_count(self, product: object) -> int:
-        """
-        Возвращает количество отзывов для товара
-        :param product: товар
-        :type product: object
-        :return: количество отзывов для товара
-        :rtype: int
-        """
-        return 3
+    # def get_reviews_count(self, product: object) -> int:
+    #     """
+    #     Возвращает количество отзывов для товара
+    #     :param product: товар
+    #     :type product: object
+    #     :return: количество отзывов для товара
+    #     :rtype: int
+    #     """
+    #
+    #     return 3
 
 
-def get_cheapest_product(products: QuerySet) -> Decimal:
+def get_cheapest_product_price() -> Decimal:
     """
     Возвращает цену самого дешевого товара
     :param products: список товаров
     :type products: QuerySet
-    :return: самый дешевый товар
-    :rtype: Product
+    :return: цена самого дешевого товара
+    :rtype: Decimal
     """
-    return products.aggregate(price=Min('price'))['price']
+    return Product.objects.aggregate(price=Min('price'))['price']
 
 
-def get_most_expensive_product(products: QuerySet) -> Product:
+def get_most_expensive_product_price() -> Decimal:
     """
-    Возвращает самый дорогой товар
+    Возвращает цену самого дорогого товара
     :param products: список товаров
     :type products: QuerySet
-    :return: самый дорогой товар
-    :rtype: Product
+    :return: цена самого дорогого товара
+    :rtype: Decimal
     """
-    return products.aggregate(price=Max('price'))['price']
+    return Product.objects.aggregate(price=Max('price'))['price']
+
+
+def get_top_products() -> Product:
+    """
+    Возвращает самые популярные товары
+    :param products:
+    :return: самые популярные товары
+    """
+    quantity = SiteSettings.load()
+    return Product.objects.prefetch_related('order_items')\
+                          .filter(available=True)\
+                          .only('category', 'name', 'price')\
+                          .annotate(total=Sum('order_items__quantity'))\
+                          .order_by('-total')[:quantity.top_items_count]
+
+
+def get_limited_product() -> Product:
+    """
+    Возвращает топ ограниченных товаров
+    :param is_limited:
+    :return: топ ограниченных товаров
+    """
+    return Product.objects.select_related('category')\
+                          .filter(available=True)\
+                          .filter(limited=True)\
+                          .only('category', 'name', 'price')
 
 
 def get_update_quantity_product(product: Product, user: User) -> bool:

@@ -61,23 +61,23 @@
                 <div class="ProductCard-cartElement"><button class="btn btn_primary" type="submit"><img class="btn-icon" src="{{ static('img/icons/card/cart_white.svg')}}" alt="cart_white.svg"/><span class="btn-content">Add To Cart</span></button>
                 </div>
               </form>
-              <div class="ProductCard-footer">
-                <div class="ProductCard-tags">
-                  <strong class="ProductCard-tagsTitle">Tags:
-                  </strong><a href="#">Accesories</a>,<a href="#">Creative</a>,<a href="#">Design</a>,<a href="#">Gaming</a>
-                </div>
+            </div>
+            <div class="ProductCard-footer">
+              <div class="ProductCard-tags">
+                <strong class="ProductCard-tagsTitle">Tags:
+                </strong><a href="#">Accesories</a>,<a href="#">Creative</a>,<a href="#">Design</a>,<a href="#">Gaming</a>
               </div>
             </div>
           </div>
+        </div>
           <div class="Tabs Tabs_default">
             <div class="Tabs-links"><a class="Tabs-link_ACTIVE Tabs-link" href="#description"><span>Description</span></a><a class="Tabs-link" href="#addit"><span>AdditionaL Info</span></a><a class="Tabs-link" href="#reviews"><span>Reviews ({{ reviews|count }})</span></a>
             </div>
             <div class="Tabs-wrap">
               <div class="Tabs-block" id="description">
-                <h2>Megano Store Hystory
-                </h2>
+                <h2>Megano Store Hystory</h2>
                 <p>
-                    {{ product.description }}
+                  {{ product.description }}
                 </p>
                   <img class="pict pict_right" src="{{ product.image.url }}" alt="bigGoods.png"/>
                 <ul>
@@ -139,53 +139,59 @@
               </div>
               <div class="Tabs-block" id="reviews">
                 <header class="Section-header">
-                  <h3 class="Section-title">{{ reviews|count }} Reviews
-                  </h3>
+                  <h3 class="Section-title">{{ reviews|count }} Reviews</h3>
                 </header>
-                <div class="Comments">
+              <div class="Comments">
+              {% for review in reviews %}
+                  <p>review</p>
                   <div class="Comment">
                     <div class="Comment-column Comment-column_pict">
-                      <div class="Comment-avatar">
-                      </div>
+                          {% if review.user.avatar %}
+                            <img class="Comment-avatar" src="{{ review.user.avatar.url }}" alt="avatar">
+                          {% else %}
+                            <img class="Comment-avatar" src="" alt="">
+                          {% endif %}
                     </div>
                     <div class="Comment-column">
                       <header class="Comment-header">
                         <div>
-                          <strong class="Comment-title">Alexandra Brownie
-                          </strong><span class="Comment-date">December 25&#32;&#32;/&#32;&#32;2017&#32;&#32;/&#32;&#32;22:50</span>
+                          <strong class="Comment-title">{{ review.user.full_name }}</strong>
+                            <span class="Comment-date">{{ review.created_at.strftime('%H:%M %Y-%m-%d') }}</span>
                         </div>
                       </header>
-                      <div class="Comment-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit doli. Aenean commodo ligula eget dolor. Aenean massa. Cumtipsu sociis natoque penatibus et magnis dis parturient montesti, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eutu, pretiumem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justotuio, rhoncus ut loret, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus element semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae.
-                      </div>
+                      <div class="Comment-content">{{ review.text }}</div>
                     </div>
                   </div>
-                </div>
+              {% endfor %}
+              </div>
+
                 <header class="Section-header Section-header_product">
-                  <h3 class="Section-title">Add Review
-                  </h3>
+                  <h3 class="Section-title">Add Review</h3>
                 </header>
                 <div class="Tabs-addComment">
-                    {% if request.user.is_authenticated %}
+                  {% if request.user.is_authenticated %}
                     <form class="form" method="post" action="{{ url('add_review') }}">
-                        {% csrf_token %}
-                        <div class="form-group">
-                          <textarea class="form-textarea" name="text" id="review" placeholder="Review" {{ review_form.text }}></textarea>
-                        </div>
-                        <div class="form-group">
+                      {% csrf_token %}
+                      <div class="form-group">
+                        {{ review_form.text }}
+                      </div>
+                      <div class="form-group">
                         <div class="row">
-                        <div class="row-block">
-                          <input class="form-input" id="name" name="name" type="text" placeholder="Name" value="{{ request.user.full_name }}"></div>
-                        <div class="row-block">
-                          <input class="form-input" id="email" name="email" type="text" placeholder="Email" value="{{ request.user.email }}">
+                          <div class="row-block">
+                            <input class="form-input" id="name" name="name" type="text" placeholder="Name" value="{{ request.user.full_name }}">
+                          </div>
+                          <div class="row-block">
+                            <input class="form-input" id="email" name="email" type="text" placeholder="Email" value="{{ request.user.email }}">
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div class="form-group">
-                      <button class="btn btn_muted" type="submit">Submit Review</button>
-                    </div>
+                      <div class="form-group">
+                        <button class="btn btn_muted" type="submit">Submit Review</button>
+                      </div>
                     {% else %}
                         <p><a href="/"><h5>Войти / зарегистрироваться</h5></a></p>
                     {% endif %}
+
                   </form>
                 </div>
               </div>
