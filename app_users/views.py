@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from contextlib import suppress
 from bootstrap_modal_forms.generic import BSModalLoginView
 from django.contrib.auth import authenticate, login
@@ -9,7 +9,6 @@ from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView, 
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse, reverse_lazy
-from django.views import generic
 from django.views.decorators.http import require_GET
 from django.views.generic import CreateView, TemplateView
 from django.views.generic.edit import UpdateView
@@ -25,7 +24,7 @@ class MyRegistration(CreateView):
     model = User
     form_class = UserCreateForm
     template_name = 'app_users/registration.jinja2'
-    success_url = reverse_lazy('main')
+    success_url = reverse_lazy('top')
 
     def dispatch(self, *args, **kwargs):
         if self.request.user.is_authenticated:
@@ -73,7 +72,7 @@ class ProfileView(LoginRequiredMixin, UpdateView):
 class MyLoginView(LoginView):
     template_name = 'app_users/login.jinja2'
     authentication_form = UserLoginForm
-    next_page = reverse_lazy('main')
+    next_page = reverse_lazy('top')
 
 
 class ModalLoginView(BSModalLoginView):
