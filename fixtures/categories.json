@@ -1,0 +1,184 @@
+[
+{
+    "model": "app_goods.category",
+    "pk": 1,
+    "fields": {
+        "name": "Смартфоны",
+        "slug": "smartfony",
+        "parent": null,
+        "image": "",
+        "lft": 1,
+        "rght": 6,
+        "tree_id": 4,
+        "level": 0
+    }
+},
+{
+    "model": "app_goods.category",
+    "pk": 2,
+    "fields": {
+        "name": "Айфоны",
+        "slug": "ajfony",
+        "parent": 1,
+        "image": "",
+        "lft": 2,
+        "rght": 3,
+        "tree_id": 4,
+        "level": 1
+    }
+},
+{
+    "model": "app_goods.category",
+    "pk": 3,
+    "fields": {
+        "name": "Андроиды",
+        "slug": "androidy",
+        "parent": 1,
+        "image": "",
+        "lft": 4,
+        "rght": 5,
+        "tree_id": 4,
+        "level": 1
+    }
+},
+{
+    "model": "app_goods.category",
+    "pk": 4,
+    "fields": {
+        "name": "Ноутбуки",
+        "slug": "noutbuki",
+        "parent": null,
+        "image": "",
+        "lft": 1,
+        "rght": 2,
+        "tree_id": 3,
+        "level": 0
+    }
+},
+{
+    "model": "app_goods.category",
+    "pk": 5,
+    "fields": {
+        "name": "Комплектующие для ПК",
+        "slug": "komplektuyushie-dlya-pk",
+        "parent": null,
+        "image": "",
+        "lft": 1,
+        "rght": 8,
+        "tree_id": 2,
+        "level": 0
+    }
+},
+{
+    "model": "app_goods.category",
+    "pk": 6,
+    "fields": {
+        "name": "Видеокарты",
+        "slug": "videokarty",
+        "parent": 5,
+        "image": "",
+        "lft": 2,
+        "rght": 3,
+        "tree_id": 2,
+        "level": 1
+    }
+},
+{
+    "model": "app_goods.category",
+    "pk": 7,
+    "fields": {
+        "name": "Процессоры",
+        "slug": "processory",
+        "parent": 5,
+        "image": "",
+        "lft": 6,
+        "rght": 7,
+        "tree_id": 2,
+        "level": 1
+    }
+},
+{
+    "model": "app_goods.category",
+    "pk": 8,
+    "fields": {
+        "name": "Материнские платы",
+        "slug": "materinskie-platy",
+        "parent": 5,
+        "image": "",
+        "lft": 4,
+        "rght": 5,
+        "tree_id": 2,
+        "level": 1
+    }
+},
+{
+    "model": "app_goods.category",
+    "pk": 9,
+    "fields": {
+        "name": "Бытовая техника",
+        "slug": "bytovaya-tehnika",
+        "parent": null,
+        "image": "",
+        "lft": 1,
+        "rght": 10,
+        "tree_id": 1,
+        "level": 0
+    }
+},
+{
+    "model": "app_goods.category",
+    "pk": 10,
+    "fields": {
+        "name": "Плиты газовые",
+        "slug": "plity-gazovye",
+        "parent": 9,
+        "image": "",
+        "lft": 2,
+        "rght": 3,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "app_goods.category",
+    "pk": 11,
+    "fields": {
+        "name": "Холодильники",
+        "slug": "holodilniki",
+        "parent": 9,
+        "image": "",
+        "lft": 8,
+        "rght": 9,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "app_goods.category",
+    "pk": 12,
+    "fields": {
+        "name": "Сплит-системы",
+        "slug": "split-sistemy",
+        "parent": 9,
+        "image": "",
+        "lft": 4,
+        "rght": 5,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "app_goods.category",
+    "pk": 13,
+    "fields": {
+        "name": "Стиральные машины",
+        "slug": "stiralnye-mashiny",
+        "parent": 9,
+        "image": "",
+        "lft": 6,
+        "rght": 7,
+        "tree_id": 1,
+        "level": 1
+    }
+}
+]

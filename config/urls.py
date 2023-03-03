@@ -24,8 +24,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('clear_all_cache/', clear_all_cache_view, name='clear_all_cache'),
     path('__debug__/', include('debug_toolbar.urls')),
+    path('payment/', include('app_payment.urls', namespace='payment')),
     path('app_users/', include('app_users.urls')),
     path('cart/', include('app_cart.urls')),
+    path('order/', include('app_order.urls', namespace='order')),
     path('', include('app_goods.urls', namespace='goods')),
 ]
 

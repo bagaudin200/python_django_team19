@@ -1,12 +1,11 @@
 from django.core.paginator import Page
-from django.shortcuts import render
 from django.core.cache import cache
 from django.db.models import Sum
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import FormMixin
 
 from .forms import FilterForm
-from .catalog_utils import CatalogPaginator, CatalogQueryStringBuilder, CatalogQuerySetBuilder
+from app_goods.services.catalog_services import CatalogPaginator, CatalogQueryStringBuilder, CatalogQuerySetBuilder
 from app_goods.models import Product, Review
 from app_settings.models import SiteSettings
 
@@ -39,8 +38,6 @@ class CatalogView(FormMixin, ListView):
     paginator_class = CatalogPaginator
     paginate_by = 8
     __order_by = {'popular': 'Популярности', 'price': 'Цене', 'reviews': 'Отзывам', 'novelty': 'Новизне'}
-    queryset = Product.objects.select_related('category', 'category__parent').defer('description', 'quantity').order_by(
-        'price')
 
     def get_context_data(self, **kwargs):
         context = super(FormMixin, self).get_context_data(**kwargs)

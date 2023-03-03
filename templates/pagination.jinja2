@@ -1,34 +1,36 @@
 <div class="Pagination">
-    <div class="Pagination-ins">
-        {% if page_obj.has_previous() %}
-            <a class="Pagination-element Pagination-element_prev"
-               href="{{ url('goods:catalog') }}{{ query_string_builder(request).build() }}&page={{ page_obj.previous_page_number() }}">
-                <img src="{{ static('img/icons/prevPagination.svg') }}" alt="prevPagination.svg"/>
-            </a>
-        {% endif %}
-
-        {% for p in paginator_range %}
-            {% if page_obj.number == p %}
-                <a class="Pagination-element Pagination-element_current" href="#">
-                    <span class="Pagination-text">{{ page_obj.number }}</span>
+    {% with query_string_builder = query_string_builder(request).build() %}
+        <div class="Pagination-ins">
+            {% if page_obj.has_previous() %}
+                <a class="Pagination-element Pagination-element_prev"
+                   href="{{ url('goods:catalog') }}{{ query_string_builder }}&page={{ page_obj.previous_page_number() }}">
+                    <img src="{{ static('img/icons/prevPagination.svg') }}" alt="prevPagination.svg"/>
                 </a>
-            {% else %}
-                {% if p == page_obj.paginator.ELLIPSIS %}
-                    <span class="Pagination-text">{{ p }}</span>
-                {% else %}
-                    <a class="Pagination-element"
-                       href="{{ url('goods:catalog') }}{{ query_string_builder(request).build() }}&page={{ p }}">
-                        <span class="Pagination-text">{{ p }}</span>
-                    </a>
-                {% endif %}
             {% endif %}
-        {% endfor %}
 
-        {% if page_obj.has_next() %}
-            <a class="Pagination-element Pagination-element_prev"
-               href="{{ url('goods:catalog') }}{{ query_string_builder(request).build() }}&page={{ page_obj.next_page_number() }}">
-                <img src="{{ static('img/icons/nextPagination.svg') }}" alt="nextPagination.svg"/>
-            </a>
-        {% endif %}
-    </div>
+            {% for p in paginator_range %}
+                {% if page_obj.number == p %}
+                    <a class="Pagination-element Pagination-element_current" href="#">
+                        <span class="Pagination-text">{{ page_obj.number }}</span>
+                    </a>
+                {% else %}
+                    {% if p == page_obj.paginator.ELLIPSIS %}
+                        <span class="Pagination-text">{{ p }}</span>
+                    {% else %}
+                        <a class="Pagination-element"
+                           href="{{ url('goods:catalog') }}{{ query_string_builder }}&page={{ p }}">
+                            <span class="Pagination-text">{{ p }}</span>
+                        </a>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next() %}
+                <a class="Pagination-element Pagination-element_prev"
+                   href="{{ url('goods:catalog') }}{{ query_string_builder }}&page={{ page_obj.next_page_number() }}">
+                    <img src="{{ static('img/icons/nextPagination.svg') }}" alt="nextPagination.svg"/>
+                </a>
+            {% endif %}
+        </div>
+    {% endwith %}
 </div>
