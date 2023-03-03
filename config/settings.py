@@ -82,6 +82,7 @@ TEMPLATES = [
             'globals': {},
             'context_processors': [
                 'context_processors.categories_context.categories',
+                'context_processors.context_processors.cart',
             ],
         },
     },
