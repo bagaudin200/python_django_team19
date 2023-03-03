@@ -3,7 +3,6 @@ from django.db import models
 
 from app_goods.models import Product
 
-# Create your models here.
 User = get_user_model()
 
 
