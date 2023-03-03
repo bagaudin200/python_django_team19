@@ -5,15 +5,13 @@
         <nav class="row-block row-block_right Header-menu">
           <div class="menuModal" id="navigate">
             <ul class="menu menu_main" style="position: static;">
-              <li class="menu-item"><a class="menu-link" href="#">Home</a>
+              <li class="menu-item"><a class="menu-link" href="#">Главная</a>
               </li>
 
-              <li class="menu-item"><a class="menu-link" href="#">Blog</a>
-              </li>
               <li class="menu-item"><span class="menu-label menu-label_success">Hot </span><a class="menu-link" href="#">Gallery</a>
               </li>
 
-              <li class="menu-item"><a class="menu-link" href="#">Purchase</a>
+              <li class="menu-item"><a class="menu-link" href="{{ url('catalog') }}">Каталог</a>
               </li>
             </ul>
           </div>
@@ -66,9 +64,9 @@
         </div>
         <div class="Header-search">
           <div class="search">
-            <form class="form form_search" action="#" method="post">
-              <input class="search-input" id="query" name="query" type="text" placeholder="What are you looking for ..."/>
-              <button class="search-button" type="submit" name="search" id="search"><img src="{{ static('img/icons/search.svg') }}" alt="search.svg"/>Найти
+            <form class="form form_search" action="{{ url('catalog') }}" method="get">
+              <input class="search-input" id="search" name="search" type="text" placeholder="Что ищем?"/>
+              <button class="search-button" type="submit" id="search2"><img src="{{ static('img/icons/search.svg') }}" alt="search.svg"/>Найти
               </button>
             </form>
           </div>
