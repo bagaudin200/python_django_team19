@@ -72,12 +72,10 @@ def get_top_products() -> Product:
     :param products:
     :return: самые популярные товары
     """
-    quantity = SiteSettings.load()
-    return Product.objects.prefetch_related('order_items')\
-                          .filter(available=True)\
-                          .only('category', 'name', 'price')\
-                          .annotate(total=Sum('order_items__quantity'))\
-                          .order_by('-total')[:quantity.top_items_count]
+    quantity = SiteSettings()
+    return Product.objects.only('category', 'name', 'price')\
+                  .order_by('-total')[:quantity.top_items_count]
+
 
 
 def get_limited_product() -> Product:
@@ -87,6 +85,5 @@ def get_limited_product() -> Product:
     :return: топ ограниченных товаров
     """
     return Product.objects.select_related('category')\
-                          .filter(available=True)\
-                          .filter(limited=True)\
+                          .filter(is_limited=True)\
                           .only('category', 'name', 'price')
