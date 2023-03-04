@@ -1,7 +1,7 @@
 from django.core.cache import cache
 from django.core.paginator import Page
 from django.http import HttpResponse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.views import View
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import FormMixin
@@ -85,10 +85,14 @@ class GoodsDetailView(DetailView):
 
 class AddReview(View):
     def post(self, request, *args, **kwargs):
-        print('request', request)
-        print('args', args)
-        print('kwargs', kwargs)
-        return HttpResponse('1')
+        form = ReviewsForm(request.POST)
+        if form.is_valid():
+            text = form.cleaned_data['text']
+            user = request.POST.user
+            review_service = ReviewService(user)
+            review_service.add()
+        return redirect(request.META.get('HTTP_REFERER'))
+
 
 
 class CatalogView(FormMixin, ListView):

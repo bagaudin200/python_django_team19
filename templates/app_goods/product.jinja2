@@ -49,7 +49,6 @@
                   </li>
                 </ul>
               </div>
-{#                {% cart_add product.id %}#}
               <form class="ProductCard-cart" method="post">{% csrf_token %}
                 <div class="ProductCard-cartElement ProductCard-cartElement_amount">
                   <div class="Amount Amount_product">
@@ -178,21 +177,20 @@
                       <div class="form-group">
                         <div class="row">
                           <div class="row-block">
-                            <input class="form-input" id="name" name="name" type="text" placeholder="Name" value="{{ request.user.full_name }}">
+                            <input class="form-input" id="name" name="name" type="text" placeholder="Name" value="{{ request.user.full_name }}" readonly="readonly">
                           </div>
                           <div class="row-block">
-                            <input class="form-input" id="email" name="email" type="text" placeholder="Email" value="{{ request.user.email }}">
+                            <input class="form-input" id="email" name="email" type="text" placeholder="Email" value="{{ request.user.email }}" readonly="readonly">
                           </div>
                         </div>
                       </div>
                       <div class="form-group">
                         <button class="btn btn_muted" type="submit">Submit Review</button>
                       </div>
+                    </form>
                     {% else %}
                         <p><a href="/"><h5>Войти / зарегистрироваться</h5></a></p>
                     {% endif %}
-
-                  </form>
                 </div>
               </div>
             </div>

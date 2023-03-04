@@ -107,8 +107,7 @@ def get_update_quantity_product(product: Product, user: User) -> bool:
     """
     update_product = False
     if not user.is_anonymous:
-        cart = Cart.objects.get(user=user, good=product)
-        print('cart', cart)
+        cart = Cart.objects.filter(user=user, good=product)
         if cart:
             update_product = True
     else:

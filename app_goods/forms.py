@@ -21,12 +21,13 @@ class ReviewsForm(forms.ModelForm):
     class Meta:
         model = Review
         fields = ('text',)
-        widgets = {'text': Textarea(attrs={'class': 'form-textarea',
-                                           'placeholder': "Review",
-                                           'id': "review",
-                                           }
-                                    ),
-                   }
+        widgets = {
+            'text': Textarea(attrs={'class': 'form-textarea',
+                                    'placeholder': 'Review',
+                                    'id': 'review',
+                                    }
+                             ),
+        }
 
 
 class FilterForm(forms.Form):
