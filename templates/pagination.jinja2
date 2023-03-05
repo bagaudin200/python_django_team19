@@ -1,14 +1,9 @@
 <div class="Pagination">
-    {% with category=request.GET.get('category'), order=request.GET.get('order'), order_by=request.GET.get('order_by') %}
-        {% set tag=request.GET.get('tag') %}
-        {% set price=request.GET.get('price') %}
-        {% set title=request.GET.get('title') %}
-        {% set in_stock=request.GET.get('in_stock') %}
-        {% set free_delivery=request.GET.get('free_delivery') %}
+    {% with query_string_builder = query_string_builder(request).build() %}
         <div class="Pagination-ins">
             {% if page_obj.has_previous() %}
                 <a class="Pagination-element Pagination-element_prev"
-                   href="{{ url('catalog') }}{% if category %}?category={{ category }}{% else %}?{% endif %}{% if order_by %}&order_by={{ order_by }}{% endif %}{% if order %}&order={{ order }}{% endif %}{% if tag %}&tag={{ tag }}{% endif %}{% if price %}&price={{ price }}{% endif %}{% if title %}&title={{ title }}{% endif %}{% if in_stock %}&in_stock={{ in_stock }}{% endif %}{% if free_delivery %}&free_delivery={{ free_delivery }}{% endif %}&page={{ page_obj.previous_page_number() }}">
+                   href="{{ url('catalog') }}{{ query_string_builder }}&page={{ page_obj.previous_page_number() }}">
                     <img src="{{ static('img/icons/prevPagination.svg') }}" alt="prevPagination.svg"/>
                 </a>
             {% endif %}
@@ -23,7 +18,7 @@
                         <span class="Pagination-text">{{ p }}</span>
                     {% else %}
                         <a class="Pagination-element"
-                           href="{{ url('catalog') }}{% if category %}?category={{ category }}{% else %}?{% endif %}{% if order_by %}&order_by={{ order_by }}{% endif %}{% if order %}&order={{ order }}{% endif %}{% if tag %}&tag={{ tag }}{% endif %}{% if price %}&price={{ price }}{% endif %}{% if title %}&title={{ title }}{% endif %}{% if in_stock %}&in_stock={{ in_stock }}{% endif %}{% if free_delivery %}&free_delivery={{ free_delivery }}{% endif %}&page={{ p }}">
+                           href="{{ url('catalog') }}{{ query_string_builder }}&page={{ p }}">
                             <span class="Pagination-text">{{ p }}</span>
                         </a>
                     {% endif %}
@@ -32,7 +27,7 @@
 
             {% if page_obj.has_next() %}
                 <a class="Pagination-element Pagination-element_prev"
-                   href="{{ url('catalog') }}{% if category %}?category={{ category }}{% else %}?{% endif %}{% if order_by %}&order_by={{ order_by }}{% endif %}{% if order %}&order={{ order }}{% endif %}{% if price %}&price={{ price }}{% endif %}{% if title %}&title={{ title }}{% endif %}{% if in_stock %}&in_stock={{ in_stock }}{% endif %}{% if free_delivery %}&free_delivery={{ free_delivery }}{% endif %}&page={{ page_obj.next_page_number() }}">
+                   href="{{ url('catalog') }}{{ query_string_builder }}&page={{ page_obj.next_page_number() }}">
                     <img src="{{ static('img/icons/nextPagination.svg') }}" alt="nextPagination.svg"/>
                 </a>
             {% endif %}

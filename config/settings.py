@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'app_users.apps.AppUsersConfig',
     'app_goods.apps.AppGoodsConfig',
     'app_settings.apps.AppSettingsConfig',
+    'app_payment.apps.AppPaymentConfig',
 ]
 
 MIDDLEWARE = [
@@ -171,4 +172,9 @@ AUTH_USER_MODEL = 'app_users.User'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = '/media/'
 
+# taggit settings
 TAGGIT_CASE_INSENSITIVE = True
+
+# Celery settings
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
