@@ -1,4 +1,4 @@
-{% extends 'base.jinja2' %}
+{{ extends('base.jinja2') }}
 
 {% block title %}
     Каталог
@@ -12,7 +12,7 @@
           <h1 class="Middle-title">Каталог Megano
           </h1>
           <ul class="breadcrumbs Middle-breadcrumbs">
-            <li class="breadcrumbs-item"><a href="index.html">главная</a>
+            <li class="breadcrumbs-item"><a href="index.jinja2">главная</a>
             </li>
             <li class="breadcrumbs-item breadcrumbs-item_current"><span>каталог</span>
             </li>
@@ -125,7 +125,7 @@
                 </div>
               {% endfor %}
           </div>
-          {% include 'pagination.jinja2' %}
+          {{ include('pagination.jinja2') }}
         </div>
       </div>
     </div>

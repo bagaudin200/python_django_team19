@@ -1,8 +1,7 @@
-{% extends "base.jinja2" %}
+{{ extends("base.jinja2") }}
 
-{% load thumbnail %}
 
-{% block middle %}
+{% block content %}
 <div class="Middle">
     <div class="Section">
         <div class="wrap">
@@ -43,11 +42,10 @@
                     <div class="Card">
                         <a class="Card-picture" href="{{ good.get_absolute_url }}">
                             <img src="
-                            {% thumbnail good.image.first.image '258x172' padding=True as im %}
                             {{ im.url }}
                             {% empty %}
-                            {% static 'static/img/content/home/card.jpg' %}
-                            {% endthumbnail %}"
+                            {{ static('static/img/content/home/card.jpg') }}"
+
                                  alt="изображение товара"/>
                         </a>
                         <div class="Card-content">
@@ -69,7 +67,7 @@
                                     <form action="{{  url('cart_add'), good.id }}" method="post">
                                         {% csrf_token %}
                                         <a class="Card-btn">
-                                            <img src="{% static 'static/img/icons/cart.svg' %}"
+                                            <img src="{{ static('static/img/icons/cart.svg') }}"
                                                  alt="добавить в корзину"/>
                                         </a>
                                     </form>
@@ -87,7 +85,7 @@
             <div class="Section-column">
                 <div class="Section-columnSection Section-columnSection_mark">
                     <div class="media media_advantage">
-                        <div class="media-image"><img src="{% static 'static/img/icons/advantages/shipping.svg' %}"
+                        <div class="media-image"><img src="{{ static ('static/img/icons/advantages/shipping.svg') }}"
                                                       alt="shipping.svg"/>
                         </div>
                         <div class="media-content">
@@ -100,7 +98,7 @@
                 </div>
                 <div class="Section-columnSection Section-columnSection_mark">
                     <div class="media media_advantage">
-                        <div class="media-image"><img src="{% static 'static/img/icons/advantages/moneyBack.svg' %}"
+                        <div class="media-image"><img src="{{ static('static/img/icons/advantages/moneyBack.svg') }}"
                                                       alt="moneyBack.svg"/>
                         </div>
                         <div class="media-content">
@@ -113,7 +111,7 @@
                 </div>
                 <div class="Section-columnSection Section-columnSection_mark">
                     <div class="media media_advantage">
-                        <div class="media-image"><img src="{% static 'static/img/icons/advantages/support.svg' %}"
+                        <div class="media-image"><img src="{{ static('static/img/icons/advantages/support.svg') }}"
                                                       alt="support.svg"/>
                         </div>
                         <div class="media-content">
@@ -126,7 +124,7 @@
                 </div>
                 <div class="Section-columnSection Section-columnSection_mark">
                     <div class="media media_advantage">
-                        <div class="media-image"><img src="{% static 'static/img/icons/advantages/quality.svg' %}"
+                        <div class="media-image"><img src="{{ static('static/img/icons/advantages/quality.svg') }}"
                                                       alt="quality.svg"/>
                         </div>
                         <div class="media-content">
@@ -155,11 +153,11 @@
                                 <div class="Card">
                                     <a class="Card-picture" href="#">
                                         <img src="
-                                        {% thumbnail product.image.first.image '258x172' padding=True as im %}
+
                                         {{ im.url }}
                                         {% empty %}
-                                        {% static 'static/img/content/home/card.jpg' %}
-                                        {% endthumbnail %}" alt="img"/>
+                                        {{ static('static/img/content/home/card.jpg') }}
+                                        " alt="img"/>
                                     </a>
                                     <div class="Card-content">
                                         <strong class="Card-title">
@@ -176,7 +174,7 @@
                                                 <form action="{{  url('cart_add'), product.id }}" method="post">
                                                     {% csrf_token %}
                                                     <a class="Card-btn">
-                                                        <img src="{% static 'static/img/icons/cart.svg' %}"
+                                                        <img src="{{ static('static/img/icons/cart.svg') }}"
                                                              alt="добавить в корзину"/>
                                                     </a>
                                                 </form>
