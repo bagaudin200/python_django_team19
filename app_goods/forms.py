@@ -1,4 +1,5 @@
 from django import forms
+from django.core.exceptions import ValidationError
 from django.forms import TextInput, Textarea
 
 from app_cart.models import Cart
@@ -15,6 +16,11 @@ class AddProductToCardForm(forms.ModelForm):
                                          }
                                   ),
         }
+    def clean_quantity(self):
+        quantity = self.cleaned_data['quantity']
+        if quantity < 1:
+            raise ValidationError('Too small')
+        return quantity
 
 
 class ReviewsForm(forms.ModelForm):

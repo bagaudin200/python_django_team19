@@ -18,14 +18,15 @@
     <script src="{{ static('plg/CountDown/countdown.js')}}"></script>
 </head>
 <body>
-    {% include "header.jinja2" ignore missing %}
-    {% include "menu.jinja2" ignore missing %}
+    {% include "header.jinja2" %}
+    {% include "menu.jinja2" %}
+    {% include "allert.jinja2" %}
     <div class="Middle">
         {% block content %}
             <p>Здесь будет отображаться контент</p>
         {% endblock %}
     </div>
-    {% include "footer.jinja2" ignore missing%}
+    {% include "footer.jinja2" %}
 </body>
 
   <script src="{{ static('plg/jQuery/jquery-3.5.0.slim.min.js')}}"></script>

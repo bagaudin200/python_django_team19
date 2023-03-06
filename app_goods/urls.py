@@ -1,9 +1,9 @@
 from django.urls import path
-from .views import GoodsDetailView, ShopView, CatalogView, AddReview
+from .views import GoodsDetailView, ShopView, CatalogView, add_review
 
 urlpatterns = [
     path('catalog/', CatalogView.as_view(), name='catalog'),
-    path('<str:slug>/', GoodsDetailView.as_view(), name='product'),
-    path('add_review/', AddReview.as_view(), name='add_review'),
+    path('add_review/', add_review, name='add_review'),
     path('top/', ShopView.as_view(), name='top'),
+    path('<str:slug>/', GoodsDetailView.as_view(), name='product'),
 ]

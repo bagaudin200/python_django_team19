@@ -23,9 +23,12 @@
           <div class="ProductCard">
             <div class="ProductCard-look">
               <div class="ProductCard-photo">
-                <img src="{{ product.image.url }}" alt="product image"/>
+                <img src="{{ product.image.url }}" alt="product_image"/>
               </div>
-              <div class="ProductCard-picts"><a class="ProductCard-pict ProductCard-pict_ACTIVE" href="{{ product.image.url }}"><img src="{{ product.image.url }}" alt="bigGoods.png"/></a><a class="ProductCard-pict" href="/img/content/home/slider.png"><img src="img/content/home/slider.png" alt="slider.png"/></a><a class="ProductCard-pict" href="img/content/home/videoca.png"><img src="img/content/home/videoca.png" alt="videoca.png"/></a>
+              <div class="ProductCard-picts"><a class="ProductCard-pict ProductCard-pict_ACTIVE" href="{{ product.image.url }}"><img src="{{ product.image.url }}" alt="bigGoods.png"/></a>
+                {%  for image in images %}
+                  <a class="ProductCard-pict" href="{{ image.image.url }}"><img src="{{ image.image.url }}" alt="slider.png"/></a>
+                {% endfor %}
               </div>
             </div>
             <div class="ProductCard-desc">
@@ -53,7 +56,7 @@
                 <div class="ProductCard-cartElement ProductCard-cartElement_amount">
                   <div class="Amount Amount_product">
                     <button class="Amount-remove" type="button"></button>
-                    {{product_form.quantity}}
+                    {{ product_form.quantity }}
                     <button class="Amount-add" type="button"></button>
                   </div>
                 </div>
@@ -142,20 +145,19 @@
                 </header>
               <div class="Comments">
               {% for review in reviews %}
-                  <p>review</p>
                   <div class="Comment">
                     <div class="Comment-column Comment-column_pict">
                           {% if review.user.avatar %}
                             <img class="Comment-avatar" src="{{ review.user.avatar.url }}" alt="avatar">
                           {% else %}
-                            <img class="Comment-avatar" src="" alt="">
+                              <div class="Comment-avatar"></div>
                           {% endif %}
                     </div>
                     <div class="Comment-column">
                       <header class="Comment-header">
                         <div>
                           <strong class="Comment-title">{{ review.user.full_name }}</strong>
-                            <span class="Comment-date">{{ review.created_at.strftime('%H:%M %Y-%m-%d') }}</span>
+                            <span class="Comment-date">{{ review.created_at.strftime('%B / %d / %Y / %H:%M') }}</span>
                         </div>
                       </header>
                       <div class="Comment-content">{{ review.text }}</div>
@@ -163,7 +165,6 @@
                   </div>
               {% endfor %}
               </div>
-
                 <header class="Section-header Section-header_product">
                   <h3 class="Section-title">Add Review</h3>
                 </header>
@@ -182,6 +183,7 @@
                           <div class="row-block">
                             <input class="form-input" id="email" name="email" type="text" placeholder="Email" value="{{ request.user.email }}" readonly="readonly">
                           </div>
+                            <input name="product" type="hidden" value="{{ product }}">
                         </div>
                       </div>
                       <div class="form-group">
@@ -189,7 +191,7 @@
                       </div>
                     </form>
                     {% else %}
-                        <p><a href="/"><h5>Войти / зарегистрироваться</h5></a></p>
+                        <p>To leave a comment on the product, <slag><a href="{{ url('login') }}">log in</a></slag> or <slag><a href="{{ url('registration') }}">register</a></slag>, please.<p>
                     {% endif %}
                 </div>
               </div>

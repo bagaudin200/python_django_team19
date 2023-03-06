@@ -28,7 +28,12 @@ class ReviewService:
         :return: None
         :rtype: None
         """
-        pass
+        Review.objects.create(
+            user=self.profile,
+            product=product,
+            text=review,
+        )
+        return None
 
     def get_reviews_for_product(self, product: object) -> List:
         """
@@ -101,6 +106,13 @@ def get_limited_product() -> Product:
                           .only('category', 'name', 'price')
 
 
+def check_product_quantity(product: Product, quantity: int) -> bool:
+    """Проверяет допустимое количество товара на складе"""
+    if product.quantity >= quantity:
+        return True
+    return False
+
+
 def get_update_quantity_product(product: Product, user: User) -> bool:
     """
     Возвращает булево значения, для добавление товара или обновления его количетсва в корзине
@@ -113,5 +125,7 @@ def get_update_quantity_product(product: Product, user: User) -> bool:
     else:
         pass
     return update_product
+
+
 
 
