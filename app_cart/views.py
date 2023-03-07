@@ -19,8 +19,6 @@ class CartDetail(TemplateView):
             item['update_quantity_form'] = CartAddProductForm(initial={'quantity': item['quantity'], 'update': True})
         return ctx
 
-from app_cart.services import Cart
-
 
 @require_POST
 def cart_add(request, pk):
@@ -54,11 +52,4 @@ def get_cart_data(request):
         total_item = int(product['quantity']) * Decimal(product['price'])
         response['total_item'] = total_item
     return JsonResponse(response)
-def cart_add(request):
-    """Функция заглушка для получения данных в корзину"""
-    # product = request.POST.get['id_product']
-    # quantity = request.POST.get['quantity']
-    # def add(self, product: object, quantity: int = 1, update_quantity: bool = False) -> None:
-    messages.success(request, 'Товар добавлен в корзину!')
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 

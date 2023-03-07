@@ -1,82 +1,40 @@
-from django.contrib import messages
-from django.core.cache import cache
 from django.core.paginator import Page
-from django.http import HttpResponse
-from django.shortcuts import redirect, render
-from django.views import View
+from django.urls import reverse
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import FormMixin
 
-from app_cart.services import Cart
-from app_goods.forms import AddProductToCardForm, ReviewsForm
-
-from app_goods.models import Category, Review, Image
-from .forms import FilterForm
-from .catalog_utils import CatalogPaginator, CatalogQueryStringBuilder, CatalogQuerySetBuilder
-from app_goods.models import Product, Review
-from app_settings.models import SiteSettings
-from .services import get_cheapest_product_price, get_most_expensive_product_price, get_top_products, \
-    get_limited_product, get_update_quantity_product, ReviewService, check_product_quantity
-from .utils import CatalogPaginator
+from app_goods.forms import Reviewsform
 from app_goods.models import Product
+from app_goods.services.catalog_services import CatalogPaginator, CatalogQueryStringBuilder, CatalogQuerySetBuilder
+from .forms import FilterForm
+from .services.services import get_top_products, get_limited_product
 
 
-class GoodsDetailView(DetailView):
+class GoodsDetailView(FormMixin, DetailView):
+    form_class = Reviewsform
     model = Product
     template_name = 'app_goods/product.jinja2'
+    slug_url_kwarg = 'slug'
     context_object_name = 'product'
 
-    def get_object(self, queryset=None):
-        slug = self.kwargs['slug']
-        obj = cache.get(f"product:{slug}")
-        if not obj:
-            obj = super(GoodsDetailView, self).get_object()
-            cache.set(f"product:{slug}", obj)
-        return obj
+    def get_success_url(self):
+        return reverse('product', kwargs={'slug': self.object.slug})
 
     def post(self, request, *args, **kwargs):
-        form = AddProductToCardForm(request.POST)
+        self.object = self.get_object()
+        form = self.get_form()
+        if request.user.is_authenticated:
+            form.instance.user = request.user
+            form.instance.product = self.object
         if form.is_valid():
-            user = self.request.user
-            product = self.get_object()
-            quantity = form.cleaned_data['quantity']
-            if check_product_quantity(product=product, quantity=quantity):
-                update_product = get_update_quantity_product(product=product,
-                                                             user=user
-                                                             )
-                cart = Cart(user)
-                cart.add(product=product,
-                         quantity=quantity,
-                         update_quantity=update_product,
-                         )
-                print(quantity)
-                messages.success(request, 'Successful! Product added to cart!')
-            else:
-                messages.error(request, f"Unsuccessful. Have only {quantity}")
-        return redirect(request.META.get('HTTP_REFERER'))
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        product = self.object
-        user = self.request.user
-        review_service = ReviewService(user)
-        images = Image.objects.filter(product=product)[1:]
-        context['images'] = images
-        context['reviews'] = review_service.get_reviews_for_product(product)
-        context['product_form'] = AddProductToCardForm()
-        context['review_form'] = ReviewsForm()
-        return context
-
-
-def add_review(request):
-    if request.method == 'POST':
-        form = ReviewsForm(request.POST)
-        if form.is_valid():
-            review = ReviewService(request.user)
-            text = form.cleaned_data['text']
-            product = Product.objects.get(name=request.POST['product'])
-            review.add(product, text)
-    return redirect(request.META.get('HTTP_REFERER'))
+    def form_valid(self, form):
+        new_review = form.save(commit=False)
+        new_review.save()
+        return super(GoodsDetailView, self).form_valid(form)
 
 
 class CatalogView(FormMixin, ListView):
@@ -86,8 +44,6 @@ class CatalogView(FormMixin, ListView):
     paginator_class = CatalogPaginator
     paginate_by = 8
     __order_by = {'popular': 'Популярности', 'price': 'Цене', 'reviews': 'Отзывам', 'novelty': 'Новизне'}
-    queryset = Product.objects.select_related('category', 'category__parent').defer('description', 'quantity').order_by(
-        'price')
 
     def get_context_data(self, **kwargs):
         context = super(FormMixin, self).get_context_data(**kwargs)
@@ -104,7 +60,7 @@ class CatalogView(FormMixin, ListView):
 
 
 class ShopView(TemplateView):
-    template_name = 'app_goods/index.jinja2'
+    template_name = 'index.jinja2'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)

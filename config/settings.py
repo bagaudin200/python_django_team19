@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'app_users.apps.AppUsersConfig',
     'app_goods.apps.AppGoodsConfig',
     'app_settings.apps.AppSettingsConfig',
+    'app_payment.apps.AppPaymentConfig',
 ]
 
 MIDDLEWARE = [
@@ -83,7 +84,6 @@ TEMPLATES = [
             'context_processors': [
                 'context_processors.categories_context.categories',
                 'context_processors.context_processors.cart',
-                'django.contrib.messages.context_processors.messages',
             ],
         },
     },
@@ -160,7 +160,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, '/static')
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -172,4 +172,9 @@ AUTH_USER_MODEL = 'app_users.User'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_URL = '/media/'
 
+# taggit settings
 TAGGIT_CASE_INSENSITIVE = True
+
+# Celery settings
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'

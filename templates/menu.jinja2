@@ -11,7 +11,7 @@
               <li class="menu-item"><span class="menu-label menu-label_success">Hot </span><a class="menu-link" href="#">Gallery</a>
               </li>
 
-              <li class="menu-item"><a class="menu-link" href="{{ url('goods:catalog') }}">Каталог</a>
+              <li class="menu-item"><a class="menu-link" href="{{ url('catalog') }}">Каталог</a>
               </li>
             </ul>
           </div>
@@ -43,7 +43,7 @@
                     {% set children = category.get_children() %}
                     {% set slug = category.slug %}
                     <div class="CategoriesButton-link">
-                        <a href="{{ url('goods:catalog') }}?category={{ slug }}">
+                        <a href="{{ url('catalog') }}?category={{ slug }}">
                             <div class="CategoriesButton-icon">
                                 <img src="{{ static(category_icons_paths[slug]) }}" alt="{{ slug }}.png"/>
                             </div>
@@ -64,7 +64,7 @@
         </div>
         <div class="Header-search">
           <div class="search">
-            <form class="form form_search" action="{{ url('goods:catalog') }}" method="get">
+            <form class="form form_search" action="{{ url('catalog') }}" method="get">
               <input class="search-input" id="search" name="search" type="text" placeholder="Что ищем?"/>
               <button class="search-button" type="submit" id="search2"><img src="{{ static('img/icons/search.svg') }}" alt="search.svg"/>Найти
               </button>
