@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from app_order.utils import card_number_is_valid
+from .utils import card_number_is_valid
 
 
 class PaymentForm(forms.Form):

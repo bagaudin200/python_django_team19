@@ -26,6 +26,14 @@ class PaymentFromSomeonesAccount(FormMixin, TemplateView):
     """Отображение шаблона оплаты с чужого счета"""
     form_class = PaymentForm
     template_name = 'app_payment/payment_someone.jinja2'
+    http_method_names = ['get', 'post']
+
+    def post(self, *args, **kwargs):
+        form = self.form_class(self.request.POST)
+        if form.is_valid():
+            return HttpResponseRedirect(reverse('payment:progress_payment'))
+        return render(request=self.request, template_name='app_payment/payment_someone.jinja2',
+                      context={'form': form})
 
 
 class ProgressPaymentView(TemplateView):
