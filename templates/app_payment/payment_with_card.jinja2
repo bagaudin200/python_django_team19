@@ -30,11 +30,14 @@
               <label class="form-label">Номер карты
               </label>
               {{ form.card_number }}
-{#              <input class="form-input Payment-bill" id="numero1" name="numero1" type="text" placeholder="9999 9999" data-mask="9999 9999" data-validate="require pay"/>#}
+              {% if form.card_number.errors %}
+                  <div class="form-error">
+                      {{ form.card_number.errors }}
+                  </div>
+              {% endif %}
             </div>
           </div>
           <div class="Payment-pay">
-{#              <a class="btn btn_primary" href="{{ url('payment:progress_payment') }}">Оплатить</a>#}
               <input type="submit" class="btn btn_primary" value="Оплатить">
           </div>
         </form>
