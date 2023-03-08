@@ -60,7 +60,7 @@ class Product(models.Model):
         return f'{self.name}'
 
     def get_absolute_url(self):
-        return reverse('goods:product', args=[self.slug])
+        return reverse('product', args=[self.slug])
 
     @property
     def short_description(self):

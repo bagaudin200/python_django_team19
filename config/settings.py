@@ -178,3 +178,6 @@ TAGGIT_CASE_INSENSITIVE = True
 # Celery settings
 CELERY_BROKER_URL = 'redis://localhost:6379'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+
+# Cart settings
+CART_SESSION_ID = 1

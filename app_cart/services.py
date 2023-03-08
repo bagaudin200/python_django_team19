@@ -28,8 +28,8 @@ class CartServices(object):
             if cart:
                 self.save_in_db(cart, request.user)
                 self.clear(True)
-            self.qs = Cart_db.objects.filter(user=self.user)
-            cart = self.get_cart_from_db(self.qs)
+            # self.qs = Cart_db.objects.filter(user=self.user)
+            # cart = self.get_cart_from_db(self.qs)
         else:
             # сохранить пустую корзину в сеансе
             if not cart:
