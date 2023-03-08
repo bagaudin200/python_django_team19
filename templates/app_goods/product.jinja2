@@ -23,10 +23,12 @@
           <div class="ProductCard">
             <div class="ProductCard-look">
               <div class="ProductCard-photo">
-                <div class="ProductCard-sale">-15%
-                </div><img src="" alt="product-image.png"/>
+                <img src="{{ product.image.url }}" alt="product_image"/>
               </div>
-              <div class="ProductCard-picts"><a class="ProductCard-pict ProductCard-pict_ACTIVE" href=""><img src="" alt="bigGoods.png"/></a><a class="ProductCard-pict" href="/img/content/home/slider.png"><img src="img/content/home/slider.png" alt="slider.png"/></a><a class="ProductCard-pict" href="img/content/home/videoca.png"><img src="img/content/home/videoca.png" alt="videoca.png"/></a>
+              <div class="ProductCard-picts"><a class="ProductCard-pict ProductCard-pict_ACTIVE" href="{{ product.image.url }}"><img src="{{ product.image.url }}" alt="bigGoods.png"/></a>
+                {%  for image in images %}
+                  <a class="ProductCard-pict" href="{{ image.image.url }}"><img src="{{ image.image.url }}" alt="slider.png"/></a>
+                {% endfor %}
               </div>
             </div>
             <div class="ProductCard-desc">
@@ -41,15 +43,20 @@
                 </div>
               </div>
               <div class="ProductCard-text">
-                  {{ product.description }}
+                <ul>
+                  <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, eiusmod
+                  </li>
+                  <li>tempor incididunt ut labore et dolore magna aliqua. Lorem
+                  </li>
+                  <li>ipsum dolor sit ameabore et dolore magna aliqua. Lorem ipsum
+                  </li>
+                </ul>
               </div>
-              <div class="ProductCard-cart">
+              <form class="ProductCard-cart" method="post">{% csrf_token %}
                 <div class="ProductCard-cartElement ProductCard-cartElement_amount">
                   <div class="Amount Amount_product">
-                    <button class="Amount-remove" type="button">
-                    </button>
-                    <input type="hidden" name="id" value="{{ product.id }}">
-                    <input class="Amount-input form-input" name="quantity" type="text" value="1">
+                    <button class="Amount-remove" type="button"></button>
+                    {{ product_form.quantity }}
                     <button class="Amount-add" type="button"></button>
                   </div>
                 </div>
@@ -64,17 +71,17 @@
               </div>
             </div>
           </div>
+        </div>
           <div class="Tabs Tabs_default">
             <div class="Tabs-links"><a class="Tabs-link_ACTIVE Tabs-link" href="#description"><span>Description</span></a><a class="Tabs-link" href="#addit"><span>AdditionaL Info</span></a><a class="Tabs-link" href="#reviews"><span>Reviews ({{ reviews|count }})</span></a>
             </div>
             <div class="Tabs-wrap">
               <div class="Tabs-block" id="description">
-                <h2>Megano Store Hystory
-                </h2>
+                <h2>Megano Store Hystory</h2>
                 <p>
-                    {{ product.description }}
+                  {{ product.description }}
                 </p>
-                  <img class="pict pict_right" src="" alt="bigGoods.png"/>
+                  <img class="pict pict_right" src="{{ product.image.url }}" alt="bigGoods.png"/>
                 <ul>
                   <li>Lorem ipsum dolor sit amet, consectetuer
                   </li>
@@ -134,23 +141,23 @@
               </div>
               <div class="Tabs-block" id="reviews">
                 <header class="Section-header">
-                  <h3 class="Section-title">{{ product.reviews.filter(product=product.id).count() }} Reviews</h3>
+                  <h3 class="Section-title">{{ reviews|count }} Reviews</h3>
                 </header>
               <div class="Comments">
-              {% for review in product.reviews.filter(product=product.id) %}
+              {% for review in reviews %}
                   <div class="Comment">
                     <div class="Comment-column Comment-column_pict">
                           {% if review.user.avatar %}
                             <img class="Comment-avatar" src="{{ review.user.avatar.url }}" alt="avatar">
                           {% else %}
-                            <img class="Comment-avatar" src="" alt="">
+                              <div class="Comment-avatar"></div>
                           {% endif %}
                     </div>
                     <div class="Comment-column">
                       <header class="Comment-header">
                         <div>
                           <strong class="Comment-title">{{ review.user.full_name }}</strong>
-                            <span class="Comment-date">{{ review.created_at.strftime('%H:%M %Y-%m-%d') }}</span>
+                            <span class="Comment-date">{{ review.created_at.strftime('%B / %d / %Y / %H:%M') }}</span>
                         </div>
                       </header>
                       <div class="Comment-content">{{ review.text }}</div>
@@ -158,35 +165,34 @@
                   </div>
               {% endfor %}
               </div>
-
                 <header class="Section-header Section-header_product">
-                  <h3 class="Section-title">Add Review
-                  </h3>
+                  <h3 class="Section-title">Add Review</h3>
                 </header>
                 <div class="Tabs-addComment">
-                    {% if request.user.is_authenticated %}
-                    <form class="form" method="post" action="{{ url('product', slug=product.slug) }}">
-                        {% csrf_token %}
-                        <div class="form-group">
-                          <textarea class="form-textarea" name="text" id="review" placeholder="Review" {{ form.text }}</textarea>
-                        </div>
-                        <div class="form-group">
+                  {% if request.user.is_authenticated %}
+                    <form class="form" method="post" action="{{ url('add_review') }}">
+                      {% csrf_token %}
+                      <div class="form-group">
+                        {{ review_form.text }}
+                      </div>
+                      <div class="form-group">
                         <div class="row">
-                        <div class="row-block">
-                          <input class="form-input" id="name" name="name" type="text" placeholder="Name" value="{{ request.user.full_name }}"></div>
-                        <div class="row-block">
-                          <input class="form-input" id="email" name="email" type="text" placeholder="Email" value="{{ request.user.email }}">
+                          <div class="row-block">
+                            <input class="form-input" id="name" name="name" type="text" placeholder="Name" value="{{ request.user.full_name }}" readonly="readonly">
+                          </div>
+                          <div class="row-block">
+                            <input class="form-input" id="email" name="email" type="text" placeholder="Email" value="{{ request.user.email }}" readonly="readonly">
+                          </div>
+                            <input name="product" type="hidden" value="{{ product }}">
                         </div>
                       </div>
-                    </div>
-                    <div class="form-group">
-                      <button class="btn btn_muted" type="submit">Submit Review</button>
-                    </div>
+                      <div class="form-group">
+                        <button class="btn btn_muted" type="submit">Submit Review</button>
+                      </div>
+                    </form>
                     {% else %}
-                        <p><a href="/"><h5>Войти / зарегистрироваться</h5></a></p>
+                        <p>To leave a comment on the product, <slag><a href="{{ url('login') }}">log in</a></slag> or <slag><a href="{{ url('registration') }}">register</a></slag>, please.<p>
                     {% endif %}
-
-                  </form>
                 </div>
               </div>
             </div>
@@ -194,5 +200,4 @@
         </div>
       </div>
     </div>
-  </div>
 {% endblock %}

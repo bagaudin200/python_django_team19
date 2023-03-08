@@ -1,8 +1,15 @@
 from typing import List
 from decimal import Decimal
+
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
+from django.db.models import QuerySet, Min, Max
+from app_cart.models import Cart
 from django.db.models import QuerySet, Min, Max, Sum
 from app_settings.models import SiteSettings
-from app_goods.models import Product
+from app_goods.models import Product, Review
+
+user = get_user_model()
 
 
 class ReviewService:
@@ -21,7 +28,12 @@ class ReviewService:
         :return: None
         :rtype: None
         """
-        pass
+        Review.objects.create(
+            user=self.profile,
+            product=product,
+            text=review,
+        )
+        return None
 
     def get_reviews_for_product(self, product: object) -> List:
         """
@@ -31,17 +43,19 @@ class ReviewService:
         :return: список отзывов
         :rtype: list
         """
-        return ['Отзыв1', 'Отзыв2', 'Отзыв3']
+        reviews = Review.objects.filter(product=product)
+        return reviews
 
-    def get_reviews_count(self, product: object) -> int:
-        """
-        Возвращает количество отзывов для товара
-        :param product: товар
-        :type product: object
-        :return: количество отзывов для товара
-        :rtype: int
-        """
-        return 3
+    # def get_reviews_count(self, product: object) -> int:
+    #     """
+    #     Возвращает количество отзывов для товара
+    #     :param product: товар
+    #     :type product: object
+    #     :return: количество отзывов для товара
+    #     :rtype: int
+    #     """
+    #
+    #     return 3
 
 
 def get_cheapest_product_price() -> Decimal:
@@ -72,12 +86,10 @@ def get_top_products() -> Product:
     :param products:
     :return: самые популярные товары
     """
-    quantity = SiteSettings.load()
-    return Product.objects.prefetch_related('order_items')\
-                          .filter(available=True)\
-                          .only('category', 'name', 'price')\
-                          .annotate(total=Sum('order_items__quantity'))\
-                          .order_by('-total')[:quantity.top_items_count]
+    quantity = SiteSettings()
+    return Product.objects.only('category', 'name', 'price')\
+                  .order_by('-total')[:quantity.top_items_count]
+
 
 
 def get_limited_product() -> Product:
@@ -87,6 +99,30 @@ def get_limited_product() -> Product:
     :return: топ ограниченных товаров
     """
     return Product.objects.select_related('category')\
-                          .filter(available=True)\
-                          .filter(limited=True)\
+                          .filter(is_limited=True)\
                           .only('category', 'name', 'price')
+
+
+def check_product_quantity(product: Product, quantity: int) -> bool:
+    """Проверяет допустимое количество товара на складе"""
+    if product.quantity >= quantity:
+        return True
+    return False
+
+
+def get_update_quantity_product(product: Product, user: User) -> bool:
+    """
+    Возвращает булево значения, для добавление товара или обновления его количетсва в корзине
+    """
+    update_product = False
+    if not user.is_anonymous:
+        cart = Cart.objects.filter(user=user, good=product)
+        if cart:
+            update_product = True
+    else:
+        pass
+    return update_product
+
+
+
+

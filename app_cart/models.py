@@ -3,7 +3,6 @@ from django.db import models
 
 from app_goods.models import Product
 
-# Create your models here.
 User = get_user_model()
 
 
@@ -19,3 +18,4 @@ class Cart(models.Model):
     class Meta:
         verbose_name = "Корзина"
         verbose_name_plural = "Корзины"
+

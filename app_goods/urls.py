@@ -1,6 +1,6 @@
 from django.urls import path
 from django.views.decorators.cache import cache_page
-from app_goods.views import GoodsDetailView, ShopView, CatalogView
+from app_goods.views import GoodsDetailView, CatalogView
 
 
 urlpatterns = [
