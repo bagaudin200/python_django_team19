@@ -1,0 +1,850 @@
+[
+{
+    "model": "taggit.tag",
+    "pk": 1,
+    "fields": {
+        "name": "материнская",
+        "slug": "материнская"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 2,
+    "fields": {
+        "name": "плата",
+        "slug": "плата"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 3,
+    "fields": {
+        "name": "msi",
+        "slug": "msi"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 4,
+    "fields": {
+        "name": "mag",
+        "slug": "mag"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 5,
+    "fields": {
+        "name": "torpedo",
+        "slug": "torpedo"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 6,
+    "fields": {
+        "name": "intel",
+        "slug": "intel"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 7,
+    "fields": {
+        "name": "asus",
+        "slug": "asus"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 8,
+    "fields": {
+        "name": "rog",
+        "slug": "rog"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 9,
+    "fields": {
+        "name": "strix",
+        "slug": "strix"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 10,
+    "fields": {
+        "name": "gaming",
+        "slug": "gaming"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 11,
+    "fields": {
+        "name": "wifi",
+        "slug": "wifi"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 12,
+    "fields": {
+        "name": "tuf",
+        "slug": "tuf"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 13,
+    "fields": {
+        "name": "gigabyte",
+        "slug": "gigabyte"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 14,
+    "fields": {
+        "name": "bazooka",
+        "slug": "bazooka"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 15,
+    "fields": {
+        "name": "asrock",
+        "slug": "asrock"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 16,
+    "fields": {
+        "name": "riptide",
+        "slug": "riptide"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 17,
+    "fields": {
+        "name": "pro",
+        "slug": "pro"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 18,
+    "fields": {
+        "name": "смартфон",
+        "slug": "смартфон"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 19,
+    "fields": {
+        "name": "samsung",
+        "slug": "samsung"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 20,
+    "fields": {
+        "name": "galaxy",
+        "slug": "galaxy"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 21,
+    "fields": {
+        "name": "black",
+        "slug": "black"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 22,
+    "fields": {
+        "name": "cooper",
+        "slug": "cooper"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 23,
+    "fields": {
+        "name": "green",
+        "slug": "green"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 24,
+    "fields": {
+        "name": "white",
+        "slug": "white"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 25,
+    "fields": {
+        "name": "nfc",
+        "slug": "nfc"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 26,
+    "fields": {
+        "name": "blue",
+        "slug": "blue"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 27,
+    "fields": {
+        "name": "apple",
+        "slug": "apple"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 28,
+    "fields": {
+        "name": "iphone",
+        "slug": "iphone"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 29,
+    "fields": {
+        "name": "max",
+        "slug": "max"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 30,
+    "fields": {
+        "name": "gold",
+        "slug": "gold"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 31,
+    "fields": {
+        "name": "deep",
+        "slug": "deep"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 32,
+    "fields": {
+        "name": "purple",
+        "slug": "purple"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 33,
+    "fields": {
+        "name": "space",
+        "slug": "space"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 34,
+    "fields": {
+        "name": "silver",
+        "slug": "silver"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 35,
+    "fields": {
+        "name": "ультрабук",
+        "slug": "ультрабук"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 36,
+    "fields": {
+        "name": "honor",
+        "slug": "honor"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 37,
+    "fields": {
+        "name": "magicbook",
+        "slug": "magicbook"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 38,
+    "fields": {
+        "name": "core",
+        "slug": "core"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 39,
+    "fields": {
+        "name": "acer",
+        "slug": "acer"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 40,
+    "fields": {
+        "name": "swift",
+        "slug": "swift"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 41,
+    "fields": {
+        "name": "ноутбук",
+        "slug": "ноутбук"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 42,
+    "fields": {
+        "name": "rombica",
+        "slug": "rombica"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 43,
+    "fields": {
+        "name": "mybook",
+        "slug": "mybook"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 44,
+    "fields": {
+        "name": "eclipse",
+        "slug": "eclipse"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 45,
+    "fields": {
+        "name": "sword",
+        "slug": "sword"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 46,
+    "fields": {
+        "name": "katana",
+        "slug": "katana"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 47,
+    "fields": {
+        "name": "thin",
+        "slug": "thin"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 48,
+    "fields": {
+        "name": "lenovo",
+        "slug": "lenovo"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 49,
+    "fields": {
+        "name": "ideapad",
+        "slug": "ideapad"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 50,
+    "fields": {
+        "name": "стиральная",
+        "slug": "стиральная"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 51,
+    "fields": {
+        "name": "машина",
+        "slug": "машина"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 52,
+    "fields": {
+        "name": "gorenje",
+        "slug": "gorenje"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 53,
+    "fields": {
+        "name": "colour",
+        "slug": "colour"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 54,
+    "fields": {
+        "name": "hiberg",
+        "slug": "hiberg"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 55,
+    "fields": {
+        "name": "bis",
+        "slug": "bis"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 56,
+    "fields": {
+        "name": "wis",
+        "slug": "wis"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 57,
+    "fields": {
+        "name": "invertor",
+        "slug": "invertor"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 58,
+    "fields": {
+        "name": "vickers",
+        "slug": "vickers"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 59,
+    "fields": {
+        "name": "king",
+        "slug": "king"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 60,
+    "fields": {
+        "name": "inverter",
+        "slug": "inverter"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 61,
+    "fields": {
+        "name": "сплит",
+        "slug": "сплит"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 62,
+    "fields": {
+        "name": "система",
+        "slug": "система"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 63,
+    "fields": {
+        "name": "jax",
+        "slug": "jax"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 64,
+    "fields": {
+        "name": "murray",
+        "slug": "murray"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 65,
+    "fields": {
+        "name": "newtek",
+        "slug": "newtek"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 66,
+    "fields": {
+        "name": "haier",
+        "slug": "haier"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 67,
+    "fields": {
+        "name": "tundra",
+        "slug": "tundra"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 68,
+    "fields": {
+        "name": "rovex",
+        "slug": "rovex"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 69,
+    "fields": {
+        "name": "city",
+        "slug": "city"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 70,
+    "fields": {
+        "name": "холодильник",
+        "slug": "холодильник"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 71,
+    "fields": {
+        "name": "nfgb",
+        "slug": "nfgb"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 72,
+    "fields": {
+        "name": "nfgr",
+        "slug": "nfgr"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 73,
+    "fields": {
+        "name": "nfgp",
+        "slug": "nfgp"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 74,
+    "fields": {
+        "name": "холодильники",
+        "slug": "холодильники"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 75,
+    "fields": {
+        "name": "kuppersberg",
+        "slug": "kuppersberg"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 76,
+    "fields": {
+        "name": "nrv",
+        "slug": "nrv"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 77,
+    "fields": {
+        "name": "hre",
+        "slug": "hre"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 78,
+    "fields": {
+        "name": "nfxq",
+        "slug": "nfxq"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 79,
+    "fields": {
+        "name": "nfb",
+        "slug": "nfb"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 80,
+    "fields": {
+        "name": "nfxd",
+        "slug": "nfxd"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 81,
+    "fields": {
+        "name": "nfx",
+        "slug": "nfx"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 82,
+    "fields": {
+        "name": "centek",
+        "slug": "centek"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 83,
+    "fields": {
+        "name": "inox",
+        "slug": "inox"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 84,
+    "fields": {
+        "name": "видеокарта",
+        "slug": "видеокарта"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 85,
+    "fields": {
+        "name": "nvidia",
+        "slug": "nvidia"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 86,
+    "fields": {
+        "name": "geforce",
+        "slug": "geforce"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 87,
+    "fields": {
+        "name": "rtx",
+        "slug": "rtx"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 88,
+    "fields": {
+        "name": "palit",
+        "slug": "palit"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 89,
+    "fields": {
+        "name": "газовая",
+        "slug": "газовая"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 90,
+    "fields": {
+        "name": "плита",
+        "slug": "плита"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 91,
+    "fields": {
+        "name": "hansa",
+        "slug": "hansa"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 92,
+    "fields": {
+        "name": "лада",
+        "slug": "лада"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 93,
+    "fields": {
+        "name": "nova",
+        "slug": "nova"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 94,
+    "fields": {
+        "name": "комбинированая",
+        "slug": "комбинированая"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 95,
+    "fields": {
+        "name": "gefest",
+        "slug": "gefest"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 96,
+    "fields": {
+        "name": "пгэ",
+        "slug": "пгэ"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 97,
+    "fields": {
+        "name": "комбинированная",
+        "slug": "комбинированная"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 98,
+    "fields": {
+        "name": "monte",
+        "slug": "monte"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 99,
+    "fields": {
+        "name": "ivory",
+        "slug": "ivory"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 100,
+    "fields": {
+        "name": "rustico",
+        "slug": "rustico"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 101,
+    "fields": {
+        "name": "процессор",
+        "slug": "процессор"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 102,
+    "fields": {
+        "name": "lga",
+        "slug": "lga"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 103,
+    "fields": {
+        "name": "oem",
+        "slug": "oem"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 104,
+    "fields": {
+        "name": "box",
+        "slug": "box"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 105,
+    "fields": {
+        "name": "amd",
+        "slug": "amd"
+    }
+},
+{
+    "model": "taggit.tag",
+    "pk": 106,
+    "fields": {
+        "name": "ryzen",
+        "slug": "ryzen"
+    }
+}
+]

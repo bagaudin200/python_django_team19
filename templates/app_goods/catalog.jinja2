@@ -106,7 +106,7 @@
           </div>
           <div class="Cards">
               {% for product in products %}
-                  <div class="Card"><a class="Card-picture" href="{{ product.get_absolute_url() }}"><img src="" alt="card.jpg"/></a>
+                  <div class="Card"><a class="Card-picture" href="{{ product.get_absolute_url() }}"><img src="{{ product.image.url }}" alt="card.jpg"/></a>
                     <div class="Card-content">
                     <strong class="Card-title"><a href="{{ product.get_absolute_url() }}">{{ product.name }}</a>
                     </strong>
