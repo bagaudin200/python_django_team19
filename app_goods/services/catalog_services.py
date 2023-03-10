@@ -57,7 +57,6 @@ class CatalogQueryStringBuilder(Builder):
         all_params = self.query_string_to_dict() | self.params
         for param_name, param_value in all_params.items():
             query_string += f"&{param_name}={param_value}"
-        print(query_string)
         return query_string
 
 

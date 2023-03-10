@@ -4,7 +4,7 @@
     "pk": 1,
     "fields": {
         "name": "материнская",
-        "slug": "материнская"
+        "slug": "materinskaya"
     }
 },
 {
@@ -12,7 +12,7 @@
     "pk": 2,
     "fields": {
         "name": "плата",
-        "slug": "плата"
+        "slug": "plata"
     }
 },
 {
@@ -140,7 +140,7 @@
     "pk": 18,
     "fields": {
         "name": "смартфон",
-        "slug": "смартфон"
+        "slug": "smartfon"
     }
 },
 {
@@ -276,7 +276,7 @@
     "pk": 35,
     "fields": {
         "name": "ультрабук",
-        "slug": "ультрабук"
+        "slug": "ultrabuk"
     }
 },
 {
@@ -324,7 +324,7 @@
     "pk": 41,
     "fields": {
         "name": "ноутбук",
-        "slug": "ноутбук"
+        "slug": "noutbuk"
     }
 },
 {
@@ -396,7 +396,7 @@
     "pk": 50,
     "fields": {
         "name": "стиральная",
-        "slug": "стиральная"
+        "slug": "stiralnaya"
     }
 },
 {
@@ -404,7 +404,7 @@
     "pk": 51,
     "fields": {
         "name": "машина",
-        "slug": "машина"
+        "slug": "mashina"
     }
 },
 {
@@ -484,7 +484,7 @@
     "pk": 61,
     "fields": {
         "name": "сплит",
-        "slug": "сплит"
+        "slug": "split"
     }
 },
 {
@@ -492,7 +492,7 @@
     "pk": 62,
     "fields": {
         "name": "система",
-        "slug": "система"
+        "slug": "sistema"
     }
 },
 {
@@ -556,7 +556,7 @@
     "pk": 70,
     "fields": {
         "name": "холодильник",
-        "slug": "холодильник"
+        "slug": "holodilnik"
     }
 },
 {
@@ -588,7 +588,7 @@
     "pk": 74,
     "fields": {
         "name": "холодильники",
-        "slug": "холодильники"
+        "slug": "holodilniki"
     }
 },
 {
@@ -668,7 +668,7 @@
     "pk": 84,
     "fields": {
         "name": "видеокарта",
-        "slug": "видеокарта"
+        "slug": "videokarta"
     }
 },
 {
@@ -708,7 +708,7 @@
     "pk": 89,
     "fields": {
         "name": "газовая",
-        "slug": "газовая"
+        "slug": "gazovaya"
     }
 },
 {
@@ -716,7 +716,7 @@
     "pk": 90,
     "fields": {
         "name": "плита",
-        "slug": "плита"
+        "slug": "plita"
     }
 },
 {
@@ -732,7 +732,7 @@
     "pk": 92,
     "fields": {
         "name": "лада",
-        "slug": "лада"
+        "slug": "lada"
     }
 },
 {
@@ -748,7 +748,7 @@
     "pk": 94,
     "fields": {
         "name": "комбинированая",
-        "slug": "комбинированая"
+        "slug": "kombinirovanaya"
     }
 },
 {
@@ -764,7 +764,7 @@
     "pk": 96,
     "fields": {
         "name": "пгэ",
-        "slug": "пгэ"
+        "slug": "pge"
     }
 },
 {
@@ -772,7 +772,7 @@
     "pk": 97,
     "fields": {
         "name": "комбинированная",
-        "slug": "комбинированная"
+        "slug": "kombinirovannaya"
     }
 },
 {
@@ -804,7 +804,7 @@
     "pk": 101,
     "fields": {
         "name": "процессор",
-        "slug": "процессор"
+        "slug": "protsessor"
     }
 },
 {
