@@ -1,4 +1,4 @@
-{{ extends('base.jinja2') }}
+{% extends('base.jinja2') %}
 
 {% block title %}
     Каталог
@@ -92,12 +92,12 @@
                     {% for key, value in orders_by.items() %}
                         {% if key != order_by %}
                             <a class="Sort-sortBy"
-                               href="{{ url('catalog') }}{% if category %}?category={{ category }}&order_by={{ key }}&order=asc{% else %}?order_by={{ key }}&order=asc{% endif %}{% if tag %}&tag={{ tag }}{% endif %}{% if price %}&price={{ price }}{% endif %}{% if title %}&title={{ title }}{% endif %}{% if in_stock %}&in_stock={{ in_stock }}{% endif %}{% if free_delivery %}&free_delivery={{ free_delivery }}{% endif %}">{{ value }}
+                               href="{{ url('catalog') }}{{ query_string_builder(request, order_by=key, order='asc').build() }}">{{ value }}
                             </a>
                         {% else %}
                             {% set _order = 'asc' if order == 'desc' else 'desc' %}
                             <a class="Sort-sortBy {% if order=='desc' %}Sort-sortBy_inc{% else %}Sort-sortBy_dec{% endif %}"
-                               href="{{ url('catalog') }}{% if category %}?category={{ category }}&{% else %}?{% endif %}order_by={{ key }}&order={% if order=='asc' %}desc{% else %}asc{% endif %}{% if tag %}&tag={{ tag }}{% endif %}{% if price %}&price={{ price }}{% endif %}{% if title %}&title={{ title }}{% endif %}{% if in_stock %}&in_stock={{ in_stock }}{% endif %}{% if free_delivery %}&free_delivery={{ free_delivery }}{% endif %}">{{ value }}
+                               href="{{ url('catalog') }}{{ query_string_builder(request, order_by=key, order=_order).build() }}">{{ value }}
                             </a>
                         {% endif %}
                     {% endfor %}
@@ -125,7 +125,7 @@
                 </div>
               {% endfor %}
           </div>
-          {{ include('pagination.jinja2') }}
+          {% include('pagination.jinja2') %}
         </div>
       </div>
     </div>

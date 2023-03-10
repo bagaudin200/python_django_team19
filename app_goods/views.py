@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import FormMixin
 
-from app_goods.forms import Reviewsform
+from app_goods.forms import ReviewsForm
 from app_goods.models import Product
 from app_goods.services.catalog_services import CatalogPaginator, CatalogQueryStringBuilder, CatalogQuerySetBuilder
 from .forms import FilterForm
@@ -11,7 +11,7 @@ from .services.services import get_top_products, get_limited_product
 
 
 class GoodsDetailView(FormMixin, DetailView):
-    form_class = Reviewsform
+    form_class = ReviewsForm
     model = Product
     template_name = 'app_goods/product.jinja2'
     slug_url_kwarg = 'slug'
