@@ -1,4 +1,4 @@
-{{ extends("base.jinja2") }}
+{% extends "base.jinja2" %}
 
 
 {% block content %}
@@ -6,7 +6,7 @@
     <div class="Section">
         <div class="wrap">
             <div class="BannersHome">
-                {%  for category in site_settings.category_main_page.all|slice%}:":3" %}
+                {%  for category in site_settings.banners_count.all, ":3" %}
                 <a class="BannersHomeBlock" href="{{ category.get_absolute_url }}">
                     <div class="BannersHomeBlock-row">
                         <div class="BannersHomeBlock-block">
@@ -43,7 +43,7 @@
                         <a class="Card-picture" href="{{ good.get_absolute_url }}">
                             <img src="
                             {{ im.url }}
-                            {% empty %}
+
                             {{ static('static/img/content/home/card.jpg') }}"
 
                                  alt="изображение товара"/>
@@ -155,7 +155,7 @@
                                         <img src="
 
                                         {{ im.url }}
-                                        {% empty %}
+
                                         {{ static('static/img/content/home/card.jpg') }}
                                         " alt="img"/>
                                     </a>

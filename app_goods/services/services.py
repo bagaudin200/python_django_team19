@@ -86,9 +86,9 @@ def get_top_products() -> Product:
     :param products:
     :return: самые популярные товары
     """
-    quantity = SiteSettings()
+    quantity = SiteSettings.load()
     return Product.objects.only('category', 'name', 'price')\
-                  .order_by('-total')[:quantity.top_items_count]
+                  .order_by('quantity')[:quantity.top_items_count]
 
 
 
