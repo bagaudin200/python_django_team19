@@ -27,10 +27,10 @@ class Builder:
         Преобразует строку запроса в словарь
         :return: dict
         """
-        query_string: str = self.request.META['QUERY_STRING']
+        query_string: str = self.request.META['QUERY_STRING'].replace('?', '')
 
         result = {}
-        params = [param for param in query_string.split('&') if param]
+        params = [param for param in query_string.split('&') if param.count('=') == 1]
         for item in params:
             name, value = item.split('=')
             if name in self.__available_params:
@@ -57,6 +57,7 @@ class CatalogQueryStringBuilder(Builder):
         all_params = self.query_string_to_dict() | self.params
         for param_name, param_value in all_params.items():
             query_string += f"&{param_name}={param_value}"
+        print(query_string)
         return query_string
 
 
