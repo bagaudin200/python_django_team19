@@ -84,6 +84,7 @@ TEMPLATES = [
             'context_processors': [
                 'context_processors.categories_context.categories',
                 'context_processors.context_processors.cart',
+                'context_processors.shop_views_context.load_settings',
             ],
         },
     },
@@ -178,3 +179,5 @@ TAGGIT_CASE_INSENSITIVE = True
 # Celery settings
 CELERY_BROKER_URL = 'redis://localhost:6379'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+
+CART_SESSION_ID = 'cart'

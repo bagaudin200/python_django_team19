@@ -1,8 +1,9 @@
 from django.core.validators import MaxValueValidator
 from django.db import models
+from app_settings.singleton_model import SingletonModel
 
 
-class SiteSettings(models.Model):
+class SiteSettings(SingletonModel):
     """Модель настроек сайта"""
     min_order_price_for_free_shipping = models.DecimalField(max_digits=6, decimal_places=2, default=2000.00,
                                                             verbose_name='minimum order price for free shipping, $')

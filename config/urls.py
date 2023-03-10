@@ -28,7 +28,8 @@ urlpatterns = [
     path('app_users/', include('app_users.urls')),
     path('cart/', include('app_cart.urls')),
     path('order/', include('app_order.urls', namespace='order')),
-    path('', include('app_goods.urls')),
+    path('app_goods/', include('app_goods.urls')),
+    path('', ShopView.as_view(), name='top')
 ]
 
 if settings.DEBUG:
