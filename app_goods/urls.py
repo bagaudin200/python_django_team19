@@ -4,6 +4,7 @@ from app_goods.views import GoodsDetailView, CatalogView, ShopView
 
 
 urlpatterns = [
+    path('', ShopView.as_view(), name='top'),
     path('catalog/', CatalogView.as_view(), name='catalog'),
     path('<str:slug>/', cache_page(60)(GoodsDetailView.as_view()), name='product'),
 

@@ -72,7 +72,7 @@ class ProfileView(LoginRequiredMixin, UpdateView):
 class MyLoginView(LoginView):
     template_name = 'app_users/login.jinja2'
     authentication_form = UserLoginForm
-    next_page = reverse_lazy('top')
+    # next_page = reverse_lazy('login')
 
 
 class ModalLoginView(BSModalLoginView):

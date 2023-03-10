@@ -60,7 +60,7 @@ class CatalogView(FormMixin, ListView):
 
 
 class ShopView(TemplateView):
-    template_name = 'index.jinja2'
+    template_name = 'app_goods/index.jinja2'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
