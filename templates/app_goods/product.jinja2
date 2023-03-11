@@ -183,11 +183,11 @@
                           <div class="row-block">
                             <input class="form-input" id="email" name="email" type="text" placeholder="Email" value="{{ request.user.email }}" readonly="readonly">
                           </div>
-                            <input name="product" type="hidden" value="{{ product }}">
+                            <input name="product" type="hidden" value="{{ product.id }}">
                         </div>
                       </div>
                       <div class="form-group">
-                        <button class="btn btn_muted" type="submit">Submit Review</button>
+                        <button class="btn btn_primary" type="submit">Submit Review</button>
                       </div>
                     </form>
                     {% else %}

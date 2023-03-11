@@ -1,3 +1,4 @@
+from celery.exceptions import ImproperlyConfigured
 from django.contrib import messages
 from django.core.cache import cache
 from django.core.paginator import Page
@@ -29,6 +30,7 @@ class GoodsDetailView(DetailView):
         if not obj:
             obj = super(GoodsDetailView, self).get_object()
             cache.set(f"product:{slug}", obj)
+        print('obj', obj.reviews)
         return obj
 
     def post(self, request, *args, **kwargs):
@@ -46,11 +48,11 @@ class GoodsDetailView(DetailView):
                          quantity=quantity,
                          update_quantity=update_product,
                          )
-                print(quantity)
                 messages.success(request, 'Successful! Product added to cart!')
             else:
                 messages.error(request, f"Unsuccessful. Have only {quantity}")
         return redirect(request.META.get('HTTP_REFERER'))
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -71,8 +73,7 @@ def add_review(request):
         if form.is_valid():
             review = ReviewService(request.user)
             text = form.cleaned_data['text']
-            product = Product.objects.get(name=request.POST['product'])
-            review.add(product, text)
+            review.add(request.POST['product'], text)
     return redirect(request.META.get('HTTP_REFERER'))
 
 

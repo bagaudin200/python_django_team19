@@ -18,7 +18,7 @@ class ReviewService:
     def __init__(self, profile: object):
         self.profile = profile
 
-    def add(self, product: object, review: str) -> None:
+    def add(self, product_id: int, review: str) -> None:
         """
         Добавляет отзыв к товару
         :param product: товар
@@ -30,7 +30,7 @@ class ReviewService:
         """
         Review.objects.create(
             user=self.profile,
-            product=product,
+            product_id=product_id,
             text=review,
         )
         return None
