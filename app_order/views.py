@@ -1,22 +1,10 @@
-from django.views.generic import ListView
+from django.shortcuts import render
+from django.views.generic import TemplateView
+from django.views.generic.edit import FormMixin
 
-from app_goods.models import Product
-from app_users.forms import UserCreateForm
+from app_order.forms import OrderForm
 
 
-class OrderView(ListView):
+class OrderView(FormMixin, TemplateView):
+    form_class = OrderForm
     template_name = 'app_order/order.jinja2'
-    queryset = Product
-
-    def post(self, request):
-        print(request.POST)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['form'] = UserCreateForm()
-        return context
-
-
-
-
-

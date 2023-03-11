@@ -1,7 +1,9 @@
 {% extends 'base.jinja2' %}
 
+{% block title %}
+    Оформление заказа
+{% endblock %}
 
-{% block title%}Order{% endblock %}
 
 {% block content %}
   <div class="Middle Middle_top">
@@ -42,42 +44,9 @@
           </div>
         </div>
         <div class="Section-content">
-          <form class="form" action="#" method="post">
-{#              <div class="row">#}
-{#                <div class="row-block">#}
-{#                  <div class="form-group">#}
-{#                    <label class="form-label" for="name">ФИО#}
-{#                    </label>#}
-{#                    <input class="form-input" id="name" name="name" type="text" value="Иванов Иван Иванович"/>#}
-{#                  </div>#}
-{#                  <div class="form-group">#}
-{#                    <label class="form-label" for="phone">Телефон#}
-{#                    </label>#}
-{#                    <input class="form-input" id="phone" name="phone" type="text" value="+70000000000"/>#}
-{#                  </div>#}
-{#                  <div class="form-group">#}
-{#                    <label class="form-label" for="mail">E-mail#}
-{#                    </label>#}
-{#                    <input class="form-input" id="mail" name="mail" type="text" value="" data-validate="require"/>#}
-{#                  </div>#}
-{#                </div>#}
-{#                <div class="row-block">#}
-{#                  <div class="form-group">#}
-{#                    <label class="form-label" for="password">Пароль#}
-{#                    </label>#}
-{#                    <input class="form-input" id="password" name="password" type="password" placeholder="Тут можно изменить пароль"/>#}
-{#                  </div>#}
-{#                  <div class="form-group">#}
-{#                    <label class="form-label" for="passwordReply">Подтверждение пароля#}
-{#                    </label>#}
-{#                    <input class="form-input" id="passwordReply" name="passwordReply" type="password" placeholder="Введите пароль повторно"/>#}
-{#                  </div>#}
-{#                  <div class="form-group"><a class="btn btn_muted Order-btnReg" href="#">Я уже зарегистрирован</a>#}
-{#                  </div>#}
-{#                </div>#}
-{#              </div>#}
-              <form class="form" action="#" method="post">
-              <div class="Order-block Order-block_OPEN" id="step1">
+          <form class="form" action="{{ url('payment:payment_with_card') }}" method="post">
+            {% csrf_token %}
+            <div class="Order-block Order-block_OPEN" id="step1">
               <header class="Section-header Section-header_sm">
                 <h2 class="Section-title">Шаг 1. Параметры пользователя
                 </h2>
@@ -85,40 +54,39 @@
               <div class="row">
                 <div class="row-block">
                   <div class="form-group">
-                      <label class="form-label" for="name">ФИО
-                      </label>
-                      {{ form.full_name }}
+                    <label class="form-label" for="name">ФИО
+                    </label>
+                    <input class="form-input" id="name" name="name" type="text" value={% if request.user.is_authenticated %}"{{ request.user.full_name}}"{% endif %}/>
                   </div>
                   <div class="form-group">
                     <label class="form-label" for="phone">Телефон
                     </label>
-                    {{ form.phoneNumber }}
+                    <input class="form-input" id="phone" name="phone" type="text" value={% if request.user.is_authenticated %}"+7{{ request.user.phoneNumber}}"{% endif %}/>
                   </div>
                   <div class="form-group">
                     <label class="form-label" for="mail">E-mail
                     </label>
-                      {{ form.email }}
+                    <input class="form-input" id="mail" name="mail" type="text" value="" data-validate="require"/>
                   </div>
                 </div>
                 <div class="row-block">
                   <div class="form-group">
                     <label class="form-label" for="password">Пароль
                     </label>
-                    {{ form.password1 }}
+                    <input class="form-input" id="password" name="password" type="password" placeholder="Тут можно изменить пароль"/>
                   </div>
                   <div class="form-group">
                     <label class="form-label" for="passwordReply">Подтверждение пароля
                     </label>
-                    {{ form.password2 }}
+                    <input class="form-input" id="passwordReply" name="passwordReply" type="password" placeholder="Введите пароль повторно"/>
                   </div>
-                  <div class="form-group"><a class="btn btn_muted Order-btnReg" href="{{ url('login') }}">Я уже зарегистрирован</a>
+                  <div class="form-group"><a class="btn btn_muted Order-btnReg" href="#">Я уже зарегистрирован</a>
                   </div>
                 </div>
               </div>
-              <div class="Order-footer"><a class="btn btn_success Order-next" type="submit" href="#step2">Дальше</a>
+              <div class="Order-footer"><a class="btn btn_success Order-next" href="#step2">Дальше</a>
               </div>
             </div>
-            </form>
             <div class="Order-block" id="step2">
               <header class="Section-header Section-header_sm">
                 <h2 class="Section-title">Шаг 2. Способ доставки

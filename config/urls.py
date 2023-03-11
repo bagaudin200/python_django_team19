@@ -18,16 +18,16 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
-app_name = 'app_product', 'app_settings'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('__debug__/', include('debug_toolbar.urls')),
+    path('payment/', include('app_payment.urls', namespace='payment')),
     path('app_users/', include('app_users.urls')),
     path('cart/', include('app_cart.urls')),
-    path('order/', include('app_order.urls')),
     path('product/', include('app_goods.urls')),
     path('settings/', include('app_settings.urls')),
+    path('', include('app_goods.urls')),
 ]
 
 if settings.DEBUG:

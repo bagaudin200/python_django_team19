@@ -12,7 +12,7 @@
           <h1 class="Middle-title">Каталог Megano
           </h1>
           <ul class="breadcrumbs Middle-breadcrumbs">
-            <li class="breadcrumbs-item"><a href="index.html">главная</a>
+            <li class="breadcrumbs-item"><a href="index.jinja2">главная</a>
             </li>
             <li class="breadcrumbs-item breadcrumbs-item_current"><span>каталог</span>
             </li>
@@ -34,13 +34,15 @@
                 <input type="hidden" name="order" value="{{ request.GET.get('order') }}">
                 <input type="hidden" name="order_by" value="{{ request.GET.get('order_by') }}">
                 <div class="form-group">
-                  <div class="range Section-columnRange">
-                    <input class="range-line" id="price" name="price" type="text" data-type="double" data-min="{{ cheapest }}" data-max="{{ most_expensive }}" data-from="{{ cheapest }}" data-to="{{ most_expensive }}"/>
-                    <div class="range-price">Цена:&#32;
-                      <div class="rangePrice">
+                  {% with cheapest=products|min(attribute='price'), most_expensive=products|max(attribute='price') %}
+                      <div class="range Section-columnRange">
+                        <input class="range-line" id="price" name="price" type="text" data-type="double" data-min="{{ cheapest.price }}" data-max="{{ most_expensive.price }}" data-from="{{ cheapest.price }}" data-to="{{ most_expensive.price }}"/>
+                        <div class="range-price">Цена:&#32;
+                          <div class="rangePrice">
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
+                  {% endwith %}
                 </div>
                 <div class="form-group">
                   <input class="form-input form-input_full" id="title" name="title" type="text" placeholder="Название"/>
@@ -86,20 +88,16 @@
             <div class="Sort-title">Сортировать по:
             </div>
             <div class="Sort-variants">
-                {% with category=request.GET.get('category'), order=request.GET.get('order'), order_by=request.GET.get('order_by') %}
-                    {% set tag=request.GET.get('tag') %}
-                    {% set price=request.GET.get('price') %}
-                    {% set title=request.GET.get('title') %}
-                    {% set in_stock=request.GET.get('in_stock') %}
-                    {% set free_delivery=request.GET.get('free_delivery') %}
+                {% with order_by=request.GET.get('order_by'), order=request.GET.get('order') %}
                     {% for key, value in orders_by.items() %}
                         {% if key != order_by %}
                             <a class="Sort-sortBy"
-                               href="{{ url('catalog') }}{% if category %}?category={{ category }}&order_by={{ key }}&order=asc{% else %}?order_by={{ key }}&order=asc{% endif %}{% if tag %}&tag={{ tag }}{% endif %}{% if price %}&price={{ price }}{% endif %}{% if title %}&title={{ title }}{% endif %}{% if in_stock %}&in_stock={{ in_stock }}{% endif %}{% if free_delivery %}&free_delivery={{ free_delivery }}{% endif %}">{{ value }}
+                               href="{{ url('catalog') }}{{ query_string_builder(request, order_by=key, order='asc').build() }}">{{ value }}
                             </a>
                         {% else %}
+                            {% set _order = 'asc' if order == 'desc' else 'desc' %}
                             <a class="Sort-sortBy {% if order=='desc' %}Sort-sortBy_inc{% else %}Sort-sortBy_dec{% endif %}"
-                               href="{{ url('catalog') }}{% if category %}?category={{ category }}&{% else %}?{% endif %}order_by={{ key }}&order={% if order=='asc' %}desc{% else %}asc{% endif %}{% if tag %}&tag={{ tag }}{% endif %}{% if price %}&price={{ price }}{% endif %}{% if title %}&title={{ title }}{% endif %}{% if in_stock %}&in_stock={{ in_stock }}{% endif %}{% if free_delivery %}&free_delivery={{ free_delivery }}{% endif %}">{{ value }}
+                               href="{{ url('catalog') }}{{ query_string_builder(request, order_by=key, order=_order).build() }}">{{ value }}
                             </a>
                         {% endif %}
                     {% endfor %}
@@ -108,7 +106,7 @@
           </div>
           <div class="Cards">
               {% for product in products %}
-                  <div class="Card"><a class="Card-picture" href="{{ product.get_absolute_url() }}"><img src="" alt="card.jpg"/></a>
+                  <div class="Card"><a class="Card-picture" href="{{ product.get_absolute_url() }}"><img src="{{ product.image.url }}" alt="card.jpg"/></a>
                     <div class="Card-content">
                     <strong class="Card-title"><a href="{{ product.get_absolute_url() }}">{{ product.name }}</a>
                     </strong>
@@ -127,7 +125,7 @@
                 </div>
               {% endfor %}
           </div>
-          {% include 'pagination.jinja2' %}
+          {% include('pagination.jinja2') %}
         </div>
       </div>
     </div>
