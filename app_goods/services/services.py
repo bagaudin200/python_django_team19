@@ -18,11 +18,11 @@ class ReviewService:
     def __init__(self, profile: object):
         self.profile = profile
 
-    def add(self, product: object, review: str) -> None:
+    def add(self, product: int, review: str) -> None:
         """
         Добавляет отзыв к товару
-        :param product: товар
-        :type product: object
+        :param product: ид товара
+        :type product: int
         :param review: текст отзыва
         :type review: str
         :return: None
@@ -30,7 +30,7 @@ class ReviewService:
         """
         Review.objects.create(
             user=self.profile,
-            product=product,
+            product_id=product,
             text=review,
         )
         return None
@@ -45,17 +45,6 @@ class ReviewService:
         """
         reviews = Review.objects.filter(product=product)
         return reviews
-
-    # def get_reviews_count(self, product: object) -> int:
-    #     """
-    #     Возвращает количество отзывов для товара
-    #     :param product: товар
-    #     :type product: object
-    #     :return: количество отзывов для товара
-    #     :rtype: int
-    #     """
-    #
-    #     return 3
 
 
 def get_cheapest_product_price() -> Decimal:

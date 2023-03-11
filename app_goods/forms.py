@@ -16,11 +16,6 @@ class AddProductToCardForm(forms.ModelForm):
                                          }
                                   ),
         }
-    def clean_quantity(self):
-        quantity = self.cleaned_data['quantity']
-        if quantity < 1:
-            raise ValidationError('Too small')
-        return quantity
 
 
 class ReviewsForm(forms.ModelForm):
