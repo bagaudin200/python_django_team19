@@ -124,6 +124,8 @@ class CatalogQuerySetBuilder(Builder):
             return 'price'
         if order_by == 'novelty':
             order_by = 'created_at'
+        if order_by == 'popular':
+            order_by = 'sales_count'
         return order_by
 
     def _get_price_range_filter(self) -> dict:
