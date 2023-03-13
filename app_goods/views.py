@@ -1,20 +1,41 @@
 from django.core.paginator import Page
 from django.core.cache import cache
 from django.db.models import Sum
+from django.urls import reverse
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import FormMixin
 
-from .forms import FilterForm
+from .forms import FilterForm, Reviewsform
 from app_goods.services.catalog_services import CatalogPaginator, CatalogQueryStringBuilder, CatalogQuerySetBuilder
 from app_goods.models import Product, Review
 from app_settings.models import SiteSettings
 
 
-class GoodsDetailView(DetailView):
+class GoodsDetailView(FormMixin, DetailView):
+    form_class = Reviewsform
     model = Product
     template_name = 'app_goods/product.jinja2'
     context_object_name = 'product'
     slug_url_kwarg = 'slug'
+
+    def get_success_url(self):
+        return reverse('goods:product', args=[self.object.slug])
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        if request.user.is_authenticated:
+            form.instance.user = request.user
+            form.instance.product = self.object
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        new_review = form.save(commit=False)
+        new_review.save()
+        return super(GoodsDetailView, self).form_valid(form)
 
     def get_object(self, queryset=None):
         print(self.kwargs)
