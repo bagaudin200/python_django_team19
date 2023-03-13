@@ -25,8 +25,8 @@
               <div class="ProductCard-photo">
                 <img src="{{ product.image.url }}" alt="product_image"/>
               </div>
-              <div class="ProductCard-picts"><a class="ProductCard-pict ProductCard-pict_ACTIVE" href="{{ product.image.url }}"><img src="{{ product.image.url }}" alt="bigGoods.png"/></a>
-                {%  for image in images %}
+              <div class="ProductCard-picts"><a class="ProductCard-pict ProductCard-pict_ACTIVE" href="{{ images[0].image.url }}"><img src="{{ images[0].image.url }}" alt="bigGoods.png"/></a>
+                {%  for image in images[1:] %}
                   <a class="ProductCard-pict" href="{{ image.image.url }}"><img src="{{ image.image.url }}" alt="slider.png"/></a>
                 {% endfor %}
               </div>
@@ -65,8 +65,11 @@
               </form>
               <div class="ProductCard-footer">
                 <div class="ProductCard-tags">
-                  <strong class="ProductCard-tagsTitle">Tags:
-                  </strong><a href="#">Accesories</a>,<a href="#">Creative</a>,<a href="#">Design</a>,<a href="#">Gaming</a>
+                  <strong class="ProductCard-tagsTitle">Tags:</strong>
+                  {% for tag in tags %}
+                    <a href="{{ url('catalog') }}?tag={{ tag.slug }}">{{ tag }}</a>
+                  {% endfor %}
+{#          <a href="#">Accesories</a>,<a href="#">Creative</a>,<a href="#">Design</a>,<a href="#">Gaming</a>#}
                 </div>
               </div>
             </div>
@@ -81,7 +84,7 @@
                 <p>
                   {{ product.description }}
                 </p>
-                  <img class="pict pict_right" src="{{ product.image.url }}" alt="bigGoods.png"/>
+                  <img class="pict pict_right" src="{{ images[1].image.url }}" alt="bigGoods.png"/>
                 <ul>
                   <li>Lorem ipsum dolor sit amet, consectetuer
                   </li>
@@ -191,7 +194,7 @@
                       </div>
                     </form>
                     {% else %}
-                        <p>To leave a comment on the product, <slag><a href="{{ url('login') }}">log in</a></slag> or <slag><a href="{{ url('registration') }}">register</a></slag>, please.<p>
+                      <p>To leave a comment on the product, <slag><a href="{{ url('login') }}">log in</a></slag> or <slag><a href="{{ url('registration') }}">register</a></slag>, please.<p>
                     {% endif %}
                 </div>
               </div>

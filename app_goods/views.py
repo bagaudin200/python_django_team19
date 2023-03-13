@@ -52,8 +52,9 @@ class GoodsDetailView(DetailView):
         product = self.object
         user = self.request.user
         review_service = ReviewService(user)
-        images = Image.objects.filter(product=product)[1:]
+        images = Image.objects.filter(product=product)
         context['images'] = images
+        context['tags'] = product.tags.all()
         context['reviews'] = review_service.get_reviews_for_product(product)
         context['product_form'] = AddProductToCardForm()
         context['review_form'] = ReviewsForm()
