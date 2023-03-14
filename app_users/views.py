@@ -48,7 +48,7 @@ class MyRegistration(CreateView):
 
 
 class OrderRegistrationUser(MyRegistration):
-    success_url = reverse_lazy('create_order')
+    success_url = reverse('order')
 
 
 class ProfileView(LoginRequiredMixin, UpdateView):

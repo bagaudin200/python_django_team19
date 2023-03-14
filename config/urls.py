@@ -25,6 +25,7 @@ urlpatterns = [
     path('payment/', include('app_payment.urls', namespace='payment')),
     path('app_users/', include('app_users.urls')),
     path('cart/', include('app_cart.urls')),
+    path('order/', include('app_order.urls')),
     path('product/', include('app_goods.urls')),
     path('settings/', include('app_settings.urls')),
 ]
