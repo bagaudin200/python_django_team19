@@ -1,6 +1,7 @@
 from django.db import models
 
 from app_cart.models import Cart
+from app_goods.models import Product
 from app_users.models import User
 
 
@@ -28,6 +29,7 @@ class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders', verbose_name='user')
     cart = models.OneToOneField(Cart, on_delete=models.CASCADE, verbose_name='cart')
     total_price = models.DecimalField(max_digits=12, decimal_places=2, verbose_name='total price')
+    product = models.ManyToManyField(Product, verbose_name='product')
 
     class Meta:
         db_table = 'order'

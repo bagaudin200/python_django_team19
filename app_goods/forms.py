@@ -30,6 +30,8 @@ class ReviewsForm(forms.ModelForm):
                              ),
         }
 
+from app_goods.models import Review
+
 
 class FilterForm(forms.Form):
     price_from = forms.DecimalField()
@@ -37,3 +39,10 @@ class FilterForm(forms.Form):
     name = forms.CharField()
     in_stock = forms.BooleanField()
     free_delivery = forms.BooleanField()
+
+
+class Reviewsform(forms.ModelForm):
+
+    class Meta:
+        model = Review
+        fields = ('text',)

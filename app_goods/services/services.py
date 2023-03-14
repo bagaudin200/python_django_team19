@@ -1,7 +1,6 @@
 from typing import List
 
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import User
 
 from app_cart.models import Cart
 from app_goods.models import Product, Review

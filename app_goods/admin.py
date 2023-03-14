@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, Category, Image
+from .models import Product, Category, Image, Review
 
 
 @admin.register(Product)
@@ -25,3 +25,8 @@ class CategoryAdmin(admin.ModelAdmin):
 class ImageAdmin(admin.ModelAdmin):
     list_display = ('id', 'image', 'product',)
     list_filter = ('product',)
+
+
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ('text', )

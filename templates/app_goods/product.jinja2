@@ -142,62 +142,8 @@
                   </div>
                 </div>
               </div>
-              <div class="Tabs-block" id="reviews">
-                <header class="Section-header">
-                  <h3 class="Section-title">{{ reviews|count }} Reviews</h3>
-                </header>
-              <div class="Comments">
-              {% for review in reviews %}
-                  <div class="Comment">
-                    <div class="Comment-column Comment-column_pict">
-                          {% if review.user.avatar %}
-                            <img class="Comment-avatar" src="{{ review.user.avatar.url }}" alt="avatar">
-                          {% else %}
-                              <div class="Comment-avatar"></div>
-                          {% endif %}
-                    </div>
-                    <div class="Comment-column">
-                      <header class="Comment-header">
-                        <div>
-                          <strong class="Comment-title">{{ review.user.full_name }}</strong>
-                            <span class="Comment-date">{{ review.created_at.strftime('%B / %d / %Y / %H:%M') }}</span>
-                        </div>
-                      </header>
-                      <div class="Comment-content">{{ review.text }}</div>
-                    </div>
-                  </div>
-              {% endfor %}
-              </div>
-                <header class="Section-header Section-header_product">
-                  <h3 class="Section-title">Add Review</h3>
-                </header>
-                <div class="Tabs-addComment">
-                  {% if request.user.is_authenticated %}
-                    <form class="form" method="post" action="{{ url('add_review') }}">
-                      {% csrf_token %}
-                      <div class="form-group">
-                        {{ review_form.text }}
-                      </div>
-                      <div class="form-group">
-                        <div class="row">
-                          <div class="row-block">
-                            <input class="form-input" id="name" name="name" type="text" placeholder="Name" value="{{ request.user.full_name }}" readonly="readonly">
-                          </div>
-                          <div class="row-block">
-                            <input class="form-input" id="email" name="email" type="text" placeholder="Email" value="{{ request.user.email }}" readonly="readonly">
-                          </div>
-                            <input name="product" type="hidden" value="{{ product.id }}">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <button class="btn btn_primary" type="submit">Submit Review</button>
-                      </div>
-                    </form>
-                    {% else %}
-                      <p>To leave a comment on the product, <slag><a href="{{ url('login') }}">log in</a></slag> or <slag><a href="{{ url('registration') }}">register</a></slag>, please.<p>
-                    {% endif %}
-                </div>
-              </div>
+
+                {% include "app_goods/reviews.jinja2" ignore missing %}
             </div>
           </div>
         </div>

@@ -2,22 +2,44 @@ from django.contrib import messages
 from django.core.cache import cache
 from django.core.paginator import Page
 from django.shortcuts import redirect
+from django.urls import reverse
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import FormMixin
 
 from app_cart.services import CartServices
 from app_goods.forms import AddProductToCardForm, ReviewsForm
 from app_goods.models import Image, Product
+from .forms import FilterForm, Reviewsform
 from app_goods.services.catalog_services import CatalogPaginator, CatalogQueryStringBuilder, CatalogQuerySetBuilder
 from .forms import FilterForm
 from .services.services import get_top_products, get_limited_product, check_product_quantity, \
     get_update_quantity_product, ReviewService
 
 
-class GoodsDetailView(DetailView):
+class GoodsDetailView(FormMixin, DetailView):
+    form_class = Reviewsform
     model = Product
     template_name = 'app_goods/product.jinja2'
     context_object_name = 'product'
+
+    def get_success_url(self):
+        return reverse('goods:product', args=[self.object.slug])
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        if request.user.is_authenticated:
+            form.instance.user = request.user
+            form.instance.product = self.object
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        new_review = form.save(commit=False)
+        new_review.save()
+        return super(GoodsDetailView, self).form_valid(form)
 
     def get_object(self, queryset=None):
         slug = self.kwargs['slug']
