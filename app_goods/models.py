@@ -49,6 +49,7 @@ class Product(models.Model):
     image = models.ImageField(upload_to=product_directory_path, blank=True, null=True, verbose_name='image')  # основное фото
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='created at')
     free_delivery = models.BooleanField(default=False, verbose_name='free delivery')
+    sales_count = models.PositiveIntegerField(default=0, verbose_name='sales count')
     tags = TaggableManager(verbose_name='tags')
 
     class Meta:

@@ -1,13 +1,11 @@
 from typing import List
-from decimal import Decimal
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
-from django.db.models import QuerySet, Min, Max
+
 from app_cart.models import Cart
-from django.db.models import QuerySet, Min, Max, Sum
-from app_settings.models import SiteSettings
 from app_goods.models import Product, Review
+from app_settings.models import SiteSettings
 
 user = get_user_model()
 
@@ -47,28 +45,6 @@ class ReviewService:
         return reviews
 
 
-def get_cheapest_product_price() -> Decimal:
-    """
-    Возвращает цену самого дешевого товара
-    :param products: список товаров
-    :type products: QuerySet
-    :return: цена самого дешевого товара
-    :rtype: Decimal
-    """
-    return Product.objects.aggregate(price=Min('price'))['price']
-
-
-def get_most_expensive_product_price() -> Decimal:
-    """
-    Возвращает цену самого дорогого товара
-    :param products: список товаров
-    :type products: QuerySet
-    :return: цена самого дорогого товара
-    :rtype: Decimal
-    """
-    return Product.objects.aggregate(price=Max('price'))['price']
-
-
 def get_top_products() -> Product:
     """
     Возвращает самые популярные товары
@@ -78,7 +54,6 @@ def get_top_products() -> Product:
     quantity = SiteSettings.load()
     return Product.objects.only('category', 'name', 'price')\
                   .order_by('quantity')[:quantity.top_items_count]
-
 
 
 def get_limited_product() -> Product:
@@ -111,7 +86,3 @@ def get_update_quantity_product(product: Product, user: User) -> bool:
     else:
         pass
     return update_product
-
-
-
-
