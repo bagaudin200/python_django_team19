@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 from app_cart.models import Cart
 from app_goods.models import Product, Review
 from app_settings.models import SiteSettings
+from app_users.forms import User
 
 user = get_user_model()
 
