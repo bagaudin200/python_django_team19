@@ -94,9 +94,8 @@ def get_limited_product() -> Product:
 
 def check_product_quantity(product: Product, quantity: int) -> bool:
     """Проверяет допустимое количество товара на складе"""
-    if product.quantity >= quantity:
-        return True
-    return False
+    return product.quantity >= quantity
+
 
 
 def get_update_quantity_product(product: Product, user: User) -> bool:
@@ -108,8 +107,6 @@ def get_update_quantity_product(product: Product, user: User) -> bool:
         cart = Cart.objects.filter(user=user, good=product)
         if cart:
             update_product = True
-    else:
-        pass
     return update_product
 
 

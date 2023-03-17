@@ -20,10 +20,12 @@ class Order(models.Model):
         # добавить другие статусы при необходимости
     ]
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='created at')
-    delivery_type = models.CharField(max_length=50, choices=DELIVERY_TYPES, verbose_name='delivery type')
+    delivery_type = models.CharField(max_length=50, choices=DELIVERY_TYPES, verbose_name='delivery type', blank=False,
+                                     default=DELIVERY_TYPES[0])
     city = models.CharField(max_length=50, verbose_name='city')
     address = models.CharField(max_length=255, verbose_name='address')
-    payment_type = models.CharField(max_length=50, choices=PAYMENT_TYPES, verbose_name='payment type')
+    payment_type = models.CharField(max_length=50, choices=PAYMENT_TYPES, blank=False, default=PAYMENT_TYPES[0],
+                                    verbose_name='payment type')
     status = models.CharField(max_length=255, choices=STATUS_CHOICES, verbose_name='status'),
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders', verbose_name='user')
     cart = models.OneToOneField(Cart, on_delete=models.CASCADE, verbose_name='cart')

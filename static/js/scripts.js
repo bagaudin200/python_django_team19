@@ -667,7 +667,7 @@ var Amount = function(){
                 e.preventDefault();
                 var $inputThis = $(this).siblings($input).filter($input);
                 var value = parseFloat($inputThis.val());
-                $inputThis.val(value>0?value - 1:0);
+                $inputThis.val(value>1?value - 1:0);
             });
         }
     };
@@ -704,7 +704,7 @@ var Order = function(){
                         .closest('.menu-item')
                         .addClass('menu-item_ACTIVE');
                 }
-                
+
             });
         }
     };
