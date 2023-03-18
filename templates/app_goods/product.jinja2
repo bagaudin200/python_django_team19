@@ -9,7 +9,7 @@
         <div class="Middle-header">
           <h1 class="Middle-title">MEGANO PRODUCT</h1>
           <ul class="breadcrumbs Middle-breadcrumbs">
-            <li class="breadcrumbs-item"><a href="index.html">home</a>
+            <li class="breadcrumbs-item"><a href="{{ url('top') }}">home</a>
             </li>
             <li class="breadcrumbs-item breadcrumbs-item_current"><span>Product</span>
             </li>
@@ -25,8 +25,8 @@
               <div class="ProductCard-photo">
                 <img src="{{ product.image.url }}" alt="product_image"/>
               </div>
-              <div class="ProductCard-picts"><a class="ProductCard-pict ProductCard-pict_ACTIVE" href="{{ product.image.url }}"><img src="{{ product.image.url }}" alt="bigGoods.png"/></a>
-                {%  for image in images %}
+              <div class="ProductCard-picts"><a class="ProductCard-pict ProductCard-pict_ACTIVE" href="{{ images[0].image.url }}"><img src="{{ images[0].image.url }}" alt="bigGoods.png"/></a>
+                {%  for image in images[1:] %}
                   <a class="ProductCard-pict" href="{{ image.image.url }}"><img src="{{ image.image.url }}" alt="slider.png"/></a>
                 {% endfor %}
               </div>
@@ -65,8 +65,11 @@
               </form>
               <div class="ProductCard-footer">
                 <div class="ProductCard-tags">
-                  <strong class="ProductCard-tagsTitle">Tags:
-                  </strong><a href="#">Accesories</a>,<a href="#">Creative</a>,<a href="#">Design</a>,<a href="#">Gaming</a>
+                  <strong class="ProductCard-tagsTitle">Tags:</strong>
+                  {% for tag in tags %}
+                    <a href="{{ url('catalog') }}?tag={{ tag.slug }}">{{ tag }}</a>
+                  {% endfor %}
+{#          <a href="#">Accesories</a>,<a href="#">Creative</a>,<a href="#">Design</a>,<a href="#">Gaming</a>#}
                 </div>
               </div>
             </div>
@@ -81,7 +84,7 @@
                 <p>
                   {{ product.description }}
                 </p>
-                  <img class="pict pict_right" src="{{ product.image.url }}" alt="bigGoods.png"/>
+                  <img class="pict pict_right" src="{{ images[1].image.url }}" alt="bigGoods.png"/>
                 <ul>
                   <li>Lorem ipsum dolor sit amet, consectetuer
                   </li>
@@ -139,62 +142,8 @@
                   </div>
                 </div>
               </div>
-              <div class="Tabs-block" id="reviews">
-                <header class="Section-header">
-                  <h3 class="Section-title">{{ reviews|count }} Reviews</h3>
-                </header>
-              <div class="Comments">
-              {% for review in reviews %}
-                  <div class="Comment">
-                    <div class="Comment-column Comment-column_pict">
-                          {% if review.user.avatar %}
-                            <img class="Comment-avatar" src="{{ review.user.avatar.url }}" alt="avatar">
-                          {% else %}
-                              <div class="Comment-avatar"></div>
-                          {% endif %}
-                    </div>
-                    <div class="Comment-column">
-                      <header class="Comment-header">
-                        <div>
-                          <strong class="Comment-title">{{ review.user.full_name }}</strong>
-                            <span class="Comment-date">{{ review.created_at.strftime('%B / %d / %Y / %H:%M') }}</span>
-                        </div>
-                      </header>
-                      <div class="Comment-content">{{ review.text }}</div>
-                    </div>
-                  </div>
-              {% endfor %}
-              </div>
-                <header class="Section-header Section-header_product">
-                  <h3 class="Section-title">Add Review</h3>
-                </header>
-                <div class="Tabs-addComment">
-                  {% if request.user.is_authenticated %}
-                    <form class="form" method="post" action="{{ url('add_review') }}">
-                      {% csrf_token %}
-                      <div class="form-group">
-                        {{ review_form.text }}
-                      </div>
-                      <div class="form-group">
-                        <div class="row">
-                          <div class="row-block">
-                            <input class="form-input" id="name" name="name" type="text" placeholder="Name" value="{{ request.user.full_name }}" readonly="readonly">
-                          </div>
-                          <div class="row-block">
-                            <input class="form-input" id="email" name="email" type="text" placeholder="Email" value="{{ request.user.email }}" readonly="readonly">
-                          </div>
-                            <input name="product" type="hidden" value="{{ product }}">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <button class="btn btn_muted" type="submit">Submit Review</button>
-                      </div>
-                    </form>
-                    {% else %}
-                        <p>To leave a comment on the product, <slag><a href="{{ url('login') }}">log in</a></slag> or <slag><a href="{{ url('registration') }}">register</a></slag>, please.<p>
-                    {% endif %}
-                </div>
-              </div>
+
+                {% include "app_goods/reviews.jinja2" ignore missing %}
             </div>
           </div>
         </div>

@@ -1,13 +1,10 @@
 from typing import List
-from decimal import Decimal
 
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import User
-from django.db.models import QuerySet, Min, Max
+
 from app_cart.models import Cart
-from django.db.models import QuerySet, Min, Max, Sum
-from app_settings.models import SiteSettings
 from app_goods.models import Product, Review
+from app_settings.models import SiteSettings
 
 user = get_user_model()
 
@@ -18,11 +15,11 @@ class ReviewService:
     def __init__(self, profile: object):
         self.profile = profile
 
-    def add(self, product: object, review: str) -> None:
+    def add(self, product: int, review: str) -> None:
         """
         Добавляет отзыв к товару
-        :param product: товар
-        :type product: object
+        :param product: ид товара
+        :type product: int
         :param review: текст отзыва
         :type review: str
         :return: None
@@ -30,7 +27,7 @@ class ReviewService:
         """
         Review.objects.create(
             user=self.profile,
-            product=product,
+            product_id=product,
             text=review,
         )
         return None
@@ -46,39 +43,6 @@ class ReviewService:
         reviews = Review.objects.filter(product=product)
         return reviews
 
-    # def get_reviews_count(self, product: object) -> int:
-    #     """
-    #     Возвращает количество отзывов для товара
-    #     :param product: товар
-    #     :type product: object
-    #     :return: количество отзывов для товара
-    #     :rtype: int
-    #     """
-    #
-    #     return 3
-
-
-def get_cheapest_product_price() -> Decimal:
-    """
-    Возвращает цену самого дешевого товара
-    :param products: список товаров
-    :type products: QuerySet
-    :return: цена самого дешевого товара
-    :rtype: Decimal
-    """
-    return Product.objects.aggregate(price=Min('price'))['price']
-
-
-def get_most_expensive_product_price() -> Decimal:
-    """
-    Возвращает цену самого дорогого товара
-    :param products: список товаров
-    :type products: QuerySet
-    :return: цена самого дорогого товара
-    :rtype: Decimal
-    """
-    return Product.objects.aggregate(price=Max('price'))['price']
-
 
 def get_top_products() -> Product:
     """
@@ -89,7 +53,6 @@ def get_top_products() -> Product:
     quantity = SiteSettings.load()
     return Product.objects.only('category', 'name', 'price')\
                   .order_by('quantity')[:quantity.top_items_count]
-
 
 
 def get_limited_product() -> Product:
@@ -122,7 +85,3 @@ def get_update_quantity_product(product: Product, user: User) -> bool:
     else:
         pass
     return update_product
-
-
-
-

@@ -17,17 +17,16 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from app_settings.views import clear_all_cache_view
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('clear_all_cache/', clear_all_cache_view, name='clear_all_cache'),
     path('__debug__/', include('debug_toolbar.urls')),
     path('payment/', include('app_payment.urls', namespace='payment')),
     path('app_users/', include('app_users.urls')),
     path('cart/', include('app_cart.urls')),
-    path('order/', include('app_order.urls', namespace='order')),
-    path('', include('app_goods.urls')),
+    path('product/', include('app_goods.urls')),
+    path('settings/', include('app_settings.urls')),
 ]
 
 if settings.DEBUG:

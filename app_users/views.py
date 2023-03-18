@@ -34,7 +34,6 @@ class MyRegistration(CreateView):
     def post(self, request, *args, **kwargs):
         form = UserCreateForm(request.POST, request.FILES)
         self.object = None
-
         if form.is_valid():
             form.save()
             email = form.cleaned_data.get('email')

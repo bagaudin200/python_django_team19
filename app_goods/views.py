@@ -1,24 +1,29 @@
+from django.contrib import messages
+from django.core.cache import cache
 from django.core.paginator import Page
+from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import FormMixin
 
-from app_goods.forms import ReviewsForm
-from app_goods.models import Product
+from app_cart.services import CartServices
+from app_goods.forms import AddProductToCardForm, ReviewsForm
+from app_goods.models import Image, Product
+from .forms import FilterForm, Reviewsform
 from app_goods.services.catalog_services import CatalogPaginator, CatalogQueryStringBuilder, CatalogQuerySetBuilder
 from .forms import FilterForm
-from .services.services import get_top_products, get_limited_product
+from .services.services import get_top_products, get_limited_product, check_product_quantity, \
+    get_update_quantity_product, ReviewService
 
 
 class GoodsDetailView(FormMixin, DetailView):
-    form_class = ReviewsForm
+    form_class = Reviewsform
     model = Product
     template_name = 'app_goods/product.jinja2'
-    slug_url_kwarg = 'slug'
     context_object_name = 'product'
 
     def get_success_url(self):
-        return reverse('product', kwargs={'slug': self.object.slug})
+        return reverse('goods:product', args=[self.object.slug])
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -35,6 +40,57 @@ class GoodsDetailView(FormMixin, DetailView):
         new_review = form.save(commit=False)
         new_review.save()
         return super(GoodsDetailView, self).form_valid(form)
+
+    def get_object(self, queryset=None):
+        slug = self.kwargs['slug']
+        obj = cache.get(f"product:{slug}")
+        if not obj:
+            obj = super(GoodsDetailView, self).get_object()
+            cache.set(f"product:{slug}", obj)
+        return obj
+
+    def post(self, request, *args, **kwargs):
+        form = AddProductToCardForm(request.POST)
+        if form.is_valid():
+            user = self.request.user
+            product = self.get_object()
+            quantity = form.cleaned_data['quantity']
+            if check_product_quantity(product=product, quantity=quantity):
+                update_product = get_update_quantity_product(product=product,
+                                                             user=user
+                                                             )
+                cart_services = CartServices(request)
+                cart_services.add(product=product,
+                                  quantity=quantity,
+                                  update_quantity=update_product,
+                                  )
+                messages.success(request, 'Successful! Product added to cart!')
+            else:
+                messages.error(request, f"Unsuccessful. Have only {quantity}")
+        return redirect(request.META.get('HTTP_REFERER'))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        product = self.object
+        user = self.request.user
+        review_service = ReviewService(user)
+        images = Image.objects.filter(product=product)
+        context['images'] = images
+        context['tags'] = product.tags.all()
+        context['reviews'] = review_service.get_reviews_for_product(product)
+        context['product_form'] = AddProductToCardForm()
+        context['review_form'] = ReviewsForm()
+        return context
+
+
+def add_review(request):
+    if request.method == 'POST':
+        form = ReviewsForm(request.POST)
+        if form.is_valid():
+            review = ReviewService(request.user)
+            text = form.cleaned_data['text']
+            review.add(product=request.POST['product'], review=text)
+    return redirect(request.META.get('HTTP_REFERER'))
 
 
 class CatalogView(FormMixin, ListView):
