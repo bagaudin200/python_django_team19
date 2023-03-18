@@ -1,4 +1,5 @@
 {% extends "base.jinja2" %}
+
 {% block content %}
 {% if request.user.avatar %}
 {{ request.user.avatar.url|json_script}}:"user_avatar" }}
@@ -46,7 +47,7 @@
                     <form class="form Profile-form" enctype="multipart/form-data" method="post">
                         {% csrf_token %}
                         {% if form.non_field_errors %}
-                            {% for error in form.non_field_errors %}
+                            {% for error in form.non_field_errors() %}
                             <div class="form-error">{{ error|escape }}</div>
                             {% endfor %}
                         {% endif %}
@@ -57,7 +58,7 @@
                                     </label>
                                     <div class="Profile-avatar Profile-avatar_noimg">
                                         <div class="Profile-img">
-                                            <img src="{%static 'assets/img/content/home/empty_avatar.jpg' %}" alt="аватар"/>
+                                            <img src="{{ static ('static/img/content/home/empty_avatar.jpg') }}" alt="аватар"/>
                                         </div>
                                         <label class="Profile-fileLabel" for="{{ form.avatar.id_for_avatar }}">Выберите
                                             аватар

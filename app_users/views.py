@@ -24,7 +24,7 @@ class MyRegistration(CreateView):
     model = User
     form_class = UserCreateForm
     template_name = 'app_users/registration.jinja2'
-    success_url = reverse_lazy('top')
+    success_url = reverse_lazy('')
 
     def dispatch(self, *args, **kwargs):
         if self.request.user.is_authenticated:
@@ -72,7 +72,7 @@ class ProfileView(LoginRequiredMixin, UpdateView):
 class MyLoginView(LoginView):
     template_name = 'app_users/login.jinja2'
     authentication_form = UserLoginForm
-    # next_page = reverse_lazy('login')
+    next_page = reverse_lazy('login')
 
 
 class ModalLoginView(BSModalLoginView):
