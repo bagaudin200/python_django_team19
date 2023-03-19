@@ -1,4 +1,4 @@
-{{ extends ("base.jinja2") }}
+{% extends "base.jinja2" %}
 
 {% block content %}
 <div class="Middle Middle_top">
@@ -67,19 +67,19 @@
             <div class="Cart-total">
                 <div class="Cart-block Cart-block_total">
                     <strong class="Cart-title">Итого:
-                    </strong><span class="Cart-price">{{ cart.get_total_price }} Руб.</span>
+                    </strong><span class="Cart-price">{{ cart.get_total_price() }} $.</span>
                 </div>
                 <div class="Cart-block">
                     {% if cart %}
                     <button class="btn btn_success btn_lg"
                             type="button"
-                            onclick="window.location.href = '{{ url('create_order') }}';">
+                            onclick="window.location.href = '{{ url('order:order') }}';">
                         Оформить заказ
                     </button>
                     {% else %}
                     <button class="btn btn_success btn_lg"
                             type="button" disabled
-                            onclick="window.location.href = '{{ url('create_order') }}';">
+                            onclick="window.location.href = '{{ url('order:order') }}';">
                         Оформить заказ
                     </button>
                     {% endif %}

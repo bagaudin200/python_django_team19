@@ -21,3 +21,4 @@ class OrderListView(ListView):
 class OrderDetailView(DetailView):
     model = Order
     template_name = 'app_order/detail_order.jinja2'
+

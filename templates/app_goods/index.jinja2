@@ -6,7 +6,7 @@
     <div class="Section">
         <div class="wrap">
             <div class="BannersHome">
-                {%  for category in site_settings.banners_count.all, ":3" %}
+                {%  for category in site_settings.banners_count, ":3" %}
                 <a class="BannersHomeBlock" href="{{ category.get_absolute_url }}">
                     <div class="BannersHomeBlock-row">
                         <div class="BannersHomeBlock-block">
