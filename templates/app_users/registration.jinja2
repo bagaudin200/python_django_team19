@@ -1,9 +1,10 @@
 {% extends "base.jinja2" %}
+
 {% block content %}
-{% url 'validate_email' as validate_email_url %}
-{{ validate_email_url|json_script}}:'validate_email_url' }}
-{% url 'validate_phone' as validate_phone_url %}
-{{ validate_phone_url|json_script}}:'validate_phone_url' }}
+{{ url('validate_email')}} as validate_email_url }}
+{{ validate_email_url}}:'validate_email_url' }}
+{{ url('validate_phone') }}as validate_phone_url }}
+{{ validate_phone_url}}:'validate_phone_url' }}
 <div class="Middle Middle_top">
     <div class="Middle-top">
         <div class="wrap">
@@ -45,7 +46,7 @@
                     <form class="form Profile-form" enctype="multipart/form-data" method="post">
                         {% csrf_token %}
                         {% if form.non_field_errors %}
-                            {% for error in form.non_field_errors %}
+                            {% for error in form.non_field_errors() %}
                             <div class="form-error">{{ error|escape }}</div>
                             {% endfor %}
                         {% endif %}
@@ -56,7 +57,7 @@
                                     </label>
                                     <div class="Profile-avatar Profile-avatar_noimg">
                                         <div class="Profile-img">
-                                            <img src="{%static 'assets/img/content/home/empty_avatar.jpg' %}" alt="нет аватара"/>
+                                            <img src="{{ static ('static/img/content/home/empty_avatar.jpg') }}" alt="нет аватара"/>
                                         </div>
                                         <label class="Profile-fileLabel" for="{{ form.avatar.id_for_avatar }}">Выберите
                                             аватар

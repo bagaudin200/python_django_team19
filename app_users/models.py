@@ -3,7 +3,7 @@ from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin, Group
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator, FileExtensionValidator
-from .managers import UserManager
+from app_users.managers import UserManager
 
 
 class User(AbstractBaseUser, PermissionsMixin):
