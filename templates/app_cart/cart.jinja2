@@ -8,7 +8,7 @@
                 <h1 class="Middle-title">Корзина
                 </h1>
                 <ul class="breadcrumbs Middle-breadcrumbs">
-                    <li class="breadcrumbs-item"><a href="{{ url('top') }}">домой</a>
+                    <li class="breadcrumbs-item"><a href="{{ url('home') }}">домой</a>
                     </li>
                     <li class="breadcrumbs-item breadcrumbs-item_current"><span>Корзина</span>
                     </li>
@@ -20,7 +20,7 @@
         <div class="wrap">
             {% for item in cart %}
             {% with product=item.product %}
-            <form class="form" id="cart_form" method="post" action="{{ url('cart_add'), product.id }}">
+            <form class="form" id="cart_form" method="post" action="{{ url('cart_add', product.id) }}">
                 <div class="Cart-product">
                     <div class="Cart-block Cart-block_row">
                         <div class="Cart-block Cart-block_pict"><a class="Cart-pict" href="{{ product.get_absolute_url }}">
@@ -56,7 +56,7 @@
                             </div>
                         </div>
                         <div class="Cart-block Cart-block_delete"><a class="Cart-delete"
-                                                                     href="{{ url('cart_remove'), product.id }}"><img
+                                                                     href="{{ url('cart_remove', product.id) }}"><img
                                 src="{{ static('static/img/icons/card/delete.svg') }}" alt="Delete"/></a>
                         </div>
                     </div>

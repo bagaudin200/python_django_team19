@@ -51,7 +51,7 @@
                               {% if parent %}{{ parent }} / {% endif %}{{ product.category }}
                           {% endwith %}
                       </div>
-                      <div class="Card-hover"><a class="Card-btn" href="#"><img src="{{ static('img/icons/card/cart.svg') }}" alt="cart.svg"/></a>
+                      <div class="Card-hover"><a class="Card-btn" href="{{ url('cart_detail') }}"><img src="{{ static('img/icons/card/cart.svg') }}" alt="cart.svg"/></a>
                       </div>
                     </div>
                   </div>
@@ -145,7 +145,7 @@
                                     {% endwith %}
                                 </div>
                                 <div class="Card-hover">
-                                    <a class="Card-btn" href="#">
+                                    <a class="Card-btn" href="{{ url('cart_detail') }}">
                                         <img src="{{ static('img/icons/card/cart.svg') }}" alt="cart.svg"/>
                                     </a>
                                 </div>

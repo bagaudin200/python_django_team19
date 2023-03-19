@@ -24,7 +24,7 @@ class MyRegistration(CreateView):
     model = User
     form_class = UserCreateForm
     template_name = 'app_users/registration.jinja2'
-    success_url = reverse_lazy('')
+    success_url = reverse_lazy('home')
 
     def dispatch(self, *args, **kwargs):
         if self.request.user.is_authenticated:
