@@ -1,6 +1,5 @@
 from django.db import models
 from django.template.defaultfilters import truncatechars
-from django.db.models import Min
 from django.urls import reverse
 from mptt.models import MPTTModel, TreeForeignKey
 from taggit.managers import TaggableManager
@@ -24,14 +23,8 @@ class Category(MPTTModel):
     class MPTTMeta:
         order_insertion_by = ['name']
 
-    def get_absolute_url(self):
-        return reverse('product-by-category', args=[str(self.slug)])
-
-    def get_min(self):
-        sub_categories = self.get_descendants(include_self=True)
-        price = Product.objects.values('price').filter(category__in=sub_categories).filter(available=True).aggregate(
-            Min('price'))['price__min']
-        return price
+    def get_min_price(self):
+        return min(Product.objects.filter(category=self).values_list('price', flat=True))
 
     def __str__(self):
         return f'{self.name}'
@@ -46,7 +39,8 @@ class Product(models.Model):
     is_limited = models.BooleanField(default=False, verbose_name='is limited')
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='price')
     quantity = models.PositiveIntegerField(default=0, verbose_name='quantity')
-    image = models.ImageField(upload_to=product_directory_path, blank=True, null=True, verbose_name='image')  # основное фото
+    image = models.ImageField(upload_to=product_directory_path, blank=True, null=True,
+                              verbose_name='image')  # основное фото
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='created at')
     free_delivery = models.BooleanField(default=False, verbose_name='free delivery')
     sales_count = models.PositiveIntegerField(default=0, verbose_name='sales count')
@@ -97,4 +91,3 @@ class Review(models.Model):
 
     def __str__(self):
         return f"Review for {self.product} by {self.user}"
-
