@@ -1,9 +1,10 @@
 from typing import List
 
 from django.contrib.auth import get_user_model
+from django.db.models import QuerySet
 
 from app_cart.models import Cart
-from app_goods.models import Product, Review
+from app_goods.models import Product, Review, Category
 from app_settings.models import SiteSettings
 
 user = get_user_model()
@@ -44,28 +45,6 @@ class ReviewService:
         return reviews
 
 
-def get_top_products() -> Product:
-    """
-    Возвращает самые популярные товары
-    :param products:
-    :return: самые популярные товары
-    """
-    quantity = SiteSettings.load()
-    return Product.objects.only('category', 'name', 'price')\
-                  .order_by('quantity')[:quantity.top_items_count]
-
-
-def get_limited_product() -> Product:
-    """
-    Возвращает топ ограниченных товаров
-    :param is_limited:
-    :return: топ ограниченных товаров
-    """
-    return Product.objects.select_related('category')\
-                          .filter(is_limited=True)\
-                          .only('category', 'name', 'price')
-
-
 def check_product_quantity(product: Product, quantity: int) -> bool:
     """Проверяет допустимое количество товара на складе"""
     if product.quantity >= quantity:
@@ -73,7 +52,7 @@ def check_product_quantity(product: Product, quantity: int) -> bool:
     return False
 
 
-def get_update_quantity_product(product: Product, user: User) -> bool:
+def get_update_quantity_product(product: Product, user: user) -> bool:
     """
     Возвращает булево значения, для добавление товара или обновления его количетсва в корзине
     """

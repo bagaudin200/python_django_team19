@@ -9,11 +9,11 @@ from django.views.generic.edit import FormMixin
 from app_cart.services import CartServices
 from app_goods.forms import AddProductToCardForm, ReviewsForm
 from app_goods.models import Image, Product
-from .forms import FilterForm, Reviewsform
 from app_goods.services.catalog_services import CatalogPaginator, CatalogQueryStringBuilder, CatalogQuerySetBuilder
 from .forms import FilterForm
-from .services.services import get_top_products, get_limited_product, check_product_quantity, \
-    get_update_quantity_product, ReviewService
+from .forms import Reviewsform
+from .services.home_page_services import HomePageServices
+from .services.services import check_product_quantity, get_update_quantity_product, ReviewService
 
 
 class GoodsDetailView(FormMixin, DetailView):
@@ -115,12 +115,13 @@ class CatalogView(FormMixin, ListView):
         return builder.build()
 
 
-class ShopView(TemplateView):
+class HomePageView(TemplateView):
     template_name = 'app_goods/index.jinja2'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['products'] = get_top_products()
-        context['is_limited'] = get_limited_product()
-
+        home_page_service = HomePageServices()
+        context['categories'] = home_page_service.get_top_categories()
+        context['most_popular_products'] = home_page_service.get_most_popular_products()
+        context['limited_products'] = home_page_service.get_limited_products()
         return context
