@@ -12,24 +12,35 @@ class Order(models.Model):
         ('express', 'экспресс-доставка')
     ]
     PAYMENT_TYPES = [
-        ('card', 'Онлайн картой'),
-        ('random', 'Онлайн со случайного чужого счета')
+        ('card', 'онлайн картой'),
+        ('random', 'онлайн со случайного чужого счета')
     ]
+
+    STATUS_CREATED = 'created'
+    STATUS_OK = 'ok'
+    STATUS_DELIVERED = 'delivered'
+    STATUS_PAID = 'paid'
+    STATUS_NOT_PAID = 'not paid'
     STATUS_CHOICES = [
-        ('ok', 'заказ выполнен'),
-        ('insufficient funds', 'недостаточно средств'),
-        # добавить другие статусы при необходимости
+        ('Success', (
+            (STATUS_CREATED, 'создан'),
+            (STATUS_OK, 'выполнен'),
+            (STATUS_DELIVERED, 'доставляется'),
+            (STATUS_PAID, 'оплачен'),
+        )
+         ),
+        (STATUS_NOT_PAID, 'не оплачен'),
     ]
+
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='created at')
-    delivery_type = models.CharField(max_length=50, choices=DELIVERY_TYPES, verbose_name='delivery type')
+    delivery_type = models.CharField(max_length=15, choices=DELIVERY_TYPES, verbose_name='delivery type')
     city = models.CharField(max_length=50, verbose_name='city')
     address = models.CharField(max_length=255, verbose_name='address')
-    payment_type = models.CharField(max_length=50, choices=PAYMENT_TYPES, verbose_name='payment type')
-    status = models.CharField(max_length=255, choices=STATUS_CHOICES, verbose_name='status')
+    payment_type = models.CharField(max_length=15, choices=PAYMENT_TYPES, verbose_name='payment type')
+    status = models.CharField(max_length=15, choices=STATUS_CHOICES, default=STATUS_CREATED, verbose_name='status')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders', verbose_name='user')
-    cart = models.OneToOneField(Cart, on_delete=models.CASCADE, verbose_name='cart')
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, verbose_name='cart')
     total_price = models.DecimalField(max_digits=12, decimal_places=2, verbose_name='total price')
-    product = models.ManyToManyField(Product, verbose_name='product')
 
     class Meta:
         db_table = 'order'

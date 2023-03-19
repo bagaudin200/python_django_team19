@@ -20,5 +20,5 @@ class ProgressPaymentView(TemplateView):
     template_name = 'app_payment/progressPayment.jinja2'
 
     def get(self, request, *args, **kwargs):
-        pay.delay(2, 22222222, 1000)
+        pay.delay(1, 22222222, 2000)
         return HttpResponseRedirect(reverse('catalog'))
