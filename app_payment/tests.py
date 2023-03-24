@@ -1,8 +1,8 @@
-from django.test import TestCase
+from django.test import SimpleTestCase
 from .utils import card_number_is_valid, generate_card_number
 
 
-class TestUtils(TestCase):
+class TestUtils(SimpleTestCase):
     EXPECTED = {
         '1000002': False,
         '10000000': False,

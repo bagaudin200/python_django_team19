@@ -44,3 +44,9 @@ class FilterForm(forms.Form):
     name = forms.CharField()
     in_stock = forms.BooleanField()
     free_delivery = forms.BooleanField()
+
+
+class Reviewsform(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ('text',)

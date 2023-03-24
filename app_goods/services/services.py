@@ -1,13 +1,11 @@
 from typing import List
-from decimal import Decimal
 
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import User
-from django.db.models import QuerySet, Min, Max
+from django.db.models import QuerySet
+
 from app_cart.models import Cart
-from django.db.models import QuerySet, Min, Max, Sum
+from app_goods.models import Product, Review, Category
 from app_settings.models import SiteSettings
-from app_goods.models import Product, Review
 
 user = get_user_model()
 
@@ -47,58 +45,13 @@ class ReviewService:
         return reviews
 
 
-def get_cheapest_product_price() -> Decimal:
-    """
-    Возвращает цену самого дешевого товара
-    :param products: список товаров
-    :type products: QuerySet
-    :return: цена самого дешевого товара
-    :rtype: Decimal
-    """
-    return Product.objects.aggregate(price=Min('price'))['price']
-
-
-def get_most_expensive_product_price() -> Decimal:
-    """
-    Возвращает цену самого дорогого товара
-    :param products: список товаров
-    :type products: QuerySet
-    :return: цена самого дорогого товара
-    :rtype: Decimal
-    """
-    return Product.objects.aggregate(price=Max('price'))['price']
-
-
-def get_top_products() -> Product:
-    """
-    Возвращает самые популярные товары
-    :param products:
-    :return: самые популярные товары
-    """
-    quantity = SiteSettings.load()
-    return Product.objects.only('category', 'name', 'price')\
-                  .order_by('quantity')[:quantity.top_items_count]
-
-
-
-def get_limited_product() -> Product:
-    """
-    Возвращает топ ограниченных товаров
-    :param is_limited:
-    :return: топ ограниченных товаров
-    """
-    return Product.objects.select_related('category')\
-                          .filter(is_limited=True)\
-                          .only('category', 'name', 'price')
-
-
 def check_product_quantity(product: Product, quantity: int) -> bool:
     """Проверяет допустимое количество товара на складе"""
     return product.quantity >= quantity
 
 
 
-def get_update_quantity_product(product: Product, user: User) -> bool:
+def get_update_quantity_product(product: Product, user: user) -> bool:
     """
     Возвращает булево значения, для добавление товара или обновления его количетсва в корзине
     """
@@ -108,7 +61,3 @@ def get_update_quantity_product(product: Product, user: User) -> bool:
         if cart:
             update_product = True
     return update_product
-
-
-
-

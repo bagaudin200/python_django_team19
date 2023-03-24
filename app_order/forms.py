@@ -8,11 +8,7 @@ from app_users.forms import UserCreateForm
 
 
 class OrderStepOneForm(UserCreateForm):
-    def clean_phoneNumber(self):
-        phone = self.cleaned_data['phoneNumber']
-        if phone:
-            phone = ''.join(re.findall(r'\d+', phone[2:]))
-        return phone
+    pass
 
 
 class OrderStepTwoForm(forms.ModelForm):
@@ -35,7 +31,10 @@ class OrderStepThreeForm(forms.ModelForm):
 
 
 class OrderStepFourForm(forms.ModelForm):
-    pass
+    class Meta:
+        model = Order
+        fields = ('delivery_type', 'city', 'address', 'payment_type',)
+
 
 
 

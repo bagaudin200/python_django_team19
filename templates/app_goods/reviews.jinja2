@@ -1,0 +1,56 @@
+<div class="Tabs-block" id="reviews">
+    {% if reviews %}
+      <header class="Section-header">
+          <h3 class="Section-title">{{ reviews|count }} Reviews</h3>
+      </header>
+      <div class="Comments">
+          {% for review in product.reviews.filter(product=product.id) %}
+              <div class="Comment">
+                  <div class="Comment-column Comment-column_pict">
+                      {% if review.user.avatar %}
+                          <img class="Comment-avatar" src="{{ review.user.avatar.url }}" alt="avatar">
+                      {% else %}
+                          <img class="Comment-avatar" src="" alt="">
+                      {% endif %}
+                  </div>
+                  <div class="Comment-column">
+                      <header class="Comment-header"><div>
+                          <strong class="Comment-title">{{ review.user.full_name }}</strong>
+                          <span class="Comment-date">{{ review.created_at.strftime('%H:%M %Y-%m-%d') }}</span>
+                      </div>
+                      </header>
+                      <div class="Comment-content">{{ review.text }}</div>
+                  </div>
+              </div>
+          {% endfor %}
+      </div>
+    {% endif %}
+  {% if request.user.is_authenticated %}
+    <header class="Section-header Section-header_product">
+      <h3 class="Section-title">Add Review</h3>
+    </header>
+    <div class="Tabs-addComment">
+      <form class="form" method="post" action="{{ url('add_review') }}">{% csrf_token %}
+        <div class="form-group">
+          <textarea class="form-textarea" name="text" id="review" placeholder="Review"></textarea>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="row-block">
+              <input class="form-input" id="name" name="name" type="text" placeholder="Name" value="{{ request.user.full_name }}" readonly="readonly">
+            </div>
+            <div class="row-block">
+              <input class="form-input" id="email" name="email" type="text" placeholder="Email" value="{{ request.user.email }}" readonly="readonly">
+            </div>
+          </div>
+        </div>
+        <input type="hidden" name="product" value="{{ product.id }}">
+        <div class="form-group">
+          <button class="btn btn_muted" type="submit">Submit Review</button>
+        </div>
+      </form>
+    </div>
+  {% else %}
+    <h4>Для того чтобы оставить комментарий вы должны <a href="{{ url('login') }}">войти</a> или <a href="{{ url('registration') }}">зарегистрироваться</a></h4>
+  {% endif %}
+</div>

@@ -1425,30 +1425,6 @@
 },
 {
     "model": "app_goods.image",
-    "pk": 179,
-    "fields": {
-        "image": "/products/holodilniki/kholodilniki-kuppersberg-nrv-1867-hre/928f2e161ef211ed8b702c4d54470eec_507354fc49f611ed8b722c4d54470eec-1400x1000.jpg",
-        "product": 64
-    }
-},
-{
-    "model": "app_goods.image",
-    "pk": 180,
-    "fields": {
-        "image": "/products/holodilniki/kholodilniki-kuppersberg-nrv-1867-hre/928f2e161ef211ed8b702c4d54470eec_928f2e1d1ef211ed8b702c4d54470eec-1400x1000.jpg",
-        "product": 64
-    }
-},
-{
-    "model": "app_goods.image",
-    "pk": 181,
-    "fields": {
-        "image": "/products/holodilniki/kholodilniki-kuppersberg-nrv-1867-hre/928f2e161ef211ed8b702c4d54470eec_928f2e1c1ef211ed8b702c4d54470eec-1400x1000.jpg",
-        "product": 64
-    }
-},
-{
-    "model": "app_goods.image",
     "pk": 182,
     "fields": {
         "image": "/products/holodilniki/kholodilnik-hiberg-rfq-490dx-nfxq-inverter/e0e922e2a32911ebb3b62c4d54470eec_507354fb49f611ed8b722c4d54470eec-1400x1000.jpg",

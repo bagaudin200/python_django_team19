@@ -2,22 +2,27 @@ from django.contrib import messages
 from django.core.cache import cache
 from django.core.paginator import Page
 from django.shortcuts import redirect
+from django.urls import reverse
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import FormMixin
 
 from app_cart.services import CartServices
 from app_goods.forms import AddProductToCardForm, ReviewsForm
-from app_goods.models import Image, Product
+from app_goods.models import Product
 from app_goods.services.catalog_services import CatalogPaginator, CatalogQueryStringBuilder, CatalogQuerySetBuilder
 from .forms import FilterForm
-from .services.services import get_top_products, get_limited_product, check_product_quantity, \
-    get_update_quantity_product, ReviewService
+from .forms import Reviewsform
+from .services.home_page_services import HomePageServices
+from .services.services import check_product_quantity, get_update_quantity_product, ReviewService
 
 
 class GoodsDetailView(DetailView):
     model = Product
     template_name = 'app_goods/product.jinja2'
     context_object_name = 'product'
+
+    def get_success_url(self):
+        return reverse('goods:product', args=[self.object.slug])
 
     def get_object(self, queryset=None):
         slug = self.kwargs['slug']
@@ -50,10 +55,8 @@ class GoodsDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         product = self.object
-        user = self.request.user
-        review_service = ReviewService(user)
-        images = Image.objects.filter(product=product)
-        context['images'] = images
+        review_service = ReviewService(self.request.user)
+        context['images'] = product.images.all()
         context['tags'] = product.tags.all()
         context['reviews'] = review_service.get_reviews_for_product(product)
         context['product_form'] = AddProductToCardForm()
@@ -93,12 +96,13 @@ class CatalogView(FormMixin, ListView):
         return builder.build()
 
 
-class ShopView(TemplateView):
+class HomePageView(TemplateView):
     template_name = 'app_goods/index.jinja2'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['products'] = get_top_products()
-        context['is_limited'] = get_limited_product()
-
+        home_page_service = HomePageServices()
+        context['categories'] = home_page_service.get_top_categories()
+        context['most_popular_products'] = home_page_service.get_most_popular_products()
+        context['limited_products'] = home_page_service.get_limited_products()
         return context

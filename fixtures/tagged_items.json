@@ -2314,42 +2314,6 @@
 },
 {
     "model": "taggit.taggeditem",
-    "pk": 258,
-    "fields": {
-        "tag": 74,
-        "content_type": 14,
-        "object_id": 64
-    }
-},
-{
-    "model": "taggit.taggeditem",
-    "pk": 259,
-    "fields": {
-        "tag": 75,
-        "content_type": 14,
-        "object_id": 64
-    }
-},
-{
-    "model": "taggit.taggeditem",
-    "pk": 260,
-    "fields": {
-        "tag": 76,
-        "content_type": 14,
-        "object_id": 64
-    }
-},
-{
-    "model": "taggit.taggeditem",
-    "pk": 261,
-    "fields": {
-        "tag": 77,
-        "content_type": 14,
-        "object_id": 64
-    }
-},
-{
-    "model": "taggit.taggeditem",
     "pk": 262,
     "fields": {
         "tag": 70,
