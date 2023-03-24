@@ -8,7 +8,7 @@ from django.views.generic.edit import FormMixin
 
 from app_cart.services import CartServices
 from app_goods.forms import AddProductToCardForm, ReviewsForm
-from app_goods.models import Image, Product
+from app_goods.models import Product
 from app_goods.services.catalog_services import CatalogPaginator, CatalogQueryStringBuilder, CatalogQuerySetBuilder
 from .forms import FilterForm
 from .forms import Reviewsform
@@ -16,30 +16,13 @@ from .services.home_page_services import HomePageServices
 from .services.services import check_product_quantity, get_update_quantity_product, ReviewService
 
 
-class GoodsDetailView(FormMixin, DetailView):
-    form_class = Reviewsform
+class GoodsDetailView(DetailView):
     model = Product
     template_name = 'app_goods/product.jinja2'
     context_object_name = 'product'
 
     def get_success_url(self):
         return reverse('goods:product', args=[self.object.slug])
-
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        form = self.get_form()
-        if request.user.is_authenticated:
-            form.instance.user = request.user
-            form.instance.product = self.object
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
-
-    def form_valid(self, form):
-        new_review = form.save(commit=False)
-        new_review.save()
-        return super(GoodsDetailView, self).form_valid(form)
 
     def get_object(self, queryset=None):
         slug = self.kwargs['slug']
@@ -72,10 +55,8 @@ class GoodsDetailView(FormMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         product = self.object
-        user = self.request.user
-        review_service = ReviewService(user)
-        images = Image.objects.filter(product=product)
-        context['images'] = images
+        review_service = ReviewService(self.request.user)
+        context['images'] = product.images.all()
         context['tags'] = product.tags.all()
         context['reviews'] = review_service.get_reviews_for_product(product)
         context['product_form'] = AddProductToCardForm()

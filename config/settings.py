@@ -54,7 +54,6 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'mptt',
     'taggit',
-
     'app_cart.apps.AppCartConfig',
     'app_order.apps.AppOrderConfig',
     'app_users.apps.AppUsersConfig',

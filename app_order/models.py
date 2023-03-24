@@ -7,10 +7,21 @@ from app_users.models import User
 
 class Order(models.Model):
     """Модель заказа"""
+    DELIVERY_TYPES_DICT = {
+        'regular': 'обычная доставка',
+        'express': 'экспресс-доставка'
+    }
+
     DELIVERY_TYPES = [
         ('regular', 'обычная доставка'),
         ('express', 'экспресс-доставка')
     ]
+
+    PAYMENT_TYPES_DICT = {
+        'card': 'онлайн картой',
+        'random': 'онлайн со случайного чужого счета'
+    }
+
     PAYMENT_TYPES = [
         ('card', 'онлайн картой'),
         ('random', 'онлайн со случайного чужого счета')
@@ -31,15 +42,15 @@ class Order(models.Model):
          ),
         (STATUS_NOT_PAID, 'не оплачен'),
     ]
-
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='created at')
-    delivery_type = models.CharField(max_length=15, choices=DELIVERY_TYPES, verbose_name='delivery type')
+    delivery_type = models.CharField(max_length=50, choices=DELIVERY_TYPES, verbose_name='delivery type', blank=False,
+                                     default=DELIVERY_TYPES[0])
     city = models.CharField(max_length=50, verbose_name='city')
     address = models.CharField(max_length=255, verbose_name='address')
-    payment_type = models.CharField(max_length=15, choices=PAYMENT_TYPES, verbose_name='payment type')
+    payment_type = models.CharField(max_length=50, choices=PAYMENT_TYPES, blank=False, default=PAYMENT_TYPES[0],
+                                    verbose_name='payment type')
     status = models.CharField(max_length=15, choices=STATUS_CHOICES, default=STATUS_CREATED, verbose_name='status')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders', verbose_name='user')
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, verbose_name='cart')
+    cart = models.OneToOneField(Cart, on_delete=models.CASCADE, verbose_name='cart')
     total_price = models.DecimalField(max_digits=12, decimal_places=2, verbose_name='total price')
 
     class Meta:
@@ -49,4 +60,3 @@ class Order(models.Model):
 
     def __str__(self):
         return f"Order #{self.pk} by {self.user}"
-
