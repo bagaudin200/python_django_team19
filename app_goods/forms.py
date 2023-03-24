@@ -2,13 +2,13 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.forms import TextInput, Textarea
 
-from app_cart.models import Cart
+from app_cart.models import ProductInCart
 from .models import Review
 
 
 class AddProductToCardForm(forms.ModelForm):
     class Meta:
-        model = Cart
+        model = ProductInCart
         fields = ('quantity',)
         widgets = {
             'quantity': TextInput(attrs={'class': 'Amount-input form-input',

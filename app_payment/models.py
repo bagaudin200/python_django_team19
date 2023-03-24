@@ -9,8 +9,9 @@ class Payment(models.Model):
     REASON_INSUFFICIENT_FUNDS = 'insufficient funds'
     REASON_NO_CONTACT_WITH_BANK = 'no contact with the bank'
     REASON_CARD_BLOCKED = 'card blocked'
-    REASON_NONE = ''
+    REASON_NONE = 'None'
     REASONS = [
+        (REASON_NONE, 'None'),
         (REASON_INSUFFICIENT_FUNDS, 'недостаточно средств'),
         (REASON_NO_CONTACT_WITH_BANK, 'нет связи с банком'),
         (REASON_CARD_BLOCKED, 'карта заблокирована'),
