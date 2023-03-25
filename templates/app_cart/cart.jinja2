@@ -18,7 +18,7 @@
     </div>
     <div class="Section">
         <div class="wrap">
-            {% for item in cart %}
+            {% for item, form in products_and_forms %}
             {% with product=item.product %}
             <form class="form" id="cart_form" method="post" action="{{ url('cart_add', product.id) }}">
                 <div class="Cart-product">
@@ -47,7 +47,7 @@
                                     {% csrf_token %}
                                     <button class="Amount-remove" type="button">
                                     </button>
-                                    {{ item.update_quantity_form }}
+                                    {{ form.quantity }}
                                     <button class="Amount-add" type="button">
                                     </button>
                                     <input type="hidden" class="product_id" id="product_id" name="product_id"
@@ -67,7 +67,7 @@
             <div class="Cart-total">
                 <div class="Cart-block Cart-block_total">
                     <strong class="Cart-title">Итого:
-                    </strong><span class="Cart-price"></span>
+                    </strong><span class="Cart-price">${{ cart.get_total_price() }}</span>
                 </div>
                 <div class="Cart-block">
                     {% if cart %}
