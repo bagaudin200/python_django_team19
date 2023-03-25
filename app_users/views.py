@@ -16,7 +16,6 @@ from django.contrib.auth import get_user_model
 from django.contrib import messages
 from .forms import UserCreateForm, UserLoginForm, MyUserChangeForm, MyPasswordResetForm, MySetPasswordForm
 
-
 User = get_user_model()
 
 
@@ -47,10 +46,6 @@ class MyRegistration(CreateView):
         return self.form_invalid(form)
 
 
-class OrderRegistrationUser(MyRegistration):
-    success_url = reverse_lazy('create_order')
-
-
 class ProfileView(LoginRequiredMixin, UpdateView):
     raise_exception = True
     form_class = MyUserChangeForm
@@ -71,7 +66,13 @@ class ProfileView(LoginRequiredMixin, UpdateView):
 class MyLoginView(LoginView):
     template_name = 'app_users/login.jinja2'
     authentication_form = UserLoginForm
-    next_page = reverse_lazy('login')
+
+    def get_success_url(self):
+        try:
+            next_page = self.request.POST['next']
+        except:
+            next_page = reverse('home')
+        return next_page
 
 
 class ModalLoginView(BSModalLoginView):

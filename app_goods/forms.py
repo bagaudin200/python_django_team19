@@ -17,6 +17,13 @@ class AddProductToCardForm(forms.ModelForm):
                                   ),
         }
 
+    def clean_quantity(self):
+        quantity = self.cleaned_data['quantity']
+        if quantity == 0:
+            quantity = 1
+        return quantity
+
+
 
 class ReviewsForm(forms.ModelForm):
     class Meta:

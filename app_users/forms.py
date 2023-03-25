@@ -1,3 +1,5 @@
+import re
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordResetForm, \
     SetPasswordForm
@@ -37,6 +39,12 @@ class UserCreateForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('password1', 'password2', 'full_name', 'email', 'phoneNumber', 'avatar')
+
+    def clean_phoneNumber(self):
+        phone = self.cleaned_data['phoneNumber']
+        if phone:
+            phone = ''.join(re.findall(r'\d+', phone[2:]))
+        return phone
 
 
 class MyUserChangeForm(UserChangeForm):
