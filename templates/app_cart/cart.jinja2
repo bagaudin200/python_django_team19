@@ -49,10 +49,10 @@
                             <div class="Cart-amount">
                                 <div class="Amount">
                                     {% csrf_token %}
-                                    <button class="Amount-remove" type="button">
+                                    <button class="Amount-remove" type="submit">
                                     </button>
                                     {{ item.update_quantity_form }}
-                                    <button class="Amount-add" type="button">
+                                    <button class="Amount-add" type="submit">
                                     </button>
                                     <input type="hidden" class="product_id" id="product_id" name="product_id"
                                            value="{{ product.id }}">

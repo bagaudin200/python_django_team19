@@ -20,6 +20,9 @@ class CartDetail(TemplateView):
             item['update_quantity_form'] = CartAddProductForm(initial={'quantity': item['quantity'], 'update': True})
         return context
 
+    def post(self, *args, **kwargs):
+        return redirect(self.request.META.get('HTTP_REFERER'))
+
 
 @require_POST
 def cart_add(request, pk):
