@@ -16,8 +16,8 @@ class CartDetail(TemplateView):
         cart = CartServices(self.request)
         context['cart'] = cart
         context['products_and_forms'] = zip(cart, CartAddProductFormSet())
-        # for item in cart:
-        #     item['update_quantity_form'] = CartAddProductForm(initial={'quantity': item['quantity'], 'update': True})
+        for item in cart:
+            item['update_quantity_form'] = CartAddProductForm(initial={'quantity': item['quantity'], 'update': True})
         return context
 
 

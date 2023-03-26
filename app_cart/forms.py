@@ -11,7 +11,7 @@ class CartAddProductForm(forms.Form):
                                   max_value=21,
                                   widget=forms.NumberInput(
                                       attrs={'class': 'Amount-input form-input', 'min': '1', 'max': '101', 'size': '2',
-                                             'maxlength': '2'}), label='')
+                                             'maxlength': '2', 'readonly': True}), label='')
     update = forms.BooleanField(required=False, initial=False, widget=forms.HiddenInput)
 
 
@@ -21,6 +21,9 @@ CartAddProductFormSet = modelformset_factory(
     extra=0,
     widgets={
         'quantity': forms.TextInput(attrs={'class': 'Amount-input form-input', 'min': '1', 'max': '101', 'size': '2',
-                                           'maxlength': '2'})
+                                           'maxlength': '2', 'readonly': True})
+    },
+    labels={
+        'quantity': '',
     }
 )

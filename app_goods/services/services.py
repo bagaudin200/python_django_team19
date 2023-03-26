@@ -1,11 +1,9 @@
 from typing import List
 
 from django.contrib.auth import get_user_model
-from django.db.models import QuerySet
 
-from app_cart.models import Cart
-from app_goods.models import Product, Review, Category
-from app_settings.models import SiteSettings
+from app_cart.models import ProductInCart
+from app_goods.models import Product, Review
 
 user = get_user_model()
 
@@ -50,14 +48,13 @@ def check_product_quantity(product: Product, quantity: int) -> bool:
     return product.quantity >= quantity
 
 
-
 def get_update_quantity_product(product: Product, user: user) -> bool:
     """
     Возвращает булево значения, для добавление товара или обновления его количетсва в корзине
     """
     update_product = False
     if not user.is_anonymous:
-        cart = Cart.objects.filter(user=user, good=product)
-        if cart:
+        product_in_cart = ProductInCart.objects.filter(product=product, cart=user.cart)
+        if product_in_cart:
             update_product = True
     return update_product
