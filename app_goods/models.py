@@ -13,7 +13,6 @@ class Category(MPTTModel):
     name = models.CharField(max_length=100, verbose_name='name')
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
-    image = models.ImageField(blank=True, upload_to='category/', verbose_name='Изображение')
 
     class Meta:
         db_table = 'category'
