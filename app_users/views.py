@@ -46,6 +46,7 @@ class MyRegistration(CreateView):
         return self.form_invalid(form)
 
 
+
 class ProfileView(LoginRequiredMixin, UpdateView):
     raise_exception = True
     form_class = MyUserChangeForm
@@ -82,7 +83,7 @@ class ModalLoginView(BSModalLoginView):
 
 
 class MyLogoutView(LogoutView):
-    next_page = '/'
+    next_page = '/app_users/login/'
 
 
 class MyPasswordResetView(PasswordResetView):
