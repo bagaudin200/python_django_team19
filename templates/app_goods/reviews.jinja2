@@ -1,7 +1,7 @@
 <div class="Tabs-block" id="reviews">
     {% if reviews %}
       <header class="Section-header">
-          <h3 class="Section-title">{{ reviews|count }} Reviews</h3>
+          <h3 class="Section-title">{{ reviews|count }} Отзывы</h3>
       </header>
       <div class="Comments">
           {% for review in product.reviews.filter(product=product.id) %}
@@ -27,12 +27,12 @@
     {% endif %}
   {% if request.user.is_authenticated %}
     <header class="Section-header Section-header_product">
-      <h3 class="Section-title">Add Review</h3>
+      <h3 class="Section-title">Написать отзыв</h3>
     </header>
     <div class="Tabs-addComment">
       <form class="form" method="post" action="{{ url('add_review') }}">{% csrf_token %}
         <div class="form-group">
-          <textarea class="form-textarea" name="text" id="review" placeholder="Review"></textarea>
+          <textarea class="form-textarea" name="text" id="review" placeholder="Текст отзыва"></textarea>
         </div>
         <div class="form-group">
           <div class="row">
@@ -46,11 +46,15 @@
         </div>
         <input type="hidden" name="product" value="{{ product.id }}">
         <div class="form-group">
-          <button class="btn btn_muted" type="submit">Submit Review</button>
+          <button class="btn btn_primary" type="submit" style="margin-top: 25px;">Добавить отзыв</button>
         </div>
       </form>
     </div>
   {% else %}
-    <h4>Для того чтобы оставить комментарий вы должны <a href="{{ url('login') }}">войти</a> или <a href="{{ url('registration') }}">зарегистрироваться</a></h4>
+    <h4>Для того чтобы оставить комментарий вы должны
+      <a href="{{ url('login') }}?next={{ url('product', product.slug )}}">войти</a>
+      или
+      <a href="{{ url('registration') }}?next={{ url('product', product.slug )}}">зарегистрироваться</a>
+    </h4>
   {% endif %}
 </div>
