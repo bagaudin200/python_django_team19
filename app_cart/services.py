@@ -1,16 +1,14 @@
 from decimal import Decimal
 
 from django.conf import settings
-from django.views.decorators.http import require_POST, require_GET
-from app_goods.models import Product
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Sum, F
-from django.shortcuts import render
-from app_cart.forms import CartAddProductForm
-from app_cart.models import Cart
+
+from app_cart.models import Cart, ProductInCart
+from app_goods.models import Product
 
 
-class CartServices(object):
+class CartServices:
 
     def __init__(self, request):
         """
@@ -28,8 +26,11 @@ class CartServices(object):
             if cart:
                 self.save_in_db(cart, request.user)
                 self.clear(True)
-            self.qs = Cart.objects.filter(user=self.user)
-            cart = self.get_cart_from_db(self.qs)
+            try:
+                cart = Cart.objects.get(user=self.user)
+            except ObjectDoesNotExist:
+                cart = Cart.objects.create(user=self.user)
+            self.qs = ProductInCart.objects.filter(cart=cart)
         else:
             # сохранить пустую корзину в сеансе
             if not cart:
@@ -43,19 +44,27 @@ class CartServices(object):
         return cart
 
     def save_in_db(self, cart, user):
+        """Перенос корзины из сессии в БД"""
         for key, value in cart.items():
-            if Cart.objects.filter(user=user, good=key).exists():
-                good = Cart.objects.select_for_update().get(user=user, good=key)
-                good.quantity += cart[key]['quantity']
-                good.price = cart[key]['price']
-                good.save()
-            else:
+            if Cart.objects.filter(user=user).exists():  # если корзина уже есть в БД
+                try:
+                    product = ProductInCart.objects.select_for_update().get(product=key)
+                    product.quantity += cart[key]['quantity']
+                    # product.price = cart[key]['price']
+                    product.save()
+                except ObjectDoesNotExist:
+                    ProductInCart.objects.create(
+                        product=Product.objects.get(pk=key),
+                        cart=Cart.objects.get(user=user),
+                        quantity=cart[key]['quantity']
+                    )
+            else:  # если корзины еще нет в БД
                 product = Product.objects.get(id=key)
-                Cart.objects.create(
-                    user=user,
-                    good=product,
+                cart_ = Cart.objects.create(user=user)
+                ProductInCart.objects.create(
+                    product=product,
+                    cart=cart_,
                     quantity=value['quantity'],
-                    price=value['price'],
                 )
 
     def add(self, product, quantity=1, update_quantity=False):
@@ -63,28 +72,27 @@ class CartServices(object):
         Добавьте товар в корзину или обновите его количество.
         """
         if self.use_db:
-            if self.qs.filter(good=product).exists():
-                cart = self.qs.select_for_update().get(good=product)
+            if self.qs.filter(product=product).exists():
+                product_in_cart = self.qs.select_for_update().get(product=product)
             else:
-                cart = Cart(
-                    user=self.user,
-                    good=product,
-                    quantity=0,
-                    price=product.price
+                product_in_cart = ProductInCart(
+                    product=product,
+                    cart=self.cart,
+                    quantity=0
                 )
             if update_quantity:
-                cart.quantity = quantity
+                product_in_cart.quantity += quantity
             else:
-                cart.quantity += quantity
-            cart.save()
+                product_in_cart.quantity = quantity
+            product_in_cart.save()
         else:
             product_id = str(product.id)
             if product_id not in self.cart:
                 self.cart[product_id] = {'quantity': 0, 'price': str(product.price)}
             if update_quantity:
-                self.cart[product_id]['quantity'] = quantity
-            else:
                 self.cart[product_id]['quantity'] += quantity
+            else:
+                self.cart[product_id]['quantity'] = quantity
             self.save()
 
     def save(self):
@@ -101,8 +109,8 @@ class CartServices(object):
         :return:
         """
         if self.use_db:
-            if self.qs.filter(good=product).exists():
-                self.qs.filter(good=product).delete()
+            if self.qs.filter(product=product).exists():
+                self.qs.filter(product=product).delete()
         else:
             product_id = str(product.id)
             if product_id in self.cart:
@@ -115,9 +123,8 @@ class CartServices(object):
         из базы данных.
         """
         if self.use_db:
-            for item in self.cart.values():
-                item['total_price'] = item['price'] * item['quantity']
-                yield item
+            for product in self.cart.products.all():
+                yield product
         else:
             product_ids = self.cart.keys()
             # получить объекты продукта и добавить их в корзину
@@ -130,23 +137,20 @@ class CartServices(object):
                 item['total_price'] = item['price'] * item['quantity']
                 yield item
 
-    def __len__(self):
-        """
-        Подсчитайте все товары в корзине.
-        """
-        return sum(item['quantity'] for item in self.cart.values())
+    # def __len__(self):
+    #     """
+    #     Подсчитайте все товары в корзине.
+    #     """
+    #     return sum(item['quantity'] for item in self.cart.values())
 
     def get_total_price(self):
         if self.use_db:
-            total = self.qs. \
-                only('quantity', 'price'). \
-                aggregate(total=Sum(F('quantity') * F('price')))['total']
+            total = self.qs.only('quantity', 'price').aggregate(total=Sum(F('quantity') * F('product__price')))['total']
             if not total:
-                total = 0
-            return total
+                total = Decimal('0')
+            return total.normalize()
         else:
-            return sum(Decimal(item['price']) * item['quantity'] for item in
-                       self.cart.values())
+            return sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values())
 
     def clear(self, only_session=False):
         """
@@ -159,6 +163,3 @@ class CartServices(object):
         else:
             if self.qs:
                 self.qs.delete()
-
-
-

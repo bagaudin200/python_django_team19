@@ -1,5 +1,9 @@
 {% extends "base.jinja2" %}
 
+{% block title %}
+    Корзина
+{% endblock %}
+
 {% block content %}
 <div class="Middle Middle_top">
     <div class="Middle-top">
@@ -8,7 +12,7 @@
                 <h1 class="Middle-title">Корзина
                 </h1>
                 <ul class="breadcrumbs Middle-breadcrumbs">
-                    <li class="breadcrumbs-item"><a href="{{ url('home') }}">домой</a>
+                    <li class="breadcrumbs-item"><a href="{{ url('home') }}">Главная</a>
                     </li>
                     <li class="breadcrumbs-item breadcrumbs-item_current"><span>Корзина</span>
                     </li>
@@ -23,17 +27,17 @@
             <form class="form" id="cart_form" method="post" action="{{ url('cart_add', product.id) }}">
                 <div class="Cart-product">
                     <div class="Cart-block Cart-block_row">
-                        <div class="Cart-block Cart-block_pict"><a class="Cart-pict" href="{{ product.get_absolute_url }}">
+                        <div class="Cart-block Cart-block_pict"><a class="Cart-pict" href="{{ product.get_absolute_url() }}">
                             <img class="Cart-img"
-                                 src='{% if product.image.first %}{{ product.image.first.image.url }}{% else %}{{ static("/static/img/content/home/noutbuki.png") }}{% endif %}'
+                                 src='{{ product.image.url }}'
                                  alt="good's image"/></a>
                         </div>
-                        <div class="Cart-block Cart-block_info"><a class="Cart-title" href="{{ product.get_absolute_url }}">{{ product.name }}</a>
-                            <div class="Cart-desc">{{ product.description }}
+                        <div class="Cart-block Cart-block_info"><a class="Cart-title" href="{{ product.get_absolute_url() }}">{{ product.name }}</a>
+                            <div class="Cart-desc">{{ product.description|truncatewords(15) }}
                             </div>
                         </div>
                         <div class="Cart-block Cart-block_price">
-                            <div class="Cart-price" id="product-price">{{ item.total_price }}
+                            <div class="Cart-price" id="product-price">${{ product.price }}
                             </div>
                         </div>
                     </div>
@@ -45,10 +49,10 @@
                             <div class="Cart-amount">
                                 <div class="Amount">
                                     {% csrf_token %}
-                                    <button class="Amount-remove" type="button">
+                                    <button class="Amount-remove" type="submit">
                                     </button>
                                     {{ item.update_quantity_form }}
-                                    <button class="Amount-add" type="button">
+                                    <button class="Amount-add" type="submit">
                                     </button>
                                     <input type="hidden" class="product_id" id="product_id" name="product_id"
                                            value="{{ product.id }}">
@@ -57,7 +61,7 @@
                         </div>
                         <div class="Cart-block Cart-block_delete"><a class="Cart-delete"
                                                                      href="{{ url('cart_remove', product.id) }}"><img
-                                src="{{ static('static/img/icons/card/delete.svg') }}" alt="Delete"/></a>
+                                src="{{ static('img/icons/card/delete.svg') }}" alt="Delete"/></a>
                         </div>
                     </div>
                 </div>
@@ -67,19 +71,19 @@
             <div class="Cart-total">
                 <div class="Cart-block Cart-block_total">
                     <strong class="Cart-title">Итого:
-                    </strong><span class="Cart-price">{{ cart.get_total_price() }} $.</span>
+                    </strong><span class="Cart-price">${{ cart.get_total_price() }}</span>
                 </div>
                 <div class="Cart-block">
                     {% if cart %}
                     <button class="btn btn_success btn_lg"
                             type="button"
-                            onclick="window.location.href = '{{ url('order:order') }}';">
+                            onclick="window.location.href = '{{ url('order:order_step_1') }}';">
                         Оформить заказ
                     </button>
                     {% else %}
                     <button class="btn btn_success btn_lg"
                             type="button" disabled
-                            onclick="window.location.href = '{{ url('order:order') }}';">
+                            onclick="window.location.href = '{{ url('order:order_step_1') }}';">
                         Оформить заказ
                     </button>
                     {% endif %}
