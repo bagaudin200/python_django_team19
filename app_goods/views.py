@@ -65,6 +65,7 @@ class GoodsDetailView(DetailView):
 
 
 def add_review(request):
+    print(request.POST)
     if request.method == 'POST':
         form = ReviewsForm(request.POST)
         if form.is_valid():

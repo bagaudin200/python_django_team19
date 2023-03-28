@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.views.generic import ListView, DetailView
 from django.urls import reverse, reverse_lazy
@@ -7,7 +8,8 @@ from django.views.generic.edit import FormView, FormMixin
 from app_users.views import MyRegistration
 from .forms import OrderStepTwoForm, OrderStepThreeForm, OrderStepFourForm, OrderStepOneForm
 from .models import Order
-from app_cart.models import Cart
+from app_cart.models import Cart, ProductInCart
+from .services import OrderService
 
 user = get_user_model()
 
@@ -40,6 +42,13 @@ class OrderStepTwoView(FormView):
         self.request.session['address'] = form.cleaned_data['address']
         return super().form_valid(form)
 
+    def get_initial(self):
+        initial = super().get_initial()
+        initial['delivery_type'] = self.request.session.get('delivery')
+        initial['city'] = self.request.session.get('city')
+        initial['address'] = self.request.session.get('address')
+        return initial
+
     def get_success_url(self):
         return reverse('order:order_step_3')
 
@@ -52,50 +61,47 @@ class OrderStepThreeView(FormView):
         self.request.session['payment'] = form.cleaned_data['payment_type']
         return super().form_valid(form)
 
+    def get_initial(self):
+        initial = super().get_initial()
+        initial['payment_type'] = self.request.session.get('payment')
+        return initial
+
     def get_success_url(self):
         return reverse('order:order_step_4')
 
 
 class OrderStepFourView(ListView):
-    model = Cart
+    model = ProductInCart
     paginate_by = 5
     template_name = 'app_order/order_step_4.jinja2'
+    context_object_name = 'products'
 
     '''При добавлении корзины, методы будут настроен в соответствии с новыми моделями и сервисами корзины'''
-    # def get_queryset(self):
-    #     # queryset = CardInProduct.objects.filter(card=Cart)
-    #     return queryset
+    def get_queryset(self):
+        queryset = ProductInCart.objects.filter(cart__user=self.request.user)
+        return queryset
 
-    # def post(self, request, *args, **kwargs):
-    #     cart = Cart.objects.get(user=request.user)
-    #     try:
-    #         Order.objects.create(
-    #             delivery_type = request.session['delivery'],
-    #             city=request.session['city'],
-    #             address=request.session['address'],
-    #             payment_type=request.session['payment'],
-    #             cart=cart,
-    #             total_price=###
-    #         )
-    #     except:
-    #         messages.error(request, "Проблемы на сервере, попробуйте ещё раз")
+    def post(self, request, *args, **kwargs):
+        Order.objects.create(
+            cart=Cart.objects.get(user=request.user),
+            delivery_type=request.session['delivery'],
+            city=request.session['city'],
+            address=request.session['address'],
+            payment_type=request.session['payment'],
+            total_price=request.session['total_price']
+        )
+        if request.session['payment'] == 'cart':
+            return HttpResponseRedirect(reverse('payment_with_card'))
+        elif request.session['payment'] == 'random':
+            return HttpResponseRedirect(reverse('payment_someone'))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['delivery'] = Order.DELIVERY_TYPES_DICT[self.request.session['delivery']]
-        context['payment'] = Order.PAYMENT_TYPES_DICT[self.request.session['payment']]
-        context['user_phone'] = '+7 ({}{}{}) {}{}{}-{}{}-{}{}'.format(
-            self.request.user.phoneNumber[0],
-            self.request.user.phoneNumber[1],
-            self.request.user.phoneNumber[2],
-            self.request.user.phoneNumber[3],
-            self.request.user.phoneNumber[4],
-            self.request.user.phoneNumber[5],
-            self.request.user.phoneNumber[6],
-            self.request.user.phoneNumber[7],
-            self.request.user.phoneNumber[8],
-            self.request.user.phoneNumber[9],
-        )
+        order_service = OrderService(self.request)
+        context['delivery'], context['payment'] = order_service.get_info_about_delivery_and_payment()
+        context['user_phone'] = order_service.get_format_phone_number()
+        context['total_price'] = order_service.get_total_price()
+        self.request.session['total_price'] = float(context['total_price'])
         return context
 
 
