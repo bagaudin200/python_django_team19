@@ -11,7 +11,7 @@
           <ul class="breadcrumbs Middle-breadcrumbs">
             <li class="breadcrumbs-item"><a href="{{ url('home') }}">Главная</a>
             </li>
-            <li class="breadcrumbs-item breadcrumbs-item_current"><span>Product</span>
+            <li class="breadcrumbs-item breadcrumbs-item_current"><span>Товар</span>
             </li>
           </ul>
         </div>
@@ -44,10 +44,8 @@
               </div>
               <div class="ProductCard-text">
                 <ul>
-                  <li>Best offer
-                  </li>
-                  <li>Best price
-                  </li>
+                  <li>Качественный товар</li>
+                  <li>Лучшая цена</li>
                 </ul>
               </div>
               <form class="ProductCard-cart" method="post">{% csrf_token %}
@@ -58,12 +56,12 @@
                     <button class="Amount-add" type="button"></button>
                   </div>
                 </div>
-                <div class="ProductCard-cartElement"><button class="btn btn_primary" type="submit"><img class="btn-icon" src="{{ static('img/icons/card/cart_white.svg')}}" alt="cart_white.svg"/><span class="btn-content">Add To Cart</span></button>
+                <div class="ProductCard-cartElement"><button class="btn btn_primary" type="submit"><img class="btn-icon" src="{{ static('img/icons/card/cart_white.svg')}}" alt="cart_white.svg"/><span class="btn-content">В корзину</span></button>
                 </div>
               </form>
               <div class="ProductCard-footer">
                 <div class="ProductCard-tags">
-                  <strong class="ProductCard-tagsTitle">Tags:</strong>
+                  <strong class="ProductCard-tagsTitle">Теги:</strong>
                   {% for tag in tags %}
                     <a href="{{ url('catalog') }}?tag={{ tag.slug }}">{{ tag }}</a>
                   {% endfor %}
@@ -73,44 +71,26 @@
           </div>
         </div>
           <div class="Tabs Tabs_default">
-            <div class="Tabs-links"><a class="Tabs-link_ACTIVE Tabs-link" href="#description"><span>Description</span></a><a class="Tabs-link" href="#addit"><span>AdditionaL Info</span></a><a class="Tabs-link" href="#reviews"><span>Reviews ({{ reviews|count }})</span></a>
+            <div class="Tabs-links"><a class="Tabs-link_ACTIVE Tabs-link" href="#description"><span>Описание</span></a><a class="Tabs-link" href="#addit"><span>Дополнительная информация</span></a><a class="Tabs-link" href="#reviews"><span>Отзывы ({{ reviews|count }})</span></a>
             </div>
             <div class="Tabs-wrap">
               <div class="Tabs-block" id="description">
-                <h2>Megano Store Hystory</h2>
+                <h2>Магазин Megano о товаре</h2>
                 <p>
                   {{ product.description }}
                 </p>
                   <img class="pict pict_right" src="{{ images[1].image.url }}" alt="bigGoods.png"/>
-                <ul>
-                  <li>Lorem ipsum dolor sit amet, consectetuer
-                  </li>
-                  <li>adipiscing elit doli.&#32;<em>Aenean</em>&#32;commodo ligula
-                  </li>
-                  <li>eget dolor. Aenean massa. Cumtipsu sociis
-                  </li>
-                  <li>natoque penatibus et magnis dis parturient
-                  </li>
-                  <li>montesti, nascetur ridiculus mus. Donec
-                  </li>
-                  <li>quam felis, ultricies nec, pellentesque eutu
-                  </li>
-                </ul>
                 <div class="clearfix">
                 </div>
                 <div class="table">
                   <table>
                     <tr>
-                      <th>Tech Specs
-                      </th>
-                      <th>Value
-                      </th>
+                      <th>Технические характеристики</th>
+                      <th>Значение</th>
                     </tr>
                     <tr>
-                      <td>ываыв
-                      </td>
-                      <td>llslssl
-                      </td>
+                      <td>-</td>
+                      <td>-</td>
                     </tr>
                   </table>
                 </div>
@@ -122,20 +102,16 @@
               <div class="Tabs-block" id="addit">
                 <div class="Product-props">
                   <div class="Product-prop">
-                    <strong>Lorem
-                    </strong><span> Pfizer</span>
+                    <strong>-</strong><span>-</span>
                   </div>
                   <div class="Product-prop">
-                    <strong>ipsum
-                    </strong><span> Lorem ipsum dolor sit</span>
+                    <strong>-</strong><span>-</span>
                   </div>
                   <div class="Product-prop">
-                    <strong>dolor sit
-                    </strong><span> 5 ans</span>
+                    <strong>-</strong><span>-</span>
                   </div>
                   <div class="Product-prop">
-                    <strong>psum dolo
-                    </strong><span> 2–3 jours</span>
+                    <strong>-</strong><span>-</span>
                   </div>
                 </div>
               </div>
