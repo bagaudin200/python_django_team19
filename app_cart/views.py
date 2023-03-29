@@ -17,14 +17,14 @@ class CartDetail(TemplateView):
         context['cart'] = cart
         context['products_and_forms'] = zip(cart, CartAddProductFormSet())
         for item in cart:
-            item['update_quantity_form'] = CartAddProductForm(initial={'quantity': item['quantity'], 'update': True})
+            item['update_quantity_form'] = CartAddProductForm(initial={'quantity': item['quantity'], 'update': False})
         return context
 
     def post(self, *args, **kwargs):
+        print(1)
         return redirect(self.request.META.get('HTTP_REFERER'))
 
 
-@require_POST
 def cart_add(request, pk):
     cart = CartServices(request)
     product = get_object_or_404(Product, id=pk)
