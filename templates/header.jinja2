@@ -27,7 +27,7 @@
                   <div class="row-block">
                       {% if request.user.is_authenticated %}
                         <div class="ControlPanel-title"> Добро пожаловать,
-                          <a class="ControlPanel-title" href="{{ url('profile') }}">{{ request.user.full_name|truncate(4) }}</a>
+                          <a class="ControlPanel-title" href="{{ url('profile') }}">{{ request.user.full_name|truncatewords(1) }}</a>
                           <span> / </span>
                           <a class="ControlPanel-title" href="{{ url('logout') }}">Выйти</a></div>
                         </div>

@@ -141,7 +141,8 @@ class CartServices:
         """
         Подсчитайте все товары в корзине.
         """
-        return sum(item['quantity'] for item in self.cart.values())
+        if self.user.is_anonymous:
+            return sum(item['quantity'] for item in self.cart.values())
 
     def get_total_price(self):
         if self.use_db:

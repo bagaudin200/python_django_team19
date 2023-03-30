@@ -93,7 +93,7 @@ class OrderStepFourView(ListView):
         if request.session['payment'] == 'cart':
             return HttpResponseRedirect(reverse('payment_with_card'))
         elif request.session['payment'] == 'random':
-            return HttpResponseRedirect(reverse('payment_someone'))
+            return HttpResponseRedirect(reverse('payment_someones'))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
