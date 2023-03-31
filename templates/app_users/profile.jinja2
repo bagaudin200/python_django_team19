@@ -1,9 +1,8 @@
 {% extends "base.jinja2" %}
 
 {% block content %}
-{% if request.user.avatar %}
-{{ request.user.avatar.url|json_script}}:"user_avatar" }}
-{% endif %}
+
+
 <div class="Middle Middle_top">
     <div class="Middle-top">
         <div class="wrap">
