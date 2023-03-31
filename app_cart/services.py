@@ -137,11 +137,12 @@ class CartServices:
                 item['total_price'] = item['price'] * item['quantity']
                 yield item
 
-    # def __len__(self):
-    #     """
-    #     Подсчитайте все товары в корзине.
-    #     """
-    #     return sum(item['quantity'] for item in self.cart.values())
+    def __len__(self):
+        """
+        Подсчитайте все товары в корзине.
+        """
+        if self.user.is_anonymous:
+            return sum(item['quantity'] for item in self.cart.values())
 
     def get_total_price(self):
         if self.use_db:
