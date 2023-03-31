@@ -36,16 +36,19 @@ class OrderService:
         return 'Оплачено'
 
     def get_info_about_delivery_and_payment(self):
+        """Получение информации из сессии о типе доставки и оплаты"""
         delivery_name = Order.DELIVERY_TYPES_DICT.get(self.request.session['delivery'])
         payment_name = Order.PAYMENT_TYPES_DICT.get(self.request.session['payment'])
         return delivery_name, payment_name
 
     def get_total_price(self):
+        """Получение информации об общей стоимости заказа"""
         total_price = self.cart.products.only('quantity', 'price').aggregate(total=Sum(F('quantity') *
                                                                                        F('product__price')))['total']
         return total_price
         
     def get_format_phone_number(self):
+        """Получение отформатированного номера телефона"""
         if self.request.user.phoneNumber:
             phone_number = '+7 ({}{}{}) {}{}{}-{}{}-{}{}'.format(
                 self.request.user.phoneNumber[0],
@@ -62,7 +65,3 @@ class OrderService:
             return phone_number
         else:
             return ''
-
-
-
-

@@ -11,7 +11,6 @@ from app_goods.forms import AddProductToCardForm, ReviewsForm
 from app_goods.models import Product
 from app_goods.services.catalog_services import CatalogPaginator, CatalogQueryStringBuilder, CatalogQuerySetBuilder
 from .forms import FilterForm
-from .forms import Reviewsform
 from .services.home_page_services import HomePageServices
 from .services.services import check_product_quantity, get_update_quantity_product, ReviewService
 
