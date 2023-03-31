@@ -2,7 +2,7 @@ from decimal import Decimal
 
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import Sum, F
+from django.db.models import Sum, F, Count
 
 from app_cart.models import Cart, ProductInCart
 from app_goods.models import Product
@@ -141,8 +141,10 @@ class CartServices:
         """
         Подсчитайте все товары в корзине.
         """
-        if self.user.is_anonymous:
-            return sum(item['quantity'] for item in self.cart.values())
+        if self.use_db:
+            result = ProductInCart.objects.filter(cart=self.user.cart).aggregate(Sum('quantity'))['quantity__sum']
+            return result if result else 0
+        return sum(item['quantity'] for item in self.cart.values())
 
     def get_total_price(self):
         if self.use_db:
