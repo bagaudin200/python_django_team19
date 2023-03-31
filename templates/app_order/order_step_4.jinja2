@@ -74,6 +74,36 @@
           </div>
         </div>
       {% endfor %}
+      <div class="pagination">
+        <ul class="pagination__list">
+          <div>Страницы:</div>
+          {% for p in paginator.page_range %}
+            {% if page_obj.number == p %}
+              <li class="pagination__item">{{ p }}</li>
+            {% else %}
+            <li class="pagination__item">
+              <a href="?page={{ p }}">{{ p }}</a>
+            </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+{#        <span class="step-links">#}
+{#            {% if page_obj.has_previous %}#}
+{#                <a href="?page=1">&laquo; first</a>#}
+{#                <a href="?page={{ page_obj.previous_page_number }}">previous</a>#}
+{#            {% endif %}#}
+{##}
+{#            <span class="current">#}
+{#                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.#}
+{#            </span>#}
+{##}
+{#            {% if page_obj.has_next %}#}
+{#                <a href="?page={{ page_obj.next_page_number }}">next</a>#}
+{#                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>#}
+{#            {% endif %}#}
+{#        </span>#}
+
       <div class="Cart-total">
         <div class="Cart-block Cart-block_total">
           <strong class="Cart-title">Итого:

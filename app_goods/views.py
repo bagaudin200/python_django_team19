@@ -47,9 +47,9 @@ class GoodsDetailView(DetailView):
                                   quantity=quantity,
                                   update_quantity=update_product,
                                   )
-                messages.success(request, 'Successful! Product added to cart!')
+                messages.success(request, 'Товар добавлен в корзину!')
             else:
-                messages.error(request, f"Unsuccessful. Have only {quantity}")
+                messages.error(request, f"У нас только {quantity} шт.")
         return redirect(request.META.get('HTTP_REFERER'))
 
     def get_context_data(self, **kwargs):

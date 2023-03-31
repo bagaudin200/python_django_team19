@@ -1,0 +1,7 @@
+.pagination__list {
+  display: flex;
+}
+
+.pagination__item {
+  padding: 0 10px;
+}

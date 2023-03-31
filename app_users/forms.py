@@ -28,7 +28,9 @@ class UserCreateForm(UserCreationForm):
                                                            'data-validate': 'requireMail',
                                                            'maxlength': '254'}))
     phoneNumber = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-input',
-                                                                               'data-validate': 'requirePhone'}))
+                                                                               'data-validate': 'requirePhone',
+                                                                               'type': 'tel'
+                                                                               }))
     avatar = forms.ImageField(required=False,
                               widget=forms.ClearableFileInput(attrs={'class': 'Profile-file form-input',
                                                                      'type': "file",
@@ -67,7 +69,9 @@ class MyUserChangeForm(UserChangeForm):
                                                            'data-validate': 'require',
                                                            'maxlength': '254'}))
     phoneNumber = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-input',
-                                                                               'data-validate': 'require'}))
+                                                                               'data-validate': 'require',
+                                                                               'type': 'tel',
+                                                                               }))
     avatar = forms.ImageField(required=False,
                               widget=forms.FileInput(attrs={'class': 'Profile-file form-input',
                                                             'type': "file",

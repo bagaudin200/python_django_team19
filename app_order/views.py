@@ -76,9 +76,9 @@ class OrderStepFourView(ListView):
     template_name = 'app_order/order_step_4.jinja2'
     context_object_name = 'products'
 
-    '''При добавлении корзины, методы будут настроен в соответствии с новыми моделями и сервисами корзины'''
     def get_queryset(self):
         queryset = ProductInCart.objects.filter(cart__user=self.request.user)
+        print(dir(queryset))
         return queryset
 
     def post(self, request, *args, **kwargs):
