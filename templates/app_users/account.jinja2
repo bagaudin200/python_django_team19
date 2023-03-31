@@ -53,7 +53,7 @@
                             <a class="Account-editLink" href="{{ url('profile') }}">Редактировать профиль</a>
                         </div>
                     </div>
-                    {% if request.user.order.first %}
+                    {% if request.user.cart.first %}
                     {% with order=request.user.order.first %}
                     <div class="Account-group">
                         <div class="Account-column Account-column_full">
