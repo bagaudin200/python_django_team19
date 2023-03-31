@@ -54,7 +54,7 @@
                         </div>
                     </div>
                     {% if request.user.cart.first %}
-                    {% with order=request.user.order.first %}
+                    {% with order=request.user.cart.first %}
                     <div class="Account-group">
                         <div class="Account-column Account-column_full">
                             <div class="Order Order_anons">
