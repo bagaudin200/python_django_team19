@@ -427,6 +427,7 @@ textarea {
   background: transparent;
   color: #fff;
 }
+
 @media screen and (min-width: 990px) {
   .btn:hover {
     transition: all 200ms;
@@ -2329,6 +2330,7 @@ a {
   padding-bottom: 0;
   cursor: pointer;
 }
+
 @media screen and (min-width: 990px) {
   a:hover {
     position: relative;
@@ -2440,6 +2442,7 @@ table tr:first-child th {
   padding-bottom: 0;
   cursor: pointer;
 }
+
 @media screen and (min-width: 990px) {
   .link:hover {
     position: relative;
@@ -2528,3 +2531,5 @@ button.link {
 .wrap-content {
   margin: 0 auto;
 }
+
+

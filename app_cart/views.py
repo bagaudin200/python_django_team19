@@ -1,11 +1,15 @@
 from decimal import Decimal
+
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 from django.shortcuts import redirect, get_object_or_404, render
 from django.views.decorators.http import require_POST, require_GET
+
+from app_cart.models import ProductInCart
 from app_goods.models import Product
 from django.views.generic import TemplateView
 from app_cart.services import CartServices
-from app_cart.forms import CartAddProductForm, CartAddProductFormSet
+from app_cart.forms import CartAddProductForm, CartAddProductModelForm
 
 
 class CartDetail(TemplateView):
@@ -15,25 +19,51 @@ class CartDetail(TemplateView):
         context = super().get_context_data(**kwargs)
         cart = CartServices(self.request)
         context['cart'] = cart
-        context['products_and_forms'] = zip(cart, CartAddProductFormSet())
-        for item in cart:
-            item['update_quantity_form'] = CartAddProductForm(initial={'quantity': item['quantity'], 'update': True})
+        if self.request.user.is_authenticated:
+            context['forms'] = [CartAddProductModelForm(instance=item) for item in cart]
+        else:
+            for item in cart:
+                item['update_quantity_form'] = CartAddProductForm(
+                    initial={'quantity': item['quantity'], 'update': False})
         return context
-
-    def post(self, *args, **kwargs):
-        return redirect(self.request.META.get('HTTP_REFERER'))
 
 
 @require_POST
 def cart_add(request, pk):
     cart = CartServices(request)
     product = get_object_or_404(Product, id=pk)
-    form = CartAddProductForm(request.POST)
-    if form.is_valid():
-        cd = form.cleaned_data
-        cart.add(product=product, quantity=cd['quantity'],
-                 update_quantity=cd['update'])
+    if request.user.is_authenticated:
+        product_in_cart = get_object_or_404(ProductInCart, id=pk)
+        form = CartAddProductModelForm(request.POST, instance=product_in_cart)
+        form.save()
+    else:
+        form = CartAddProductForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            cart.add(product=product, quantity=cd['quantity'],
+                     update_quantity=cd['update'])
     return redirect('cart_detail')
+
+
+def cart_add_from_product_card(request, pk):
+    """Добавление товара в корзину из карточки товара"""
+    product = get_object_or_404(Product, id=pk)
+    user = request.user
+    if user.is_authenticated:
+        try:
+            product_in_cart = ProductInCart.objects.filter(cart=user.cart).get(product=product)
+            product_in_cart.quantity += 1
+            product_in_cart.save()
+        except ObjectDoesNotExist:
+            ProductInCart.objects.create(
+                cart=user.cart,
+                product=product,
+                quantity=1
+            )
+    else:
+        cart = CartServices(request)
+        cart.add(product, quantity=1, update_quantity=True)
+    return redirect(request.META.get('HTTP_REFERER'))
 
 
 @require_GET
