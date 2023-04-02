@@ -2,6 +2,9 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.views.generic import TemplateView
+
+from app_order.models import Order
+from app_cart.services import CartServices
 from .tasks import pay
 from .mixins import PaymentMixin
 
@@ -20,5 +23,7 @@ class ProgressPaymentView(TemplateView):
     template_name = 'app_payment/progressPayment.jinja2'
 
     def get(self, request, *args, **kwargs):
-        pay.delay(1, 22222222, 2000)
+        cart = CartServices(request)
+        order = Order.objects.get(cart=cart.cart)
+        pay.delay(order.id, 22222222, order.total_price)
         return HttpResponseRedirect(reverse('catalog'))

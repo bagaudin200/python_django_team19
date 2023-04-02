@@ -34,8 +34,3 @@ class OrderStepFourForm(forms.ModelForm):
     class Meta:
         model = Order
         fields = ('delivery_type', 'city', 'address', 'payment_type',)
-
-
-
-
-

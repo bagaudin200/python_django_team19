@@ -27,7 +27,7 @@ class CartServices:
                 self.save_in_db(cart, request.user)
                 self.clear(True)
             try:
-                cart = Cart.objects.get(user=self.user)
+                cart = Cart.objects.get(user=self.user, is_active=True)
             except ObjectDoesNotExist:
                 cart = Cart.objects.create(user=self.user)
             self.qs = ProductInCart.objects.filter(cart=cart)
@@ -46,7 +46,7 @@ class CartServices:
     def save_in_db(self, cart, user):
         """Перенос корзины из сессии в БД"""
         for key, value in cart.items():
-            if Cart.objects.filter(user=user).exists():  # если корзина уже есть в БД
+            if Cart.objects.filter(user=user, is_active=True).exists():  # если корзина уже есть в БД
                 try:
                     product = ProductInCart.objects.select_for_update().get(product=key)
                     product.quantity += cart[key]['quantity']
@@ -55,7 +55,7 @@ class CartServices:
                 except ObjectDoesNotExist:
                     ProductInCart.objects.create(
                         product=Product.objects.get(pk=key),
-                        cart=Cart.objects.get(user=user),
+                        cart=Cart.objects.filter(user=user, is_active=True).first(),
                         quantity=cart[key]['quantity']
                     )
             else:  # если корзины еще нет в БД
@@ -142,7 +142,7 @@ class CartServices:
         Подсчитайте все товары в корзине.
         """
         if self.use_db:
-            result = ProductInCart.objects.filter(cart=self.user.cart).aggregate(Sum('quantity'))['quantity__sum']
+            result = ProductInCart.objects.filter(cart=self.cart).aggregate(Sum('quantity'))['quantity__sum']
             return result if result else 0
         return sum(item['quantity'] for item in self.cart.values())
 

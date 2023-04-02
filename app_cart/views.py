@@ -47,21 +47,21 @@ def cart_add(request, pk):
 
 def cart_add_from_product_card(request, pk):
     """Добавление товара в корзину из карточки товара"""
+    cart = CartServices(request)
     product = get_object_or_404(Product, id=pk)
     user = request.user
     if user.is_authenticated:
         try:
-            product_in_cart = ProductInCart.objects.filter(cart=user.cart).get(product=product)
+            product_in_cart = ProductInCart.objects.filter(cart=cart.cart).get(product=product)
             product_in_cart.quantity += 1
             product_in_cart.save()
         except ObjectDoesNotExist:
             ProductInCart.objects.create(
-                cart=user.cart,
+                cart=cart.cart,
                 product=product,
                 quantity=1
             )
     else:
-        cart = CartServices(request)
         cart.add(product, quantity=1, update_quantity=True)
     return redirect(request.META.get('HTTP_REFERER'))
 

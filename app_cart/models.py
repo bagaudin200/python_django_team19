@@ -7,7 +7,8 @@ User = get_user_model()
 
 
 class Cart(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='carts')
+    is_active = models.BooleanField(default=True)
 
     class Meta:
         db_table = 'cart'

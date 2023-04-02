@@ -2,6 +2,7 @@ import random
 
 from django.core.exceptions import ObjectDoesNotExist
 
+from app_cart.models import Cart
 from app_order.models import Order
 from app_payment.models import Payment
 from .utils import card_number_is_valid
@@ -17,7 +18,6 @@ class PaymentService:
 
     def pay(self):
         order = self._get_order()
-
         if isinstance(order, str):
             return order
 
@@ -25,6 +25,9 @@ class PaymentService:
         if card_number_is_valid(self.card_number):
             order.status = self._get_random_success_status()
             order.save()
+            cart = order.cart
+            cart.is_active = False
+            cart.save()
             payment.save()
             return f"OK: Payment for order #{self.order_id} from card {self.card_number} in the amount of ${self.total_price}"
 

@@ -55,8 +55,6 @@ class Order(models.Model):
 
     class Meta:
         db_table = 'order'
-        verbose_name = 'order'
-        verbose_name_plural = 'orders'
 
     def __str__(self):
         return f"Order #{self.id} by {self.cart.user}"
