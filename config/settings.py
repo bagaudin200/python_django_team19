@@ -75,6 +75,8 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'config.urls'
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 TEMPLATES = [
     {
         "BACKEND": "django_jinja.backend.Jinja2",
@@ -110,6 +112,8 @@ TEMPLATES = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
+
 WSGI_APPLICATION = 'config.wsgi.application'
 
 
@@ -142,6 +146,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+    {
+        'NAME': 'app_users.validators.PasswordValidator',
     },
 ]
 
