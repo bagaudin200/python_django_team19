@@ -87,7 +87,7 @@ class MyLogoutView(LogoutView):
 
 
 class MyPasswordResetView(PasswordResetView):
-    email_template_name = "app_users/password_reset_email.jinja2"
+    email_template_name = "app_users/password_reset_email.html"
     template_name = "app_users/password_reset_form.jinja2"
     form_class = MyPasswordResetForm
 
