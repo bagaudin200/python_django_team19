@@ -6,6 +6,7 @@ from django.views.generic import ListView, DetailView
 from django.urls import reverse, reverse_lazy
 from django.views.generic.edit import FormView, FormMixin
 
+from app_cart.services import CartServices
 from app_users.views import MyRegistration
 from .forms import OrderStepTwoForm, OrderStepThreeForm, OrderStepFourForm, OrderStepOneForm
 from .models import Order
@@ -83,19 +84,19 @@ class OrderStepFourView(ListView):
     context_object_name = 'products'
 
     def get_queryset(self):
-        queryset = ProductInCart.objects.filter(cart__user=self.request.user)
+        cart = CartServices(self.request).cart
+        queryset = ProductInCart.objects.filter(cart=cart)
         return queryset
 
     def post(self, request, *args, **kwargs):
-        Order.objects.update_or_create(
-            cart=Cart.objects.get(user=request.user),
-            defaults={
-                'delivery_type': request.session['delivery'],
-                'city': request.session['city'],
-                'address': request.session['address'],
-                'payment_type': request.session['payment'],
-                'total_price': request.session['total_price']
-            }
+        cart = CartServices(request).cart
+        Order.objects.create(
+            cart=cart,
+            delivery_type=request.session['delivery'],
+            city=request.session['city'],
+            address=request.session['address'],
+            payment_type=request.session['payment'],
+            total_price=request.session['total_price']
         )
         if request.session['payment'] == 'card':
             return HttpResponseRedirect(reverse('payment:payment_with_card'))

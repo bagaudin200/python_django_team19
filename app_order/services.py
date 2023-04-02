@@ -4,13 +4,14 @@ from django.db.models import Sum, F
 
 from app_cart.models import Cart
 from app_order.models import Order
+from app_cart.services import CartServices
 
 
 class OrderService:
     """Сервис для работы с заказами"""
     def __init__(self, request):
         self.request = request
-        self.cart = Cart.objects.get(user=self.request.user)
+        self.cart = CartServices(request).cart
     def get_history(self) -> List:
         """
         Возвращает историю заказов пользователя
