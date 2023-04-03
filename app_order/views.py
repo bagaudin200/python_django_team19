@@ -90,18 +90,20 @@ class OrderStepFourView(ListView):
 
     def post(self, request, *args, **kwargs):
         cart = CartServices(request).cart
-        Order.objects.create(
+        Order.objects.update_or_create(
             cart=cart,
-            delivery_type=request.session['delivery'],
-            city=request.session['city'],
-            address=request.session['address'],
-            payment_type=request.session['payment'],
-            total_price=request.session['total_price']
+            defaults={
+                'delivery_type': request.session['delivery'],
+                'city': request.session['city'],
+                'address': request.session['address'],
+                'payment_type': request.session['payment'],
+                'total_price': request.session['total_price']
+            },
         )
         if request.session['payment'] == 'card':
             return HttpResponseRedirect(reverse('payment:payment_with_card'))
         elif request.session['payment'] == 'random':
-            return HttpResponseRedirect(reverse('payment:payment_someones'))
+            return HttpResponseRedirect(reverse('payment:payment_someone'))
         messages.success(request, 'Не можем перейти к оплате. Пожалйста проверьте детали заказа.')
         return redirect(request.META.get('HTTP_REFERER'))
 

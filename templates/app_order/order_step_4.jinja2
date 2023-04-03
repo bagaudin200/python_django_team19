@@ -57,12 +57,12 @@
         <div class="Cart-product">
           <div class="Cart-block Cart-block_row">
             <div class="Cart-block Cart-block_pict">
-              <a class="Cart-pict" href="{{ url('product', slug=product.product.slug) }}">
+              <a class="Cart-pict" href="{{ url('product:product', slug=product.product.slug) }}">
                 <img class="Cart-img" src="{{ product.product.image.url }}" alt="card.jpg"/>
               </a>
             </div>
             <div class="Cart-block Cart-block_info">
-              <a class="Cart-title" href="{{ url('product', slug=product.product.slug) }}">{{ product.product.name }}</a>
+              <a class="Cart-title" href="{{ url('product:product', slug=product.product.slug) }}">{{ product.product.name }}</a>
                 <div class="Cart-desc">{{ product.product.description|truncate(200) }}</div>
             </div>
             <div class="Cart-block Cart-block_price">

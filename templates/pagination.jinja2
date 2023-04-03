@@ -3,7 +3,7 @@
         <div class="Pagination-ins">
             {% if page_obj.has_previous() %}
                 <a class="Pagination-element Pagination-element_prev"
-                   href="{{ url('catalog') }}{{ query_string_builder }}&page={{ page_obj.previous_page_number() }}">
+                   href="{{ url('product:catalog') }}{{ query_string_builder }}&page={{ page_obj.previous_page_number() }}">
                     <img src="{{ static('img/icons/prevPagination.svg') }}" alt="prevPagination.svg"/>
                 </a>
             {% endif %}
@@ -18,7 +18,7 @@
                         <span class="Pagination-text">{{ p }}</span>
                     {% else %}
                         <a class="Pagination-element"
-                           href="{{ url('catalog') }}{{ query_string_builder }}&page={{ p }}">
+                           href="{{ url('product:catalog') }}{{ query_string_builder }}&page={{ p }}">
                             <span class="Pagination-text">{{ p }}</span>
                         </a>
                     {% endif %}
@@ -27,7 +27,7 @@
 
             {% if page_obj.has_next() %}
                 <a class="Pagination-element Pagination-element_prev"
-                   href="{{ url('catalog') }}{{ query_string_builder }}&page={{ page_obj.next_page_number() }}">
+                   href="{{ url('product:catalog') }}{{ query_string_builder }}&page={{ page_obj.next_page_number() }}">
                     <img src="{{ static('img/icons/nextPagination.svg') }}" alt="nextPagination.svg"/>
                 </a>
             {% endif %}

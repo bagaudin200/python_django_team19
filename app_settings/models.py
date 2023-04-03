@@ -24,11 +24,6 @@ class SiteSettings(SingletonModel):
     def __str__(self) -> str:
         return "site settings"
 
-    def save(self, *args, **kwargs):
-        if self.__class__.objects.count():
-            self.pk = self.__class__.objects.first().pk
-        super().save(*args, **kwargs)
-
     class Meta:
         verbose_name_plural = 'settings'
         verbose_name = 'settings'

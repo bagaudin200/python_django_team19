@@ -9,7 +9,7 @@
         <div class="Middle-header">
           <h1 class="Middle-title">MEGANO PRODUCT</h1>
           <ul class="breadcrumbs Middle-breadcrumbs">
-            <li class="breadcrumbs-item"><a href="{{ url('home') }}">Главная</a>
+            <li class="breadcrumbs-item"><a href="{{ url('product:home') }}">Главная</a>
             </li>
             <li class="breadcrumbs-item breadcrumbs-item_current"><span>Товар</span>
             </li>
@@ -63,7 +63,7 @@
                 <div class="ProductCard-tags">
                   <strong class="ProductCard-tagsTitle">Теги:</strong>
                   {% for tag in tags %}
-                    <a href="{{ url('catalog') }}?tag={{ tag.slug }}">{{ tag }}</a>
+                    <a href="{{ url('product:catalog') }}?tag={{ tag.slug }}">{{ tag }}</a>
                   {% endfor %}
                 </div>
               </div>
