@@ -3,6 +3,8 @@ from .views import validate_email, validate_phone, ProfileView, MyRegistration, 
     MyPasswordResetView, MyPasswordResetDoneView, MyPasswordResetConfirmView, MyPasswordResetCompleteView, \
     ModalLoginView, AccountView
 
+app_name = 'users'
+
 urlpatterns = [
     path('login/', MyLoginView.as_view(redirect_authenticated_user=True), name='login'),
     path('logout/', MyLogoutView.as_view(), name='logout'),

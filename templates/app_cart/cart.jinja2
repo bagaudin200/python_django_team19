@@ -12,7 +12,7 @@
                 <h1 class="Middle-title">Корзина
                 </h1>
                 <ul class="breadcrumbs Middle-breadcrumbs">
-                    <li class="breadcrumbs-item"><a href="{{ url('home') }}">Главная</a>
+                    <li class="breadcrumbs-item"><a href="{{ url('product:home') }}">Главная</a>
                     </li>
                     <li class="breadcrumbs-item breadcrumbs-item_current"><span>Корзина</span>
                     </li>
@@ -25,7 +25,7 @@
             {% if request.user.is_authenticated %}
                 {% for form in forms %}
                     {% with product=form.instance %}
-                        <form class="form" id="cart_form" method="post" action="{{ url('cart_add', product.id) }}">
+                        <form class="form" id="cart_form" method="post" action="{{ url('cart:cart_add', product.id) }}">
                             {% csrf_token %}
                             {% include "app_cart/cart_model_item.jinja2" %}
                         </form>
@@ -34,7 +34,7 @@
             {% else %}
                 {% for item in cart %}
                     {% with product=item.product %}
-                        <form class="form" id="cart_form" method="post" action="{{ url('cart_add', product.id) }}">
+                        <form class="form" id="cart_form" method="post" action="{{ url('cart:cart_add', product.id) }}">
                             {% include "app_cart/cart_session_item.jinja2" %}
                         </form>
                     {% endwith %}
@@ -55,7 +55,7 @@
                         </button>
                     </div>
                     {% else %}
-                        <strong class="Cart-title">Ваша корзина пуста. Перейдите в <a href="{{ url('catalog') }}">каталог</a>, чтобы совершить покупки</strong>
+                        <strong class="Cart-title">Ваша корзина пуста. Перейдите в <a href="{{ url('product:catalog') }}">каталог</a>, чтобы совершить покупки</strong>
                     {% endif %}
                 </div>
             {% endwith %}

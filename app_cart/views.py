@@ -42,7 +42,7 @@ def cart_add(request, pk):
             cd = form.cleaned_data
             cart.add(product=product, quantity=cd['quantity'],
                      update_quantity=cd['update'])
-    return redirect('cart_detail')
+    return redirect('cart:cart_detail')
 
 
 def cart_add_from_product_card(request, pk):
@@ -71,7 +71,7 @@ def cart_remove(request, pk):
     cart = CartServices(request)
     product = get_object_or_404(Product, id=pk)
     cart.remove(product)
-    return redirect('cart_detail')
+    return redirect('cart:cart_detail')
 
 
 @require_GET
