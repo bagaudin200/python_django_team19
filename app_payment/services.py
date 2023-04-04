@@ -1,8 +1,10 @@
 import random
 
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import transaction
+from django.db.models import QuerySet
 
-from app_cart.models import Cart
+from app_cart.models import ProductInCart, Cart
 from app_order.models import Order
 from app_payment.models import Payment
 from .utils import card_number_is_valid
@@ -16,6 +18,7 @@ class PaymentService:
         self.card_number = str(card_number)
         self.total_price = total_price
 
+    @transaction.atomic
     def pay(self):
         order = self._get_order()
         if isinstance(order, str):
@@ -26,6 +29,7 @@ class PaymentService:
             order.status = self._get_random_success_status()
             order.save()
             cart = order.cart
+            self._update_products_in_cart(cart)
             cart.is_active = False
             cart.save()
             payment.save()
@@ -39,10 +43,10 @@ class PaymentService:
         payment.save()
         return f"ERROR: Order payment failed #{self.order_id} from card {self.card_number} in the amount of ${self.total_price}. Reason: {reason}"
 
-    def get_status(self):
+    def get_status(self) -> str:
         return self._get_order().status
 
-    def _get_random_reason(self):
+    def _get_random_reason(self) -> str:
         return random.choice(
             [
                 Payment.REASON_INSUFFICIENT_FUNDS,
@@ -51,7 +55,7 @@ class PaymentService:
             ]
         )
 
-    def _get_random_success_status(self):
+    def _get_random_success_status(self) -> str:
         return random.choice(
             [Order.STATUS_OK, Order.STATUS_DELIVERED, Order.STATUS_PAID]
         )
@@ -61,3 +65,10 @@ class PaymentService:
             return Order.objects.get(id=self.order_id)
         except ObjectDoesNotExist:
             return f"ERROR: Order does not exist. Please place an order first"
+
+    def _update_products_in_cart(self, cart: Cart) -> None:
+        products_in_cart = ProductInCart.objects.filter(cart=cart)
+        for item in products_in_cart:
+            item.product.quantity -= item.quantity
+            item.product.sales_count += item.quantity
+            item.product.save()

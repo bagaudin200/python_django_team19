@@ -1,12 +1,11 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
 from django.urls import reverse
 from django.views.generic import TemplateView
 
-from app_order.models import Order
 from app_cart.services import CartServices
-from .tasks import pay
+from app_order.models import Order
 from .mixins import PaymentMixin
+from .tasks import pay
 
 
 class PaymentWithCardView(PaymentMixin, TemplateView):
@@ -25,5 +24,7 @@ class ProgressPaymentView(TemplateView):
     def get(self, request, *args, **kwargs):
         cart = CartServices(request)
         order = Order.objects.get(cart=cart.cart)
-        pay.delay(order.id, 22222222, order.total_price)
-        return HttpResponseRedirect(reverse('catalog'))
+        card_number = request.session.get('card_number')
+        pay.delay(order.id, card_number, order.total_price)
+        del request.session['card_number']
+        return HttpResponseRedirect(reverse('goods:catalog'))

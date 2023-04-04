@@ -54,12 +54,7 @@ class Product(models.Model):
         return f'{self.name}'
 
     def get_absolute_url(self):
-        return reverse('product:product', args=[self.slug])
-
-    @property
-    def short_description(self):
-        """Метод для краткого отображения описания товара в админке"""
-        return truncatechars(self.description, 50)
+        return reverse('goods:product', args=[self.slug])
 
 
 class Image(models.Model):
