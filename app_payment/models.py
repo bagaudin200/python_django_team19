@@ -9,7 +9,7 @@ class Payment(models.Model):
     REASON_INSUFFICIENT_FUNDS = 'insufficient funds'
     REASON_NO_CONTACT_WITH_BANK = 'no contact with the bank'
     REASON_CARD_BLOCKED = 'card blocked'
-    REASON_OUT_OF_STOCK = 'product is out of stock'
+    REASON_OUT_OF_STOCK = 'no such quantity of goods in stock'
     REASON_NONE = 'None'
     REASONS = [
         (REASON_NONE, 'None'),
