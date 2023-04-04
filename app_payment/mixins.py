@@ -13,6 +13,7 @@ class PaymentMixin(FormMixin):
     def post(self, *args, **kwargs):
         form = self.form_class(self.request.POST)
         if form.is_valid():
+            self.request.session['card_number'] = form.cleaned_data['card_number']
             return HttpResponseRedirect(reverse('payment:progress_payment'))
         return render(request=self.request, template_name='app_payment/payment_with_card.jinja2',
                       context={'form': form})

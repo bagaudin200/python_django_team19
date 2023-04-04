@@ -4,7 +4,7 @@ from .models import Product, Category, Image, Review
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'category', 'price', 'quantity', 'slug', 'short_description', 'tag_list')
+    list_display = ('id', 'name', 'category', 'price', 'quantity', 'slug', 'sales_count', 'tag_list',)
     prepopulated_fields = {'slug': ('name',)}
     search_fields = ('name',)
 

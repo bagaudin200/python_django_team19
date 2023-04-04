@@ -122,8 +122,9 @@ class CartServices:
         из базы данных.
         """
         if self.use_db:
-            for product in self.cart.products.all():
-                yield product
+            yield from self.cart.products.all()
+            # for product in self.cart.products.all():
+            #     yield product
         else:
             product_ids = self.cart.keys()
             # получить объекты продукта и добавить их в корзину
@@ -150,7 +151,7 @@ class CartServices:
             total = self.qs.only('quantity', 'price').aggregate(total=Sum(F('quantity') * F('product__price')))['total']
             if not total:
                 total = Decimal('0')
-            return total.normalize()
+            return total.quantize(Decimal('1.00'))
         else:
             return sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values())
 
