@@ -50,7 +50,6 @@ class CartServices:
                 try:
                     product = ProductInCart.objects.select_for_update().get(product=key)
                     product.quantity += cart[key]['quantity']
-                    # product.price = cart[key]['price']
                     product.save()
                 except ObjectDoesNotExist:
                     ProductInCart.objects.create(

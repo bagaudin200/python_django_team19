@@ -23,11 +23,11 @@ class MyRegistration(CreateView):
     model = User
     form_class = UserCreateForm
     template_name = 'app_users/registration.jinja2'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('product:home')
 
     def dispatch(self, *args, **kwargs):
         if self.request.user.is_authenticated:
-            return redirect(reverse('profile'))
+            return redirect(reverse('users:profile'))
         return super().dispatch(*args, **kwargs)
 
     def post(self, request, *args, **kwargs):
@@ -54,7 +54,7 @@ class ProfileView(LoginRequiredMixin, UpdateView):
     template_name = 'app_users/profile.jinja2'
 
     def get_success_url(self):
-        return reverse('profile')
+        return reverse('users:profile')
 
     def get_object(self, queryset=None):
         return self.request.user
@@ -69,10 +69,11 @@ class MyLoginView(LoginView):
     authentication_form = UserLoginForm
 
     def get_success_url(self):
-        try:
-            next_page = self.request.POST['next']
-        except:
-            next_page = reverse('home')
+
+        if self.request.POST.get('next'):
+            next_page = self.request.POST.get('next')
+        else:
+            next_page = reverse('product:home')
         return next_page
 
 
@@ -83,7 +84,7 @@ class ModalLoginView(BSModalLoginView):
 
 
 class MyLogoutView(LogoutView):
-    next_page = '/app_users/login/'
+    next_page = reverse_lazy('product:home')
 
 
 class MyPasswordResetView(PasswordResetView):
@@ -102,7 +103,7 @@ class MyPasswordResetConfirmView(PasswordResetConfirmView):
     post_reset_login = True
 
     def get_success_url(self):
-        return reverse_lazy('profile')
+        return reverse_lazy('users:profile')
 
 
 class MyPasswordResetCompleteView(PasswordResetCompleteView):
