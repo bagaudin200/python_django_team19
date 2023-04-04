@@ -63,9 +63,11 @@ class ProductService:
                 cart=Cart.objects.filter(user=self.profile, is_active=True).first())
             if product_in_cart:
                 update_product = True
-        # else:
-        #     card_services = CartServices(self.request)
-        #     print(card_services.get_cart_from_db())
+        else:
+            product_id = str(self.product.id)
+            print(self.request.session[settings.CART_SESSION_ID])
+            if product_id in self.request.session[settings.CART_SESSION_ID]:
+                update_product = True
         return update_product
 
     def get_images(self) -> Image:
