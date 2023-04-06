@@ -17,7 +17,7 @@ class HomePageServices:
         :return: топ категорий на главной странице
         """
         return Category.objects.filter(level=1).prefetch_related(
-            'product_set').order_by('-product__sales_count').distinct()[:self.site_settings.banners_count]
+            'product_set').order_by('-product__sales_count').distinct().order_by()[:self.site_settings.banners_count]
 
     def get_most_popular_products(self) -> QuerySet:
         """
