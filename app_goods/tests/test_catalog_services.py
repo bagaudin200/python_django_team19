@@ -1,6 +1,7 @@
 from django.test import TestCase, RequestFactory, SimpleTestCase
-
-from app_goods.services.catalog_services import Builder, CatalogQueryStringBuilder
+from decimal import Decimal
+from app_goods.models import Product, Category
+from app_goods.services.catalog_services import Builder, CatalogQueryStringBuilder, CatalogQuerySetBuilder
 
 
 class TestBuilder(SimpleTestCase):
@@ -86,4 +87,32 @@ class TestCatalogQueryStringBuilder(SimpleTestCase):
 
 
 class TestCatalogQuerySetBuilder(TestCase):
-    pass
+    fixtures = [
+        'fixtures/categories.json',
+        'fixtures/products.json',
+        'fixtures/tags.json',
+        'fixtures/tagged_items.json'
+    ]
+
+    # Начальный qs по умолчанию отсортирован по возрастанию цены
+    QS = Product.objects.select_related('category', 'category__parent').defer('description').order_by('price')
+    category_slug = 'bytovaya-tehnika'
+    category = Category.objects.get(slug=category_slug)
+
+    URLS_AND_EXPECTED_QUERYSETS = {
+        '/catalog/': QS,
+        f'/catalog/?&category={category_slug}&order_by=price&order=asc': QS.filter(category__parent=category),
+        f'/catalog/?&category={category_slug}&order_by=price&order=desc': QS.filter(category__parent=category).order_by('-price'),
+        f'/catalog/?category={category_slug}&price=211%3B495.57&title=&in_stock=0&free_delivery=0':
+        QS.filter(category__parent=category, price__range=[Decimal('211'), Decimal('495.57')], quantity__gt=0, free_delivery=False),
+        f'/catalog/?tag=samsung': QS.filter(tags__slug='samsung'),
+        f'/catalog/?search=samsung': QS.filter(name__icontains='samsung'),
+    }
+
+    def setUp(self) -> None:
+        self.factory = RequestFactory()
+
+    def test_build(self):
+        for url, expected_qs in self.URLS_AND_EXPECTED_QUERYSETS.items():
+            qs = CatalogQuerySetBuilder(self.factory.get(url)).build()
+            self.assertQuerysetEqual(expected_qs, qs)

@@ -34,7 +34,7 @@
                 <input type="hidden" name="order" value="{{ request.GET.get('order') }}">
                 <input type="hidden" name="order_by" value="{{ request.GET.get('order_by') }}">
                 <div class="form-group">
-                  {% with cheapest=products|min(attribute='price'), most_expensive=products|max(attribute='price') %}
+                  {% with cheapest=view.object_list|min(attribute='price'), most_expensive=view.object_list|max(attribute='price') %}
                       <div class="range Section-columnRange">
                         <input class="range-line" id="price" name="price" type="text" data-type="double" data-min="{% if cheapest %}{{ cheapest.price }}{% endif %}" data-max="{% if most_expensive %}{{ most_expensive.price }}{% endif %}" data-from="{% if cheapest %}{{ cheapest.price }}{% endif %}" data-to="{% if most_expensive %}{{ most_expensive.price }}{% endif %}"/>
                         <div class="range-price">Цена:&#32;
