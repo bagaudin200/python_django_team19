@@ -9,7 +9,7 @@
         <div class="Middle-header">
           <h1 class="Middle-title">Заказ {{ order.id }}</h1>
           <ul class="breadcrumbs Middle-breadcrumbs">
-            <li class="breadcrumbs-item"><a href="index.html">home</a>
+            <li class="breadcrumbs-item"><a href="{{ url('home') }}">home</a>
             </li>
             <li class="breadcrumbs-item"><a href="{{ url('order:history') }}">История заказов</a>
             </li>
@@ -42,7 +42,7 @@
                           ФИО:
                       </div>
                       <div class="Order-infoContent">
-                          {{ order.user.full_name }}
+                        {{ request.user.full_name }}
                       </div>
                     </div>
                     <div class="Order-info">
@@ -50,7 +50,7 @@
                           Телефон:
                       </div>
                       <div class="Order-infoContent">
-
+                        {{ request.user.phoneNumber }}
                       </div>
                     </div>
                     <div class="Order-info">
@@ -58,7 +58,7 @@
                           E-mail:
                       </div>
                       <div class="Order-infoContent">
-                          {{ order.user.email }}
+                        {{ request.user.email }}
                       </div>
                     </div>
                   </div>
@@ -76,7 +76,7 @@
                           Город:
                       </div>
                       <div class="Order-infoContent">
-
+                        {{ order.city }}
                       </div>
                     </div>
                     <div class="Order-info">
@@ -84,7 +84,7 @@
                           Адрес:
                       </div>
                       <div class="Order-infoContent">
-
+                        {{ order.address }}
                       </div>
                     </div>
                     <div class="Order-info Order-info_pay">

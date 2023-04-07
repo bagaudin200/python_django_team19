@@ -1,29 +1,31 @@
-{% for item in order.product.all() %}
+{% for item in cart %}
     <div class="Cart Cart_order">
     <div class="Cart-product">
         <div class="Cart-block Cart-block_row">
-            {% if item.image %}
-                <div class="Cart-block Cart-block_pict"><a class="Cart-pict" href="#">
-                    <img class="Cart-img" src="{{ item.image.url }}" alt="product-image.png"/>></a>
+            {% if item.product.image %}
+                <div class="Cart-block Cart-block_pict">
+                    <a class="Cart-title" href="{{ url('product', slug=item.product.slug) }}">
+                    <img class="Cart-img" src="{{ item.product.image.url }}" alt="product-image.png"/>>
+                    </a>
                 </div>
             {% endif %}
             <div class="Cart-block Cart-block_info">
-                <a class="Cart-title" href="#">
-                    {{ item.name }}
+                <a class="Cart-title" href="{{ url('product', slug=item.product.slug) }}">
+                    {{ item.product.name }}
                 </a>
                 <div class="Cart-desc">
-                    {{ item.description }}
+                        {{ item.product.description|truncatechars(300) }}
                 </div>
                 </div>
                 <div class="Cart-block Cart-block_price">
                     <div class="Cart-price">
-                        {{ item.price }}
+                        {{ item.product.price }}$
                     </div>
                 </div>
             </div>
             <div class="Cart-block Cart-block_row">
                 <div class="Cart-block Cart-block_amount">
-                    {{ order.product.filter(id=item.id).count() }} шт.
+
                 </div>
             </div>
         </div>
@@ -34,14 +36,21 @@
         <strong class="Cart-title">
             Итого:
             <span class="Cart-price">
-
+                {{ total_price|round(2, 'common') }}$
             </span>
         </strong>
     </div>
-    <div class="Cart-block">
-        <a class="btn btn_primary btn_lg" href="#">
-            Оплатить
-        </a>
-    </div>
+    {% if order.status=='STATUS_NOT_PAID' or order.status=='STATUS_CREATED' %}
+        <div class="Cart-block">
+            <a class="btn btn_primary btn_lg" href="#">
+                Оплатить
+            </a>
+        </div>
+    {% else %}
+        <div class="Cart-block">
+                Оплачен
+        </div>
+    {% endif %}
 </div>
 </div>
+
