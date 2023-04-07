@@ -13,7 +13,8 @@ from app_goods.services.catalog_services import CatalogPaginator, CatalogQuerySt
 from app_settings.models import SiteSettings
 from .forms import FilterForm
 from .services.home_page_services import HomePageServices
-from .services.product_services import ReviewService, ProductService
+from .services.product_services import ProductService
+from .services.reviews_services import ReviewService
 
 
 class GoodsDetailView(DetailView):
@@ -46,7 +47,7 @@ class GoodsDetailView(DetailView):
                                   )
                 messages.success(request, 'Товар добавлен в корзину!')
             else:
-                messages.error(request, f"У нас только {quantity} шт.")
+                messages.error(request, f"У нас только {product_service.get_product_quantity()} шт.")
         return redirect(request.META.get('HTTP_REFERER'))
 
     def get_context_data(self, **kwargs):
