@@ -5,6 +5,7 @@ from django.db.models import Sum, F
 from app_cart.models import Cart
 from app_order.models import Order
 from app_cart.services import CartServices
+from app_settings.models import SiteSettings
 
 
 class OrderService:
@@ -46,6 +47,10 @@ class OrderService:
         """Получение информации об общей стоимости заказа"""
         total_price = self.cart.products.only('quantity', 'price').aggregate(total=Sum(F('quantity') *
                                                                                        F('product__price')))['total']
+        if total_price < 100:
+            total_price += SiteSettings.load().standard_order_price
+        if self.request.session.get('delivery') == 'express':
+            total_price += SiteSettings.load().express_order_price
         return total_price
         
     def get_format_phone_number(self):

@@ -5,11 +5,11 @@ from app_settings.singleton_model import SingletonModel
 
 class SiteSettings(SingletonModel):
     """Модель настроек сайта"""
-    min_order_price_for_free_shipping = models.DecimalField(max_digits=6, decimal_places=2, default=2000.00,
+    min_order_price_for_free_shipping = models.DecimalField(max_digits=6, decimal_places=2, default=100.00,
                                                             verbose_name='minimum order price for free shipping, $')
-    standard_order_price = models.DecimalField(max_digits=6, decimal_places=2, default=200.00,
+    standard_order_price = models.DecimalField(max_digits=6, decimal_places=2, default=10.00,
                                                verbose_name='standard order price, $')
-    express_order_price = models.DecimalField(max_digits=6, decimal_places=2, default=400.00,
+    express_order_price = models.DecimalField(max_digits=6, decimal_places=2, default=25.00,
                                               verbose_name='express order price, $')
     banners_count = models.PositiveIntegerField(validators=[MaxValueValidator(3)], default=3,
                                                 verbose_name='banners count')
