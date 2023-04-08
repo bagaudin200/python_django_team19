@@ -7,6 +7,7 @@ from app_payment.forms import PaymentForm
 
 
 class PaymentMixin(FormMixin):
+    """Миксин для отправки POST-запроса оплаты заказа"""
     form_class = PaymentForm
     http_method_names = ['get', 'post']
 
