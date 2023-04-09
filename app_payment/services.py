@@ -25,17 +25,22 @@ class PaymentService:
 
         payment = Payment(order=order)
         if card_number_is_valid(self.card_number):
-            order.status = self._get_random_success_status()
-            order.save()
             cart = order.cart
             update_products = self._update_products_in_cart(cart)
             if update_products is True:
+                order.status = self._get_random_success_status()
+                order.save()
                 cart.is_active = False
                 cart.save()
                 payment.save()
                 return (f"OK: Payment for order #{self.order_id} from card {self.card_number} "
                         f"in the amount of ${self.total_price}")
             else:
+                order.status = Order.STATUS_NOT_PAID
+                order.save()
+                reason = self._get_random_reason()
+                payment.reason_for_non_payment = reason
+                payment.save()
                 return (f"ERROR: Order payment failed #{self.order_id} from card {self.card_number} "
                         f"in the amount of ${self.total_price}. "
                         f"Reason: {Payment.REASON_OUT_OF_STOCK}(product: {update_products}, "

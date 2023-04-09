@@ -1,29 +1,29 @@
-{% for item in order.product.all() %}
+{% for item in order.cart.products.all() %}
     <div class="Cart Cart_order">
     <div class="Cart-product">
         <div class="Cart-block Cart-block_row">
-            {% if item.image %}
-                <div class="Cart-block Cart-block_pict"><a class="Cart-pict" href="#">
-                    <img class="Cart-img" src="{{ item.image.url }}" alt="product-image.png"/>></a>
+            {% if item.product.image %}
+                <div class="Cart-block Cart-block_pict"><a class="Cart-pict" href="{{ item.product.get_absolute_url() }}">
+                    <img class="Cart-img" src="{{ item.product.image.url }}" alt="product-image.png"/></a>
                 </div>
             {% endif %}
             <div class="Cart-block Cart-block_info">
-                <a class="Cart-title" href="#">
-                    {{ item.name }}
+                <a class="Cart-title" href="{{ item.product.get_absolute_url() }}">
+                    {{ item.product.name }}
                 </a>
                 <div class="Cart-desc">
-                    {{ item.description }}
+                    {{ item.product.description|truncatewords(20) }}
                 </div>
                 </div>
                 <div class="Cart-block Cart-block_price">
                     <div class="Cart-price">
-                        {{ item.price }}
+                        ${{ item.product.price }}
                     </div>
                 </div>
             </div>
             <div class="Cart-block Cart-block_row">
                 <div class="Cart-block Cart-block_amount">
-                    {{ order.product.filter(id=item.id).count() }} шт.
+                    {{ item.quantity }} шт.
                 </div>
             </div>
         </div>
@@ -34,14 +34,16 @@
         <strong class="Cart-title">
             Итого:
             <span class="Cart-price">
-
+                ${{ order.total_price }}
             </span>
         </strong>
     </div>
-    <div class="Cart-block">
-        <a class="btn btn_primary btn_lg" href="#">
-            Оплатить
-        </a>
-    </div>
+    {% if not order_paid %}
+        <div class="Cart-block">
+            <a class="btn btn_primary btn_lg" href="{{ url('order:order_step_1') }}">
+                Оплатить
+            </a>
+        </div>
+    {% endif %}
 </div>
 </div>

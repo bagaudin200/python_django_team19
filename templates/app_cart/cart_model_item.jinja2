@@ -1,43 +1,43 @@
-{% with product=product.product %}
+{% with p=product.product %}
     <div class="Cart-product">
-    <div class="Cart-block Cart-block_row">
-        <div class="Cart-block Cart-block_pict"><a class="Cart-pict" href="{{ product.get_absolute_url() }}">
-            <img class="Cart-img"
-                 src='{{ product.image.url }}'
-                 alt="good's image"/></a>
-        </div>
-        <div class="Cart-block Cart-block_info"><a class="Cart-title" href="{{ product.get_absolute_url() }}">{{ product.name }}</a>
-            <div class="Cart-desc">{{ product.description|truncatewords(15) }}
+        <div class="Cart-block Cart-block_row">
+            <div class="Cart-block Cart-block_pict"><a class="Cart-pict" href="{{ p.get_absolute_url() }}">
+                <img class="Cart-img"
+                     src='{{ p.image.url }}'
+                     alt="good's image"/></a>
             </div>
-        </div>
-        <div class="Cart-block Cart-block_price">
-            <div class="Cart-price" id="product-price">${{ product.price }}
+            <div class="Cart-block Cart-block_info"><a class="Cart-title" href="{{ p.get_absolute_url() }}">{{ p.name }}</a>
+                <div class="Cart-desc">{{ p.description|truncatewords(15) }}
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="Cart-block Cart-block_row">
-        <div class="Cart-block Cart-block_seller">
-            <!-- - var options = setOptions(items, ['value', 'selected', 'disabled']);-->
-        </div>
-        <div class="Cart-block Cart-block_amount">
-            <div class="Cart-amount">
-                <div class="Amount">
-                    {% csrf_token %}
-                    <button class="Amount-remove" type="button">
-                    </button>
-                    {{ form.quantity }}
-                    <button class="Amount-add" type="button">
-                    </button>
-                    <input type="submit" value="&#8634;" name="product_quantity">
-                    <input type="hidden" class="product_id" id="product_id" name="product_id"
-                           value="{{ product.id }}">
+            <div class="Cart-block Cart-block_price">
+                <div class="Cart-price" id="product-price">${{ p.price }}
                 </div>
             </div>
         </div>
-        <div class="Cart-block Cart-block_delete"><a class="Cart-delete"
-                                                     href="{{ url('cart:cart_remove', product.id) }}"><img
-                src="{{ static('img/icons/card/delete.svg') }}" alt="Delete"/></a>
+        <div class="Cart-block Cart-block_row">
+            <div class="Cart-block Cart-block_seller">
+                <!-- - var options = setOptions(items, ['value', 'selected', 'disabled']);-->
+            </div>
+            <div class="Cart-block Cart-block_amount">
+                <div class="Cart-amount">
+                    <div class="Amount">
+                        {% csrf_token %}
+                        <button class="Amount-remove" type="button">
+                        </button>
+                        {{ form.quantity }}
+                        <button class="Amount-add" type="button">
+                        </button>
+                        <input type="submit" value="&#8634;" name="product_quantity">
+                        <input type="hidden" class="product_id" id="product_id" name="product_id"
+                               value="{{ p.id }}">
+                    </div>
+                </div>
+            </div>
+            <div class="Cart-block Cart-block_delete"><a class="Cart-delete"
+                                                         href="{{ url('cart:cart_remove', p.id) }}"><img
+                    src="{{ static('img/icons/card/delete.svg') }}" alt="Delete"/></a>
+            </div>
         </div>
     </div>
-</div>
 {% endwith %}
