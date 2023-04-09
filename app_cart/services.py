@@ -2,7 +2,7 @@ from decimal import Decimal
 
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import Sum, F, Count
+from django.db.models import Sum, F
 
 from app_cart.models import Cart, ProductInCart
 from app_goods.models import Product
@@ -11,10 +11,6 @@ from app_goods.models import Product
 class CartServices:
 
     def __init__(self, request):
-        """
-        Инициализировать корзину.
-        """
-
         self.use_db = False
         self.cart = None
         self.user = request.user
@@ -43,10 +39,11 @@ class CartServices:
             cart[str(item.good.id)] = {'product': item.good, 'quantity': item.quantity, 'price': item.price}
         return cart
 
-    def save_in_db(self, cart, user):
+    def save_in_db(self, cart, user) -> None:
         """Перенос корзины из сессии в БД"""
+        cart_exists = Cart.objects.filter(user=user, is_active=True).exists()
         for key, value in cart.items():
-            if Cart.objects.filter(user=user, is_active=True).exists():  # если корзина уже есть в БД
+            if cart_exists:  # если корзина уже есть в БД
                 try:
                     product = ProductInCart.objects.select_for_update().get(product=key)
                     product.quantity += cart[key]['quantity']
@@ -108,8 +105,9 @@ class CartServices:
         :return:
         """
         if self.use_db:
-            if self.qs.filter(product=product).exists():
-                self.qs.filter(product=product).delete()
+            product_ = self.qs.filter(product=product)
+            if product_.exists():
+                product_.delete()
         else:
             product_id = str(product.id)
             if product_id in self.cart:
@@ -122,20 +120,18 @@ class CartServices:
         из базы данных.
         """
         if self.use_db:
-            yield from self.cart.products.all()
-            # for product in self.cart.products.all():
-            #     yield product
-        else:
-            product_ids = self.cart.keys()
-            # получить объекты продукта и добавить их в корзину
-            products = Product.objects.filter(id__in=product_ids)
-            for product in products:
-                self.cart[str(product.id)]['product'] = product
+            return self.cart.products.all()
 
-            for item in self.cart.values():
-                item['price'] = Decimal(item['price'])
-                item['total_price'] = item['price'] * item['quantity']
-                yield item
+        product_ids = self.cart.keys()
+        # получить объекты продукта и добавить их в корзину
+        products = Product.objects.filter(id__in=product_ids)
+        for product in products:
+            self.cart[str(product.id)]['product'] = product
+
+        for item in self.cart.values():
+            item['price'] = Decimal(item['price'])
+            item['total_price'] = item['price'] * item['quantity']
+            yield item
 
     def __len__(self):
         """

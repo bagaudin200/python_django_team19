@@ -12,7 +12,7 @@
                 <h1 class="Middle-title">Корзина
                 </h1>
                 <ul class="breadcrumbs Middle-breadcrumbs">
-                    <li class="breadcrumbs-item"><a href="{{ url('goods:home') }}">Главная</a>
+                    <li class="breadcrumbs-item"><a href="{{ url('product:home') }}">Главная</a>
                     </li>
                     <li class="breadcrumbs-item breadcrumbs-item_current"><span>Корзина</span>
                     </li>
@@ -55,7 +55,7 @@
                         </button>
                     </div>
                     {% else %}
-                        <strong class="Cart-title">Ваша корзина пуста. Перейдите в <a href="{{ url('goods:catalog') }}">каталог</a>, чтобы совершить покупки</strong>
+                        <strong class="Cart-title">Ваша корзина пуста. Перейдите в <a href="{{ url('product:catalog') }}">каталог</a>, чтобы совершить покупки</strong>
                     {% endif %}
                 </div>
             {% endwith %}

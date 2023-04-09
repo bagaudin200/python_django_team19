@@ -1,16 +1,16 @@
 from django.contrib import messages
 from django.contrib.auth import get_user_model
-from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import redirect, render
-from django.views.generic import ListView, DetailView
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
-from django.views.generic.edit import FormView, FormMixin
+from django.views.generic import ListView, DetailView
+from django.views.generic.edit import FormView
 
+from app_cart.models import ProductInCart
 from app_cart.services import CartServices
 from app_users.views import MyRegistration
-from .forms import OrderStepTwoForm, OrderStepThreeForm, OrderStepFourForm, OrderStepOneForm
+from .forms import OrderStepTwoForm, OrderStepThreeForm
 from .models import Order
-from app_cart.models import Cart, ProductInCart
 from .services import OrderService
 
 user = get_user_model()
@@ -126,3 +126,12 @@ class OrderListView(ListView):
 class OrderDetailView(DetailView):
     model = Order
     template_name = 'app_order/detail_order.jinja2'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        order = self.object
+        order_service = OrderService(self.request)
+        context['order_status'] = order_service.get_status()
+        context['order'] = order_service.get_order_by_id(order.id)
+        context['order_paid'] = order_service.paid(order)
+        return context

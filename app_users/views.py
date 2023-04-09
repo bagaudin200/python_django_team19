@@ -1,19 +1,22 @@
-from django.shortcuts import redirect
 from contextlib import suppress
+
 from bootstrap_modal_forms.generic import BSModalLoginView
+from django.contrib import messages
 from django.contrib.auth import authenticate, login
+from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import Group
 from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView, PasswordResetDoneView, \
     PasswordResetConfirmView, PasswordResetCompleteView
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect, JsonResponse
+from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.views.decorators.http import require_GET
 from django.views.generic import CreateView, TemplateView
 from django.views.generic.edit import UpdateView
-from django.contrib.auth import get_user_model
-from django.contrib import messages
+
+from app_order.services import OrderService
 from .forms import UserCreateForm, UserLoginForm, MyUserChangeForm, MyPasswordResetForm, MySetPasswordForm
 
 User = get_user_model()
@@ -44,7 +47,6 @@ class MyRegistration(CreateView):
             login(request, user)
             return HttpResponseRedirect(self.success_url)
         return self.form_invalid(form)
-
 
 
 class ProfileView(LoginRequiredMixin, UpdateView):
@@ -113,6 +115,12 @@ class MyPasswordResetCompleteView(PasswordResetCompleteView):
 class AccountView(LoginRequiredMixin, TemplateView):
     template_name = 'app_users/account.jinja2'
     raise_exception = True
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        order_service = OrderService(self.request)
+        context['last_order'] = order_service.get_last_order()
+        return context
 
 
 @require_GET

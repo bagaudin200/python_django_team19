@@ -2,17 +2,18 @@ from typing import List
 
 from django.db.models import Sum, F
 
-from app_cart.models import Cart
-from app_order.models import Order
 from app_cart.services import CartServices
+from app_order.models import Order
 from app_settings.models import SiteSettings
 
 
 class OrderService:
     """Сервис для работы с заказами"""
+
     def __init__(self, request):
         self.request = request
         self.cart = CartServices(request).cart
+
     def get_history(self) -> List:
         """
         Возвращает историю заказов пользователя
@@ -21,13 +22,21 @@ class OrderService:
         """
         return ['Товар 1', 'Товар 2', 'Товар 3']
 
-    def payment(self) -> None:
+    def get_last_order(self) -> Order:
         """
-        Оплата заказа
-        :return: None
-        :rtype: None
+        Возвращает последний заказ пользователя
         """
-        pass
+        return Order.objects.select_related('cart').last()
+
+    def get_order_by_id(self, id_: int) -> Order:
+        """
+        Возвращает заказ по id
+        :return:
+        """
+        return Order.objects.get(id=id_)
+
+    def paid(self, order) -> bool:
+        return order.status in [Order.STATUS_OK, Order.STATUS_PAID, Order.STATUS_DELIVERED]
 
     def get_status(self) -> str:
         """
@@ -52,7 +61,7 @@ class OrderService:
         if self.request.session.get('delivery') == 'express':
             total_price += SiteSettings.load().express_order_price
         return total_price
-        
+
     def get_format_phone_number(self):
         """Получение отформатированного номера телефона"""
         if self.request.user.phoneNumber:

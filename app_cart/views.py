@@ -20,7 +20,7 @@ class CartDetail(TemplateView):
         cart = CartServices(self.request)
         context['cart'] = cart
         if self.request.user.is_authenticated:
-            context['forms'] = [CartAddProductModelForm(instance=item) for item in cart]
+            context['forms'] = [CartAddProductModelForm(instance=item) for item in cart.qs]
         else:
             for item in cart:
                 item['update_quantity_form'] = CartAddProductForm(

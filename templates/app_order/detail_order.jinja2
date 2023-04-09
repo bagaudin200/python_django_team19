@@ -1,129 +1,129 @@
 {% extends 'base.jinja2' %}
 
-{% block title%}Заказ{% endblock %}
+{% block title %}Заказ{% endblock %}
 
 {% block content %}
     <div class="Middle Middle_top">
-    <div class="Middle-top">
-      <div class="wrap">
-        <div class="Middle-header">
-          <h1 class="Middle-title">Заказ {{ order.id }}</h1>
-          <ul class="breadcrumbs Middle-breadcrumbs">
-            <li class="breadcrumbs-item"><a href="index.html">home</a>
-            </li>
-            <li class="breadcrumbs-item"><a href="{{ url('order:history') }}">История заказов</a>
-            </li>
-            <li class="breadcrumbs-item breadcrumbs-item_current"><span>Заказ {{ order.id }}</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="Section">
-      <div class="wrap">
-        <div class="Section-content">
-          <div class="Orders">
-          </div>
-          <div class="Order">
-            <div class="Order-infoBlock">
-              <div class="Order-personal">
-                <div class="row">
-                  <div class="row-block">
-                    <div class="Order-info Order-info_date">
-                      <div class="Order-infoType">
-                          Дата заказа:
-                      </div>
-                      <div class="Order-infoContent">
-                          {{ order.created_at.strftime('%Y-%m-%d') }}
-                      </div>
-                    </div>
-                    <div class="Order-info">
-                      <div class="Order-infoType">
-                          ФИО:
-                      </div>
-                      <div class="Order-infoContent">
-                          {{ order.user.full_name }}
-                      </div>
-                    </div>
-                    <div class="Order-info">
-                      <div class="Order-infoType">
-                          Телефон:
-                      </div>
-                      <div class="Order-infoContent">
-
-                      </div>
-                    </div>
-                    <div class="Order-info">
-                      <div class="Order-infoType">
-                          E-mail:
-                      </div>
-                      <div class="Order-infoContent">
-                          {{ order.user.email }}
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row-block">
-                    <div class="Order-info Order-info_delivery">
-                      <div class="Order-infoType">
-                          Тип доставки:
-                      </div>
-                      <div class="Order-infoContent">
-                          {{ order.get_delivery_type_display() }}
-                      </div>
-                    </div>
-                    <div class="Order-info">
-                      <div class="Order-infoType">
-                          Город:
-                      </div>
-                      <div class="Order-infoContent">
-
-                      </div>
-                    </div>
-                    <div class="Order-info">
-                      <div class="Order-infoType">
-                          Адрес:
-                      </div>
-                      <div class="Order-infoContent">
-
-                      </div>
-                    </div>
-                    <div class="Order-info Order-info_pay">
-                      <div class="Order-infoType">
-                          Оплата:
-                      </div>
-                      <div class="Order-infoContent">
-                          {{ order.get_payment_type_display() }}
-                      </div>
-                    </div>
-                    <div class="Order-info Order-info_status">
-                      <div class="Order-infoType">
-                          Статус:
-                      </div>
-                      <div class="Order-infoContent">
-                          {{ order.get_status_display() }}
-                      </div>
-                    </div>
-
-                    {% if order.status=='unpaid' %}
-                        <div class="Order-info Order-info_error">
-                            <div class="Order-infoType">
-                                Не оплачен
-                            </div>
-                            <div class="Order-infoContent">
-                                Оплата не выполнена, т.к. вы подозреваетесь в нетолерантности
-                            </div>
-                        </div>
-                    {% endif %}
-                  </div>
+        <div class="Middle-top">
+            <div class="wrap">
+                <div class="Middle-header">
+                    <h1 class="Middle-title">Заказ {{ order.id }}</h1>
+                    <ul class="breadcrumbs Middle-breadcrumbs">
+                        <li class="breadcrumbs-item"><a href="{{ url('product:home') }}">Главная</a>
+                        </li>
+                        <li class="breadcrumbs-item"><a href="{{ url('order:history') }}">История заказов</a>
+                        </li>
+                        <li class="breadcrumbs-item breadcrumbs-item_current"><span>Заказ {{ order.id }}</span>
+                        </li>
+                    </ul>
                 </div>
-              </div>
-
-            {% include "app_order/order_product_list.jinja2" ignore missing %}
-
             </div>
-          </div>
         </div>
-      </div>
+        <div class="Section">
+            <div class="wrap">
+                <div class="Section-content">
+                    <div class="Orders">
+                    </div>
+                    <div class="Order">
+                        <div class="Order-infoBlock">
+                            <div class="Order-personal">
+                                <div class="row">
+                                    <div class="row-block">
+                                        <div class="Order-info Order-info_date">
+                                            <div class="Order-infoType">
+                                                Дата заказа:
+                                            </div>
+                                            <div class="Order-infoContent">
+                                                {{ order.created_at.strftime('%d.%m.%Y') }}
+                                            </div>
+                                        </div>
+                                        <div class="Order-info">
+                                            <div class="Order-infoType">
+                                                ФИО:
+                                            </div>
+                                            <div class="Order-infoContent">
+                                                {{ order.cart.user.full_name }}
+                                            </div>
+                                        </div>
+                                        <div class="Order-info">
+                                            <div class="Order-infoType">
+                                                Телефон:
+                                            </div>
+                                            <div class="Order-infoContent">
+                                                {{ order.cart.user.phoneNumber }}
+                                            </div>
+                                        </div>
+                                        <div class="Order-info">
+                                            <div class="Order-infoType">
+                                                E-mail:
+                                            </div>
+                                            <div class="Order-infoContent">
+                                                {{ order.cart.user.email }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-block">
+                                        <div class="Order-info Order-info_delivery">
+                                            <div class="Order-infoType">
+                                                Тип доставки:
+                                            </div>
+                                            <div class="Order-infoContent">
+                                                {{ order.get_delivery_type_display() }}
+                                            </div>
+                                        </div>
+                                        <div class="Order-info">
+                                            <div class="Order-infoType">
+                                                Город:
+                                            </div>
+                                            <div class="Order-infoContent">
+                                                {{ order.city }}
+                                            </div>
+                                        </div>
+                                        <div class="Order-info">
+                                            <div class="Order-infoType">
+                                                Адрес:
+                                            </div>
+                                            <div class="Order-infoContent">
+                                                {{ order.address }}
+                                            </div>
+                                        </div>
+                                        <div class="Order-info Order-info_pay">
+                                            <div class="Order-infoType">
+                                                Оплата:
+                                            </div>
+                                            <div class="Order-infoContent">
+                                                {{ order.get_payment_type_display() }}
+                                            </div>
+                                        </div>
+                                        <div class="Order-info Order-info_status">
+                                            <div class="Order-infoType">
+                                                Статус:
+                                            </div>
+                                            <div class="Order-infoContent">
+                                                {{ order.get_status_display() }}
+                                            </div>
+                                        </div>
+
+                                        {% if order.status=='unpaid' %}
+                                            <div class="Order-info Order-info_error">
+                                                <div class="Order-infoType">
+                                                    Не оплачен
+                                                </div>
+                                                <div class="Order-infoContent">
+                                                    Оплата не выполнена, т.к. вы подозреваетесь в нетолерантности
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% include "app_order/order_product_list.jinja2" ignore missing %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 {% endblock %}
