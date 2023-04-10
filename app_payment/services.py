@@ -1,7 +1,7 @@
 import random
 
 from django.core.exceptions import ObjectDoesNotExist
-from django.db import transaction
+from django.db import IntegrityError
 
 from app_cart.models import ProductInCart, Cart
 from app_order.models import Order
@@ -17,7 +17,6 @@ class PaymentService:
         self.card_number = str(card_number)
         self.total_price = total_price
 
-    @transaction.atomic
     def pay(self):
         order = self._get_order()
         if isinstance(order, str):
@@ -32,15 +31,25 @@ class PaymentService:
                 order.save()
                 cart.is_active = False
                 cart.save()
-                payment.save()
+                try:
+                    payment.save()
+                except IntegrityError:
+                    payment = Payment.objects.get(order=order)
+                    payment.reason_for_non_payment = Payment.REASON_NONE
+                    payment.save()
                 return (f"OK: Payment for order #{self.order_id} from card {self.card_number} "
                         f"in the amount of ${self.total_price}")
             else:
                 order.status = Order.STATUS_NOT_PAID
                 order.save()
-                reason = self._get_random_reason()
-                payment.reason_for_non_payment = reason
-                payment.save()
+                reason = Payment.REASON_OUT_OF_STOCK
+                try:
+                    payment.reason_for_non_payment = reason
+                    payment.save()
+                except IntegrityError:
+                    payment = Payment.objects.get(order=order)
+                    payment.reason_for_non_payment = reason
+                    payment.save()
                 return (f"ERROR: Order payment failed #{self.order_id} from card {self.card_number} "
                         f"in the amount of ${self.total_price}. "
                         f"Reason: {Payment.REASON_OUT_OF_STOCK}(product: {update_products}, "

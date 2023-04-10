@@ -43,7 +43,7 @@ class CartServices:
         """Перенос корзины из сессии в БД"""
         cart_exists = Cart.objects.filter(user=user, is_active=True).exists()
         for key, value in cart.items():
-            if cart_exists:  # если корзина уже есть в БД
+            if cart_exists:
                 try:
                     product = ProductInCart.objects.select_for_update().get(product=key)
                     product.quantity += cart[key]['quantity']
@@ -54,9 +54,9 @@ class CartServices:
                         cart=Cart.objects.filter(user=user, is_active=True).first(),
                         quantity=cart[key]['quantity']
                     )
-            else:  # если корзины еще нет в БД
+            else:
                 product = Product.objects.get(id=key)
-                cart_ = Cart.objects.create(user=user)
+                cart_ = Cart.objects.update_or_create(user=user)
                 ProductInCart.objects.create(
                     product=product,
                     cart=cart_,

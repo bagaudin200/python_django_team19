@@ -25,6 +25,7 @@ class ProgressPaymentView(TemplateView):
         cart = CartServices(request)
         order = Order.objects.get(cart=cart.cart)
         card_number = request.session.get('card_number')
-        pay.delay(order.id, card_number, order.total_price)
+        message = pay.delay(order.id, card_number, order.total_price)
+        request.session['payment_message'] = message.info
         del request.session['card_number']
-        return HttpResponseRedirect(reverse('goods:catalog'))
+        return HttpResponseRedirect(reverse('product:catalog'))
