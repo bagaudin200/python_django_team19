@@ -121,10 +121,8 @@ class OrderListView(ListView):
     context_object_name = 'orders'
 
     def get_context_data(self, **kwargs):
-        order_service = OrderService(self.request)
         context = super(OrderListView, self).get_context_data(**kwargs)
         context['carts'] = Cart.objects.all()
-        context['total_price'] = order_service.get_total_price()
         return context
 
 
@@ -134,9 +132,6 @@ class OrderDetailView(DetailView):
     context_object_name = 'order'
 
     def get_context_data(self, **kwargs):
-        order_service = OrderService(self.request)
         context = super().get_context_data(**kwargs)
-        cart = CartServices(self.request)
-        context['cart'] = cart
-        context['total_price'] = order_service.get_total_price()
+        context['products'] = ProductInCart.objects.all()
         return context

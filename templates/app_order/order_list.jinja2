@@ -30,7 +30,7 @@
                                 </div>
                                 <div class="Order-infoContent">
                                     <span class="Order-price">
-                                        {{ total_price|round(2, 'common') }}$
+                                        {{ cart.order.total_price|round(2, 'common') }}$
                                     </span>
                                 </div>
                             </div><div class="Order-info Order-info_status">
@@ -47,8 +47,6 @@
                     </div>
                 {% endif %}
             {% endfor %}
-        {% else %}
-            <p>Заказов пока нет.</p>
         {% endif %}
     </div>
 </div>
