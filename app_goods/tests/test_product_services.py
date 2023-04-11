@@ -1,8 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AnonymousUser
 from django.test import TestCase
-from importlib import import_module
-from django.conf import settings
 
 from app_cart.models import Cart, ProductInCart
 from app_goods.models import Product, Image
@@ -64,24 +62,3 @@ class ProductTestCase(TestCase):
         result = self.product_service.get_images()
         self.assertEqual(type(images), type(result))
         self.assertEqual(images.count(), result.count())
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,4 +1,4 @@
-from typing import List
+from typing import Tuple, Any
 
 from django.db.models import Sum, F
 
@@ -16,46 +16,60 @@ class OrderService:
 
     def get_last_order(self) -> Order:
         """
-        Возвращает последний заказ пользователя
+        Возвращает последнюю заказ пользователя
+        :return: последнюю заказ пользователя
         """
         return Order.objects.select_related('cart').last()
 
     def get_order_by_id(self, id_: int) -> Order:
         """
         Возвращает заказ по id
-        :return:
+        :return: заказ пользователя
         """
         return Order.objects.get(id=id_)
 
     def paid(self, order) -> bool:
+        """
+        Возвращает статус заказа
+        :param order: модель заказа
+        :return: булево значение
+        """
         return order.status in [Order.STATUS_OK, Order.STATUS_PAID, Order.STATUS_DELIVERED]
 
     def get_status(self) -> str:
         """
         Получение статуса заказа
         :return: статус заказа
-        :rtype: str
         """
         return 'Оплачено'
 
-    def get_info_about_delivery_and_payment(self):
-        """Получение информации из сессии о типе доставки и оплаты"""
+    def get_info_about_delivery_and_payment(self) -> Tuple[Any, Any]:
+        """
+        Получение информации из сессии о типе доставки и оплаты
+        :return: имя типа доставки и имя типа оплаты заказа
+        """
         delivery_name = Order.DELIVERY_TYPES_DICT.get(self.request.session['delivery'])
         payment_name = Order.PAYMENT_TYPES_DICT.get(self.request.session['payment'])
         return delivery_name, payment_name
 
     def get_total_price(self):
-        """Получение информации об общей стоимости заказа"""
+        """
+        Получение стоимости заказа с учетом выбранного типа доставки
+        :return: стоимость заказа
+        """
         total_price = self.cart.products.only('quantity', 'price').aggregate(total=Sum(F('quantity') *
                                                                                        F('product__price')))['total']
-        if total_price < 100:
+        if total_price < SiteSettings.load().min_order_price_for_free_shipping:
             total_price += SiteSettings.load().standard_order_price
         if self.request.session.get('delivery') == 'express':
             total_price += SiteSettings.load().express_order_price
         return total_price
 
-    def get_format_phone_number(self):
-        """Получение отформатированного номера телефона"""
+    def get_format_phone_number(self) -> str:
+        """
+        Получение отформатированного номера телефона
+        :return: отформатированный номер телефона
+        """
         if self.request.user.phoneNumber:
             phone_number = '+7 ({}{}{}) {}{}{}-{}{}-{}{}'.format(
                 self.request.user.phoneNumber[0],

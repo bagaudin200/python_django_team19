@@ -1,5 +1,3 @@
-import json
-
 from django.contrib import messages
 from django.core.cache import cache
 from django.shortcuts import redirect

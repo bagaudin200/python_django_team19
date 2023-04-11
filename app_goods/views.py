@@ -1,11 +1,11 @@
 from django.contrib import messages
 from django.core.cache import cache
+from django.core.handlers.wsgi import WSGIRequest
 from django.core.paginator import Page
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import FormMixin
-from django.views.generic.list import MultipleObjectMixin
 
 from app_cart.services import CartServices
 from app_goods.forms import AddProductToCardForm, ReviewsForm
@@ -19,6 +19,9 @@ from .services.reviews_services import ReviewsService
 
 
 class GoodsDetailView(DetailView):
+    """
+    Отображает детальную страницу товара
+    """
     model = Product
     template_name = 'app_goods/product.jinja2'
     context_object_name = 'product'
@@ -74,7 +77,12 @@ class GoodsDetailView(DetailView):
         return context
 
 
-def add_review(request):
+def add_review(request: WSGIRequest):
+    """
+    Добавляет коментарий о товаре
+    :param request: пост запрос
+    :return: обновляет страницу
+    """
     if request.method == 'POST':
         form = ReviewsForm(request.POST)
         if form.is_valid():

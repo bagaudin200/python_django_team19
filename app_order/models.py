@@ -1,8 +1,6 @@
 from django.db import models
 
 from app_cart.models import Cart
-from app_goods.models import Product
-from app_users.models import User
 
 
 class Order(models.Model):
@@ -40,7 +38,7 @@ class Order(models.Model):
             (STATUS_PAID, 'оплачен'),
         )
          ),
-        (STATUS_NOT_PAID, 'не оплачен'),
+        (STATUS_NOT_PAID, 'не оплачен')
     ]
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='created at')
     delivery_type = models.CharField(max_length=50, choices=DELIVERY_TYPES, verbose_name='delivery type', blank=False,

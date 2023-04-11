@@ -1,5 +1,4 @@
 from django import forms
-from django.core.exceptions import ValidationError
 from django.forms import TextInput, Textarea
 
 from app_cart.models import ProductInCart
@@ -7,6 +6,9 @@ from .models import Review
 
 
 class AddProductToCardForm(forms.ModelForm):
+    """
+    Форма для добавления товара в корзину
+    """
     class Meta:
         model = ProductInCart
         fields = ('quantity',)
@@ -19,13 +21,15 @@ class AddProductToCardForm(forms.ModelForm):
 
     def clean_quantity(self):
         quantity = self.cleaned_data['quantity']
-        if quantity == 0:
+        if quantity <= 0:
             quantity = 1
         return quantity
 
 
-
 class ReviewsForm(forms.ModelForm):
+    """
+    Форма для добавления комментария к товару
+    """
     class Meta:
         model = Review
         fields = ('text',)
@@ -44,9 +48,3 @@ class FilterForm(forms.Form):
     name = forms.CharField()
     in_stock = forms.BooleanField()
     free_delivery = forms.BooleanField()
-
-
-class Reviewsform(forms.ModelForm):
-    class Meta:
-        model = Review
-        fields = ('text',)

@@ -11,4 +11,3 @@ urlpatterns = [
     path('history/', views.OrderListView.as_view(), name='history'),
     path('history/<int:pk>/', views.OrderDetailView.as_view(), name='detail_order'),
 ]
-

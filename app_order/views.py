@@ -17,6 +17,9 @@ user = get_user_model()
 
 
 class OrderStepOneView(MyRegistration):
+    """
+    Отображает страницу первого шага заказа
+    """
     template_name = 'app_order/order_step_1.jinja2'
     success_url = reverse_lazy('order:order_step_2')
 
@@ -36,6 +39,9 @@ class OrderStepOneView(MyRegistration):
 
 
 class OrderStepTwoView(FormView):
+    """
+    Отображает страницу второго шага заказа
+    """
     form_class = OrderStepTwoForm
     template_name = 'app_order/order_step_2.jinja2'
 
@@ -60,6 +66,9 @@ class OrderStepTwoView(FormView):
 
 
 class OrderStepThreeView(FormView):
+    """
+    Отображает страницу третьего шага заказа
+    """
     form_class = OrderStepThreeForm
     template_name = 'app_order/order_step_3.jinja2'
 
@@ -78,6 +87,9 @@ class OrderStepThreeView(FormView):
 
 
 class OrderStepFourView(ListView):
+    """
+    Отображает страницу четвертого шага заказа
+    """
     model = ProductInCart
     paginate_by = 5
     template_name = 'app_order/order_step_4.jinja2'
