@@ -1,3 +1,4 @@
+from decimal import Decimal
 from typing import Tuple, Any
 
 from django.db.models import Sum, F
@@ -60,9 +61,9 @@ class OrderService:
         total_price = self.cart.products.only('quantity', 'price').aggregate(total=Sum(F('quantity') *
                                                                                        F('product__price')))['total']
         if total_price < SiteSettings.load().min_order_price_for_free_shipping:
-            total_price += SiteSettings.load().standard_order_price
+            total_price += Decimal(SiteSettings.load().standard_order_price)
         if self.request.session.get('delivery') == 'express':
-            total_price += SiteSettings.load().express_order_price
+            total_price += Decimal(SiteSettings.load().express_order_price)
         return total_price
 
     def get_format_phone_number(self) -> str:
