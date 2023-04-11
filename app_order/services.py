@@ -1,7 +1,7 @@
 from decimal import Decimal
 from typing import Tuple, Any
 
-from django.db.models import Sum, F
+from django.db.models import Sum, F, QuerySet
 
 from app_cart.services import CartServices
 from app_order.models import Order
@@ -28,6 +28,13 @@ class OrderService:
         :return: заказ пользователя
         """
         return Order.objects.get(id=id_)
+
+    def get_history(self) -> QuerySet[Order]:
+        """
+        Возвращает историю заказов
+        :return: история заказов
+        """
+        return Order.objects.select_related('cart__user').filter(cart__user=self.cart.user).order_by('-created_at')
 
     def paid(self, order) -> bool:
         """

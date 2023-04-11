@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
@@ -38,7 +39,7 @@ class OrderStepOneView(MyRegistration):
         return super().post(request, *args, **kwargs)
 
 
-class OrderStepTwoView(FormView):
+class OrderStepTwoView(LoginRequiredMixin, FormView):
     """
     Отображает страницу второго шага заказа
     """
@@ -65,7 +66,7 @@ class OrderStepTwoView(FormView):
         return reverse('order:order_step_3')
 
 
-class OrderStepThreeView(FormView):
+class OrderStepThreeView(LoginRequiredMixin, FormView):
     """
     Отображает страницу третьего шага заказа
     """
@@ -86,7 +87,7 @@ class OrderStepThreeView(FormView):
         return reverse('order:order_step_4')
 
 
-class OrderStepFourView(ListView):
+class OrderStepFourView(LoginRequiredMixin, ListView):
     """
     Отображает страницу четвертого шага заказа
     """
@@ -129,13 +130,18 @@ class OrderStepFourView(ListView):
         return context
 
 
-class OrderListView(ListView):
+class OrderListView(LoginRequiredMixin, ListView):
     model = Order
     template_name = 'app_order/history.jinja2'
     context_object_name = 'orders'
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['history'] = OrderService(self.request).get_history()
+        return context
 
-class OrderDetailView(DetailView):
+
+class OrderDetailView(LoginRequiredMixin, DetailView):
     model = Order
     template_name = 'app_order/detail_order.jinja2'
 

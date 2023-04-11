@@ -1,7 +1,7 @@
 from django.urls import path
 from app_goods.views import GoodsDetailView, CatalogView, HomePageView, add_review
 
-app_name = 'goods'
+app_name = 'product'
 
 urlpatterns = [
     path('', HomePageView.as_view(), name='home'),
