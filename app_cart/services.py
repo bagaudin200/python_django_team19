@@ -6,6 +6,7 @@ from django.db.models import Sum, F
 
 from app_cart.models import Cart, ProductInCart
 from app_goods.models import Product
+from app_users.models import User
 
 
 class CartServices:
@@ -33,19 +34,23 @@ class CartServices:
                 cart = self.session[settings.CART_SESSION_ID] = {}
         self.cart = cart
 
-    def get_cart_from_db(self, qs):
-        cart = {}
-        for item in qs:
-            cart[str(item.good.id)] = {'product': item.good, 'quantity': item.quantity, 'price': item.price}
-        return cart
+    def save_in_db(self, cart: dict, user: User) -> None:
+        """
+        Перенос корзины из сессии в БД
+        :param cart: корзина из сессии
+        :param user: пользователь
+        :return: None
+        """
+        try:
+            cart_ = Cart.objects.get(user=user, is_active=True)
+            cart_exists = True
+        except ObjectDoesNotExist:
+            cart_exists = False
 
-    def save_in_db(self, cart, user) -> None:
-        """Перенос корзины из сессии в БД"""
-        cart_exists = Cart.objects.filter(user=user, is_active=True).exists()
         for key, value in cart.items():
             if cart_exists:
                 try:
-                    product = ProductInCart.objects.select_for_update().get(product=key)
+                    product = ProductInCart.objects.filter(cart=cart_).select_for_update().get(product=key)
                     product.quantity += cart[key]['quantity']
                     product.save()
                 except ObjectDoesNotExist:
@@ -63,9 +68,13 @@ class CartServices:
                     quantity=value['quantity'],
                 )
 
-    def add(self, product, quantity=1, update_quantity=False):
+    def add(self, product: Product, quantity: int = 1, update_quantity: bool = False) -> None:
         """
-        Добавьте товар в корзину или обновите его количество.
+        Добавляет товар в корзину и обновляет его количество
+        :param product: товар
+        :param quantity: количество
+        :param update_quantity: флаг, указывающий, нужно ли обновить товар (True) либо добавить его (False)
+        :return: None
         """
         if self.use_db:
             if self.qs.filter(product=product).exists():
@@ -91,18 +100,22 @@ class CartServices:
                 self.cart[product_id]['quantity'] = quantity
             self.save()
 
-    def save(self):
+    def save(self) -> None:
+        """
+        Сохранение корзины в сессии
+        :return: None
+        """
         if not self.use_db:
             # обновить корзину сеансов
             self.session[settings.CART_SESSION_ID] = self.cart
             # пометить сеанс как «измененный», чтобы убедиться, что он сохранен
             self.session.modified = True
 
-    def remove(self, product):
+    def remove(self, product: Product) -> None:
         """
-        Удалить товар из корзины
-        :param product:
-        :return:
+        Удаление товара из корзины
+        :param product: товар
+        :return: None
         """
         if self.use_db:
             product_ = self.qs.filter(product=product)
@@ -116,11 +129,11 @@ class CartServices:
 
     def __iter__(self):
         """
-        Перебирайте товары в корзине, и получайте товары
-        из базы данных.
+        Перебор товаров из корзины
+        :return:
         """
-        if self.use_db:
-            return self.cart.products.all()
+        # if self.use_db:
+        #     return self.cart.products.all()
 
         product_ids = self.cart.keys()
         # получить объекты продукта и добавить их в корзину
@@ -133,16 +146,21 @@ class CartServices:
             item['total_price'] = item['price'] * item['quantity']
             yield item
 
-    def __len__(self):
+    def __len__(self) -> int:
         """
-        Подсчитайте все товары в корзине.
+        Считает количество товаров в корзине
+        :return: количество товаров в корзине
         """
         if self.use_db:
             result = ProductInCart.objects.filter(cart=self.cart).aggregate(Sum('quantity'))['quantity__sum']
             return result if result else 0
         return sum(item['quantity'] for item in self.cart.values())
 
-    def get_total_price(self):
+    def get_total_price(self) -> Decimal:
+        """
+        Считает итоговую цену товаров корзины
+        :return: цена товаров в корзине
+        """
         if self.use_db:
             total = self.qs.only('quantity', 'price').aggregate(total=Sum(F('quantity') * F('product__price')))['total']
             if not total:
@@ -151,7 +169,7 @@ class CartServices:
         else:
             return sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values())
 
-    def clear(self, only_session=False):
+    def clear(self, only_session: bool = False) -> None:
         """
         Удалить корзину из сеанса или из базы данных, если пользователь авторизован
         :return:

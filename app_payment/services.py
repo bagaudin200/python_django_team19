@@ -1,9 +1,11 @@
 import random
+from typing import Union
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 
 from app_cart.models import ProductInCart, Cart
+from app_goods.models import Product
 from app_order.models import Order
 from app_payment.models import Payment
 from .utils import card_number_is_valid
@@ -17,7 +19,11 @@ class PaymentService:
         self.card_number = str(card_number)
         self.total_price = total_price
 
-    def pay(self):
+    def pay(self) -> str:
+        """
+        Оплата заказа
+        :return: сообщение оплаты
+        """
         order = self._get_order()
         if isinstance(order, str):
             return order
@@ -65,9 +71,17 @@ class PaymentService:
                 f"in the amount of ${self.total_price}. Reason: {reason}")
 
     def get_status(self) -> str:
+        """
+        Получает статус заказа
+        :return: статус заказа
+        """
         return self._get_order().status
 
     def _get_random_reason(self) -> str:
+        """
+        Получает случайную причину отказа оплаты
+        :return:
+        """
         return random.choice(
             [
                 Payment.REASON_INSUFFICIENT_FUNDS,
@@ -77,17 +91,31 @@ class PaymentService:
         )
 
     def _get_random_success_status(self) -> str:
+        """
+        Получает случайный успешный статус
+        :return:
+        """
         return random.choice(
             [Order.STATUS_OK, Order.STATUS_DELIVERED, Order.STATUS_PAID]
         )
 
-    def _get_order(self):
+    def _get_order(self) -> Union[Order, str]:
+        """
+        Получает заказ, который нужно оплатить, или в случае неудачи, возвращает сообщение об ошибке
+        :return: заказ или сообщение об ошибке
+        """
         try:
             return Order.objects.get(id=self.order_id)
         except ObjectDoesNotExist:
             return f"ERROR: Order does not exist. Please place an order first"
 
-    def _update_products_in_cart(self, cart: Cart):
+    def _update_products_in_cart(self, cart: Cart) -> Union[Product, bool]:
+        """
+        Проверяет, не уйдет ли в минус кол-во товара на складе после оплаты.
+        Если все ОК, то возвращает True, иначе возвращает товар, который не удалось обновить
+        :param cart: корзина пользователя
+        :return: True или товар
+        """
         products_in_cart = ProductInCart.objects.filter(cart=cart)
         for item in products_in_cart:
             expected_quantity = item.product.quantity - item.quantity

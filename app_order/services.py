@@ -19,7 +19,7 @@ class OrderService:
         Возвращает последнюю заказ пользователя
         :return: последнюю заказ пользователя
         """
-        return Order.objects.select_related('cart').last()
+        return Order.objects.select_related('cart__user').filter(cart__user=self.cart.user).last()
 
     def get_order_by_id(self, id_: int) -> Order:
         """
