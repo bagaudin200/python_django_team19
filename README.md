@@ -61,6 +61,33 @@ python manage.py loadscript no_clear
 ```
 Более подробно узнать о функциях скрипта можно в файле loadscript.md 
 
+### Установка Redis
+
+Следующим шагом необходимо установить Redis на компьютер. Скачать: https://redis.io/download/
+
+
+## Запуск
+В первую очередь необходимо открыть терминал и запустить redis-сервер командой:
+```
+redis-server
+```
+Затем открыть еще одно окно терминала и перейти в папку с проектом:
+```
+cd .../python_django_team19
+```
+и активировать виртуальное окружение:
+```
+source venv/bin/activate  # для Linux
+venv\Scripts\activate.bat  # для Windows
+```
+После активации виртуального окружения необходимо запустить celery в этом же терминале:
+```
+celery -A config worker -l info
+```
+После запуска celery запускаем Django-сервер в отдельном терминале:
+```
+python manage.py runserver
+```
 ## Особенности
 В проекте используется шаблонизатор jinja2 (https://jinja.palletsprojects.com)
 
