@@ -1,5 +1,4 @@
 from django.db import models
-from django.template.defaultfilters import truncatechars
 from django.urls import reverse
 from mptt.models import MPTTModel, TreeForeignKey
 from taggit.managers import TaggableManager

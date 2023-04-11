@@ -1,4 +1,6 @@
 from django.test import TestCase
+from django.urls import reverse
+
 from app_settings.models import SiteSettings
 from app_goods.models import Category, Product
 
@@ -12,7 +14,7 @@ class TestShopView(TestCase):
         settings = SiteSettings.objects.create(express_order_price=500, standard_order_price=200)
         settings.save()
         product = Product.objects.create(id=1, name='test_product', category=category, price=10,
-                                          is_limited=True)
+                                         is_limited=True)
         product.save()
 
     def test_main_page_exist_at_desired_location(self):
@@ -31,3 +33,19 @@ class TestShopView(TestCase):
         limited = response.context.get('is_limited')
         self.assertEqual(1, len(products))
         self.assertEqual(1, len(is_limited))
+
+
+class TestProductView(TestCase):
+    fixtures = ['fixtures/categories', 'fixtures/products', 'fixtures/images']
+
+    def setUp(self):
+        self.product = Product.objects.get(id=1)
+
+    def test_blogs_exists_at_desired_location(self):
+        response = self.client.get(reverse('product:product', args=(self.product.slug,)))
+        self.assertEqual(response.status_code, 200)
+
+
+
+
+
