@@ -13,11 +13,11 @@ User = get_user_model()
 class ProductService:
     """Сервис для работы с товаром"""
 
-    def __init__(self, request: HttpRequest, product: Product, slug):
+    def __init__(self, request: HttpRequest, profile: User, product: Product, slug: str):
         self.product = product
         self.request = request
         self.slug = slug
-        self.profile = request.user
+        self.profile = profile
 
     def check_product_quantity(self, quantity: int) -> bool:
         """Проверяет допустимое количество товара на складе"""

@@ -14,14 +14,6 @@ class OrderService:
         self.request = request
         self.cart = CartServices(request).cart
 
-    def get_history(self) -> List:
-        """
-        Возвращает историю заказов пользователя
-        :return: история заказов
-        :rtype: list
-        """
-        return ['Товар 1', 'Товар 2', 'Товар 3']
-
     def get_last_order(self) -> Order:
         """
         Возвращает последний заказ пользователя

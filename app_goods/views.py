@@ -5,6 +5,7 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import FormMixin
+from django.views.generic.list import MultipleObjectMixin
 
 from app_cart.services import CartServices
 from app_goods.forms import AddProductToCardForm, ReviewsForm
@@ -14,7 +15,7 @@ from app_settings.models import SiteSettings
 from .forms import FilterForm
 from .services.home_page_services import HomePageServices
 from .services.product_services import ProductService
-from .services.reviews_services import ReviewService
+from .services.reviews_services import ReviewsService
 
 
 class GoodsDetailView(DetailView):
@@ -36,7 +37,12 @@ class GoodsDetailView(DetailView):
     def post(self, request, *args, **kwargs):
         form = AddProductToCardForm(request.POST)
         if form.is_valid():
-            product_service = ProductService(self.request, self.get_object(), kwargs['slug'])
+            product_service = ProductService(
+                self.request,
+                self.request.user,
+                self.get_object(),
+                kwargs['slug']
+            )
             quantity = form.cleaned_data['quantity']
             if product_service.check_product_quantity(quantity=quantity):
                 update_product = product_service.get_update_quantity_product()
@@ -52,11 +58,17 @@ class GoodsDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        review_service = ReviewService(self.request.user, self.get_object())
-        product_service = ProductService(self.request, self.get_object(), kwargs['object'].slug)
+        review_service = ReviewsService(self.request, self.request.user, self.get_object())
+        product_service = ProductService(
+            self.request,
+            self.request.user,
+            self.get_object(),
+            kwargs['object'].slug
+        )
         context['images'] = product_service.get_images()
         context['tags'] = self.object.tags.all()
         context['reviews'] = review_service.get_reviews_for_product()
+        context['paginator'], context['page_obj'] = review_service.paginate(context['reviews'])
         context['product_form'] = AddProductToCardForm()
         context['review_form'] = ReviewsForm()
         return context
@@ -66,7 +78,7 @@ def add_review(request):
     if request.method == 'POST':
         form = ReviewsForm(request.POST)
         if form.is_valid():
-            review = ReviewService(request.user, request.POST['product'])
+            review = ReviewsService(request, request.user, request.POST['product'])
             text = form.cleaned_data['text']
             review.add(review=text)
     return redirect(request.META.get('HTTP_REFERER'))

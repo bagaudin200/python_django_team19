@@ -14,7 +14,7 @@
       </h3>
     </header>
     <div class="Comments">
-      {% for review in product.reviews.filter(product=product.id) %}
+      {% for review in page_obj %}
         <div class="Comment">
           <div class="Comment-column Comment-column_pict">
             {% if review.user.avatar %}
@@ -35,6 +35,20 @@
         </div>
       {% endfor %}
     </div>
+    <div class="pagination">
+      <ul class="pagination__list">
+        <div>Страницы:</div>
+          {% for p in paginator.page_range %}
+            {% if page_obj.number == p %}
+              <li class="pagination__item">{{ p }}</li>
+            {% else %}
+            <li class="pagination__item">
+              <a href="?page={{ p }}">{{ p }}</a>
+            </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
   {% endif %}
   {% if request.user.is_authenticated %}
     <header class="Section-header Section-header_product">
