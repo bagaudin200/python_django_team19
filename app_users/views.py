@@ -30,7 +30,7 @@ class MyRegistration(CreateView):
 
     def dispatch(self, *args, **kwargs):
         if self.request.user.is_authenticated:
-            return redirect(reverse('users:profile'))
+            return redirect(reverse('profile'))
         return super().dispatch(*args, **kwargs)
 
     def post(self, request, *args, **kwargs):
@@ -56,7 +56,7 @@ class ProfileView(LoginRequiredMixin, UpdateView):
     template_name = 'app_users/profile.jinja2'
 
     def get_success_url(self):
-        return reverse('users:profile')
+        return reverse('profile')
 
     def get_object(self, queryset=None):
         return self.request.user
@@ -95,6 +95,7 @@ class MyPasswordResetView(PasswordResetView):
     form_class = MyPasswordResetForm
 
 
+
 class MyPasswordResetDoneView(PasswordResetDoneView):
     template_name = "app_users/password_reset_done.jinja2"
 
@@ -105,7 +106,7 @@ class MyPasswordResetConfirmView(PasswordResetConfirmView):
     post_reset_login = True
 
     def get_success_url(self):
-        return reverse_lazy('users:profile')
+        return reverse_lazy('profile')
 
 
 class MyPasswordResetCompleteView(PasswordResetCompleteView):
@@ -113,6 +114,7 @@ class MyPasswordResetCompleteView(PasswordResetCompleteView):
 
 
 class AccountView(LoginRequiredMixin, TemplateView):
+    """Личный кабинет пользователя"""
     template_name = 'app_users/account.jinja2'
     raise_exception = True
 
