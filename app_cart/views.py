@@ -2,14 +2,14 @@ from decimal import Decimal
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
-from django.shortcuts import redirect, get_object_or_404, render
+from django.shortcuts import redirect, get_object_or_404
 from django.views.decorators.http import require_POST, require_GET
-
-from app_cart.models import ProductInCart
-from app_goods.models import Product
 from django.views.generic import TemplateView
-from app_cart.services import CartServices
+
 from app_cart.forms import CartAddProductForm, CartAddProductModelForm
+from app_cart.models import ProductInCart
+from app_cart.services import CartServices
+from app_goods.models import Product
 
 
 class CartDetail(TemplateView):

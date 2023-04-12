@@ -1,9 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from app_settings.models import SiteSettings
-from app_goods.models import Category, Product
-
+from app_goods.models import Product
 
 
 class TestProductView(TestCase):
@@ -15,8 +13,3 @@ class TestProductView(TestCase):
     def test_blogs_exists_at_desired_location(self):
         response = self.client.get(reverse('product:product', args=(self.product.slug,)))
         self.assertEqual(response.status_code, 200)
-
-
-
-
-
