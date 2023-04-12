@@ -14,10 +14,10 @@ urlpatterns = [
     path('profile/', ProfileView.as_view(), name='profile'),
     path('account/', AccountView.as_view(), name='account'),
     path('password-reset/', MyPasswordResetView.as_view(), name='password_reset'),
-    path('password-reset/done/', MyPasswordResetDoneView.as_view(),
-                    name='password_reset_done'),
+    path('', MyPasswordResetDoneView.as_view(),
+         name='password_reset_done'),
     path('password-reset/confirm/<uidb64>/<token>/', MyPasswordResetConfirmView.as_view(),
-                    name='password_reset_confirm'),
+         name='password_reset_confirm'),
     path('password-reset/complete/', MyPasswordResetCompleteView.as_view(),
-                    name='password_reset_complete'),
-               ]
+         name='password_reset_complete'),
+]
