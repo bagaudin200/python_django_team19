@@ -9,7 +9,7 @@ class UserManager(BaseUserManager):
         Создает и сохраняет пользователя с указанным адресом электронной почты и паролем.
         """
         if not email:
-            raise ValueError('The given email must be set')
+            raise ValueError('Указанный адрес электронной почты должен быть установлен')
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)

@@ -77,9 +77,9 @@
     </div>
   {% else %}
     <h4>Для того чтобы оставить комментарий вы должны
-      <a href="{{ url('users:login') }}?next={{ url('product:product', product.slug )}}">войти</a>
+      <a href="{{ url('login') }}?next={{ url('product:product', product.slug )}}">войти</a>
       или
-      <a href="{{ url('users:registration') }}?next={{ url('product:product', product.slug )}}">зарегистрироваться</a>
+      <a href="{{ url('registration') }}?next={{ url('product:product', product.slug )}}">зарегистрироваться</a>
     </h4>
   {% endif %}
 </div>

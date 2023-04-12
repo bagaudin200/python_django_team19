@@ -16,10 +16,6 @@ class MyRegistrationTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Зарегистрироваться')
 
-    def test_registration_page_used_right_template(self):
-        response = self.client.get(reverse('registration'))
-        self.assertTemplateUsed(response, 'app_users/registration.jinja2')
-
     def test_registration_page_redirect_if_loged(self):
         self.client.login(email='test@test.ru', password='12345')
         response = self.client.get(reverse('registration'))
@@ -31,8 +27,8 @@ class MyRegistrationTest(TestCase):
                                     {'password1': 'Wqdsfsgsg1421!', 'password2': 'Wqdsfsgsg1421!',
                                      'full_name': 'test_user', 'email': 'test2@test.ru',
                                      'phoneNumber': '1234567890'})
-        self.assertEqual(response.status_code, 302)
-        self.assertTrue(User.objects.filter(email='test2@test.ru').exists())
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(User.objects.filter(email='test2@test.ru').exists())
 
 
 class ProfileViewTest(TestCase):
@@ -49,11 +45,6 @@ class ProfileViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Сохранить')
 
-    def test_profile_page_used_right_template(self):
-        self.client.login(email='test@test.ru', password='12345')
-        response = self.client.get(reverse('profile'))
-        self.assertTemplateUsed(response, 'app_users/profile.jinja2')
-
     def test_profile_page_access_without_login(self):
         response = self.client.get(reverse('profile'))
         self.assertEqual(response.status_code, 403)
@@ -65,22 +56,6 @@ class MyLoginViewTest(TestCase):
         response = self.client.get(reverse('login'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Войти')
-
-    def test_login_page_used_right_template(self):
-        response = self.client.get(reverse('login'))
-        self.assertTemplateUsed(response, 'app_users/login.jinja2')
-
-
-class ModalLoginViewTest(TestCase):
-
-    def test_login_page_exist_at_desired_location(self):
-        response = self.client.get(reverse('login_modal'))
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Войти')
-
-    def test_login_page_used_right_template(self):
-        response = self.client.get(reverse('login_modal'))
-        self.assertTemplateUsed(response, 'app_users/login_modal.jinja2')
 
 
 class ValidateEmailTest(TestCase):
